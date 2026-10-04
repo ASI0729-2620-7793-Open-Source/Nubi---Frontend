@@ -1,1 +1,275 @@
-/* You can add global styles to this file, and also import other style files */
+/* Estilos globales de Nubi.
+   Colores de la sección 4.1 del informe (Deep Teal, Mint Teal, Coral Red) con los neutros,
+   la tipografía Inter y las medidas de los mock-ups de la sección 4.4.3. */
+
+:root {
+  /* Paleta del informe */
+  --nubi-deep-teal: #00373e;
+  --nubi-deep-teal-hover: #002930;
+  --nubi-mint-teal: #4ccbbb;
+  --nubi-mint-soft: #dcefe4;
+  --nubi-coral-red: #e0605b;
+
+  /* Neutros y acentos de los mock-ups */
+  --nubi-background: #f8f9fb;
+  --nubi-surface: #ffffff;
+  --nubi-border: #e5e7eb;
+  --nubi-border-soft: #eef0f3;
+  --nubi-text: #111827;
+  --nubi-text-soft: #4b5563;
+  --nubi-text-muted: #6b7280;
+  --nubi-text-nav: #374151;
+  --nubi-favorite-bg: #ffe4e6;
+  --nubi-favorite-text: #e11d48;
+  --nubi-tag-bg: #f3f4f6;
+  --nubi-sos-gradient: linear-gradient(90deg, #f43f5e 0%, #e11d48 100%);
+
+  /* Ritmo 8pt */
+  --nubi-space-xs: 8px;
+  --nubi-space-s: 12px;
+  --nubi-space-m: 16px;
+  --nubi-space-l: 24px;
+  --nubi-space-xl: 32px;
+  --nubi-space-2xl: 48px;
+
+  --nubi-radius-s: 6px;
+  --nubi-radius-m: 10px;
+  --nubi-radius-l: 12px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  color: var(--nubi-text);
+}
+
+.nubi-spacer {
+  flex: 1 1 auto;
+}
+
+/* ---------- Estructura de página ---------- */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nubi-space-l);
+  padding: 40px 54px 48px;
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  color: var(--nubi-text-muted);
+  font-size: 14px;
+}
+
+.breadcrumbs a {
+  color: var(--nubi-text-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.breadcrumbs a:hover {
+  color: var(--nubi-deep-teal);
+}
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.page h1 {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--nubi-text-soft);
+}
+
+.error-message {
+  margin: 0;
+  color: var(--nubi-coral-red);
+  font-weight: 600;
+}
+
+/* ---------- Filtros tipo píldora ---------- */
+
+.chip {
+  position: relative;
+  min-height: 36px;
+  padding: 0 16px;
+  border: 1px solid var(--nubi-border);
+  border-radius: 999px;
+  background: var(--nubi-surface);
+  color: var(--nubi-text-nav);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+/* Área táctil de 48 px sin cambiar el tamaño visible del mock-up */
+.chip::before {
+  content: '';
+  position: absolute;
+  inset: -6px 0;
+}
+
+.chip:hover:not(.selected) {
+  border-color: var(--nubi-deep-teal);
+}
+
+.chip.selected {
+  border-color: var(--nubi-deep-teal);
+  background: var(--nubi-deep-teal);
+  color: #ffffff;
+}
+
+/* ---------- Etiqueta de favorito ---------- */
+
+.favorite-tag {
+  position: relative;
+  padding: 4px 10px;
+  border: none;
+  border-radius: 4px;
+  background: var(--nubi-tag-bg);
+  color: var(--nubi-text-muted);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.favorite-tag::before {
+  content: '';
+  position: absolute;
+  inset: -12px -4px;
+}
+
+.favorite-tag:hover {
+  background: #e5e7eb;
+}
+
+.favorite-tag.active {
+  background: var(--nubi-favorite-bg);
+  color: var(--nubi-favorite-text);
+}
+
+.favorite-tag.active:hover {
+  background: #fecdd3;
+}
+
+.favorite-tag.large {
+  padding: 8px 16px;
+  border-radius: var(--nubi-radius-s);
+  font-size: 14px;
+}
+
+/* ---------- Botones ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--nubi-space-xs);
+  min-height: 48px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--nubi-deep-teal);
+  color: #ffffff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--nubi-deep-teal-hover);
+  box-shadow: 0 6px 16px rgba(0, 55, 62, 0.2);
+}
+
+.btn-outline {
+  border: 1px solid #d1d5db;
+  background: var(--nubi-surface);
+  color: var(--nubi-text);
+  font-weight: 500;
+}
+
+.btn-outline:hover:not(:disabled) {
+  background: var(--nubi-background);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-small {
+  min-height: 36px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ---------- Diseño responsivo (sección 4.1.2.6 del informe) ---------- */
+
+/* Anillo de foco de 2.5 px en Mint Teal para todo elemento interactivo */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2.5px solid var(--nubi-mint-teal);
+  outline-offset: 2px;
+}
+
+/* Tablet: 769–1024 px */
+@media (max-width: 1024px) {
+  .page {
+    padding: var(--nubi-space-xl) var(--nubi-space-l) var(--nubi-space-2xl);
+  }
+}
+
+/* Mobile: ≤ 768 px, una sola columna y márgenes laterales de 20 px */
+@media (max-width: 768px) {
+  .page {
+    gap: 20px;
+    /* Espacio inferior para que el botón flotante del Modo SOS no tape contenido */
+    padding: 20px 20px 112px;
+  }
+}
+
+/* ---------- Paneles de Angular Material (se renderizan fuera de los componentes) ---------- */
+
+.mat-mdc-tooltip {
+  --mat-tooltip-container-color: var(--nubi-deep-teal);
+}

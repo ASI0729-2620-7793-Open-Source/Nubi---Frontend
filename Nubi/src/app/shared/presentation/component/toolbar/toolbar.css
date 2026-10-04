@@ -1,3 +1,128 @@
-.spacer {
-  flex: 1 1 auto;
+:host {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: block;
+}
+
+.toolbar {
+  --mat-toolbar-container-background-color: var(--nubi-surface);
+  --mat-toolbar-container-text-color: var(--nubi-deep-teal);
+  --mat-toolbar-standard-height: 64px;
+  --mat-toolbar-mobile-height: 64px;
+  --mat-toolbar-title-text-font: inherit;
+  --mat-toolbar-title-text-size: 16px;
+  --mat-toolbar-title-text-weight: 500;
+  border-bottom: 1px solid var(--nubi-border-soft);
+}
+
+.toolbar-main {
+  gap: var(--nubi-space-m);
+  padding: 0 var(--nubi-space-l);
+}
+
+.toolbar.compact .toolbar-main {
+  gap: var(--nubi-space-xs);
+  padding: 0 var(--nubi-space-s);
+}
+
+.menu-button {
+  color: var(--nubi-deep-teal);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--nubi-deep-teal);
+  text-decoration: none;
+}
+
+.brand-logo {
+  display: block;
+  width: 40px;
+  height: 40px;
+}
+
+.brand-name {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.sos-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: var(--nubi-radius-m);
+  background: var(--nubi-sos-gradient);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgba(225, 29, 72, 0.25);
+}
+
+.sos-button mat-icon {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+}
+
+.sos-button:focus-visible {
+  outline: 2.5px solid var(--nubi-mint-teal);
+  outline-offset: 2px;
+}
+
+/* ---------- Navegación superior completa (tablet) ---------- */
+
+.toolbar-nav-row {
+  height: auto;
+  padding: 0 var(--nubi-space-m) var(--nubi-space-xs);
+}
+
+.toolbar-nav {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+}
+
+.toolbar-link {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 56px;
+  padding: 6px 4px;
+  border-radius: var(--nubi-radius-m);
+  color: var(--nubi-text-nav);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.toolbar-link mat-icon {
+  width: 22px;
+  height: 22px;
+  font-size: 22px;
+}
+
+.toolbar-link:hover {
+  background: var(--nubi-background);
+}
+
+/* Mismo indicador que el ítem activo de la barra lateral */
+.toolbar-link.active {
+  background: var(--nubi-mint-soft);
+  color: var(--nubi-deep-teal);
+  font-weight: 600;
+}
+
+.toolbar-link:focus-visible {
+  outline: 2.5px solid var(--nubi-mint-teal);
+  outline-offset: -2px;
 }

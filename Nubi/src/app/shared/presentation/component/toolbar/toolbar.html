@@ -1,9 +1,44 @@
-<mat-toolbar>
-  <button matIconButton aria-label="Menú" (click)="menuClick.emit()">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span class="spacer"></span>
-  <button matIconButton aria-label="Notificaciones">
-    <mat-icon>notifications</mat-icon>
-  </button>
+<mat-toolbar class="toolbar" [class.compact]="compact()">
+  <mat-toolbar-row class="toolbar-main">
+    @if (compact()) {
+      <button
+        matIconButton
+        type="button"
+        class="menu-button"
+        [attr.aria-label]="'nav.openMenu' | translate"
+        (click)="menuClick.emit()"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+    }
+
+    <a class="brand" routerLink="/inicio">
+      <img src="logo-nubi-symbol.png" alt="" class="brand-logo" />
+      <span class="brand-name">Nubi</span>
+    </a>
+
+    <span class="nubi-spacer"></span>
+
+    @if (!compact()) {
+      <app-language-switch></app-language-switch>
+
+      <a class="sos-button" routerLink="/modo-sos">
+        <mat-icon>error</mat-icon>
+        {{ 'nav.sos' | translate }}
+      </a>
+    }
+  </mat-toolbar-row>
+
+  @if (!compact()) {
+    <mat-toolbar-row class="toolbar-nav-row">
+      <nav class="toolbar-nav" [attr.aria-label]="'nav.mainNavigation' | translate">
+        @for (link of links; track link.path) {
+          <a class="toolbar-link" [routerLink]="link.path" routerLinkActive="active">
+            <mat-icon>{{ link.icon }}</mat-icon>
+            <span>{{ link.labelKey | translate }}</span>
+          </a>
+        }
+      </nav>
+    </mat-toolbar-row>
+  }
 </mat-toolbar>
