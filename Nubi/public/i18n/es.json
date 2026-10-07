@@ -1,0 +1,103 @@
+{
+  "app": {
+    "apiDownTitle": "No se pudo conectar con la API",
+    "apiDownBody": "La API falsa no respondió. Revisa que ng serve siga corriendo y vuelve a intentarlo.",
+    "retry": "Reintentar"
+  },
+  "nav": {
+    "home": "Inicio",
+    "profile": "Perfil",
+    "selfcare": "Autocuidado",
+    "communication": "Comunicación",
+    "history": "Historial",
+    "settings": "Ajustes",
+    "sos": "MODO SOS",
+    "sosShort": "SOS",
+    "language": "Idioma",
+    "openMenu": "Abrir menú",
+    "mainNavigation": "Navegación principal",
+    "breadcrumb": "Ruta de navegación"
+  },
+  "caregiverRole": {
+    "CAREGIVER": "Cuidadora"
+  },
+  "gallery": {
+    "title": "Galería de estímulos",
+    "subtitle": "Elige un estímulo visual o auditivo para ayudar a {{name}} a recuperar la calma.",
+    "noticeAuditoryAndVisual": "Como {{name}} tiene sensibilidad auditiva alta y prefiere estímulos visuales, te mostramos las opciones visuales. Puedes cambiar el filtro cuando quieras.",
+    "noticeAuditory": "Como {{name}} tiene sensibilidad auditiva alta, te mostramos las opciones visuales. Puedes cambiar el filtro cuando quieras.",
+    "noticeVisual": "Como {{name}} prefiere estímulos visuales, te mostramos las opciones visuales. Puedes cambiar el filtro cuando quieras.",
+    "filterAria": "Filtrar estímulos por tipo",
+    "all": "Todos",
+    "visual": "Visual",
+    "auditory": "Auditivo",
+    "favorites": "Favoritos",
+    "inFavorites": "En favoritos",
+    "favorite": "Favorito",
+    "addFavorite": "Agregar {{name}} a favoritos",
+    "removeFavorite": "Quitar {{name}} de favoritos",
+    "noFavorites": "Todavía no hay estímulos en favoritos. Márcalos desde cada tarjeta.",
+    "noResults": "No hay estímulos de este tipo.",
+    "loadError": "No se pudo cargar la galería de estímulos."
+  },
+  "session": {
+    "pageTitle": "Estímulo en uso",
+    "breathe": "RESPIRA",
+    "intensity": "Intensidad",
+    "soft": "Suave",
+    "intense": "Intenso",
+    "lowStimulation": "Modo de baja estimulación",
+    "lowStimulationHint": "Reduce el brillo y detiene animaciones intensas.",
+    "useTimer": "Usar temporizador de calma mientras tanto",
+    "finish": "Terminar sesión y volver a la galería",
+    "playSound": "Reproducir sonido",
+    "pauseSound": "Pausar sonido",
+    "loadError": "No se pudo abrir el estímulo."
+  },
+  "timer": {
+    "title": "Temporizador de calma",
+    "continuingWith": "Continuando con {{name}}",
+    "exit": "Salir del temporizador",
+    "takeThisMoment": "Tómate este momento",
+    "remainingOf": "restantes de {{total}}",
+    "durationAria": "Duración del temporizador",
+    "minutes": "{{value}} min",
+    "pause": "Pausar",
+    "resume": "Reanudar",
+    "note": "Al terminar, te preguntaremos cómo se siente {{name}} ahora.",
+    "timeUp": "Terminó el tiempo",
+    "howFeels": "¿Cómo se siente {{name}} ahora?",
+    "feelsBetter": "Se siente mejor",
+    "notCalmYet": "Todavía no se calma",
+    "suggestHelp": "Si {{name}} todavía no se calma, pide ayuda a su red de apoyo.",
+    "askForHelp": "Pedir ayuda",
+    "backToStimulus": "Volver al estímulo",
+    "loadError": "No se pudo cargar el temporizador."
+  },
+  "resources": {
+    "FLOATING_BUBBLES": {
+      "name": "Burbujas flotantes",
+      "instruction": "Sigue el ritmo del círculo mientras observas las burbujas subir. No hay una forma correcta de hacerlo."
+    },
+    "COLOR_WAVES": {
+      "name": "Olas de color",
+      "instruction": "Respira con el círculo mientras los colores se mueven como olas. Puedes quedarte mirando el color que más te guste."
+    },
+    "STARRY_SKY": {
+      "name": "Cielo estrellado",
+      "instruction": "Respira con el círculo mientras las estrellas brillan despacio. Si quieres, elige una y síguela con la mirada."
+    },
+    "GENTLE_RAIN": {
+      "name": "Lluvia suave",
+      "instruction": "Escucha la lluvia caer despacio y respira con el círculo. No tienes que hacer nada más."
+    },
+    "OCEAN_SOUNDS": {
+      "name": "Sonido del mar",
+      "instruction": "Escucha cómo las olas llegan y se van, e inhala y exhala con ellas. Puedes cerrar los ojos si te ayuda."
+    },
+    "RELAXING_PIANO": {
+      "name": "Piano relajante",
+      "instruction": "Escucha las notas lentas del piano y deja que tu respiración siga su ritmo. No hay una forma correcta de hacerlo."
+    }
+  }
+}

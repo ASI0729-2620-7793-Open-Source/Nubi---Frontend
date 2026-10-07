@@ -1,0 +1,119 @@
+{
+  "caregivers": [
+    {
+      "id": 1,
+      "fullName": "María López",
+      "role": "CAREGIVER",
+      "avatarUrl": "caregiver-avatar.png",
+      "profileIds": [1]
+    }
+  ],
+  "profiles": [
+    {
+      "id": 1,
+      "fullName": "Diana Ríos",
+      "age": 15,
+      "diagnosis": "TEA nivel 1",
+      "sensoryProfile": {
+        "auditorySensitivity": "HIGH",
+        "visualSensitivity": "MEDIUM",
+        "tactileSensitivity": "LOW",
+        "prioritizeVisuals": true
+      }
+    }
+  ],
+  "calmingResources": [
+    {
+      "id": 1,
+      "code": "FLOATING_BUBBLES",
+      "name": "Burbujas flotantes",
+      "type": "VISUAL",
+      "mediaUrl": "stimuli/floating-bubbles.jpg",
+      "maxIntensity": 10,
+      "availableOffline": true,
+      "active": true
+    },
+    {
+      "id": 2,
+      "code": "OCEAN_SOUNDS",
+      "name": "Sonido del mar",
+      "type": "AUDITORY",
+      "mediaUrl": "stimuli/ocean-sounds.jpg",
+      "maxIntensity": 10,
+      "availableOffline": true,
+      "active": true
+    },
+    {
+      "id": 3,
+      "code": "COLOR_WAVES",
+      "name": "Olas de color",
+      "type": "VISUAL",
+      "mediaUrl": "stimuli/color-waves.jpg",
+      "maxIntensity": 10,
+      "availableOffline": true,
+      "active": true
+    },
+    {
+      "id": 4,
+      "code": "RELAXING_PIANO",
+      "name": "Piano relajante",
+      "type": "AUDITORY",
+      "mediaUrl": "stimuli/relaxing-piano.jpg",
+      "maxIntensity": 10,
+      "availableOffline": true,
+      "active": true
+    },
+    {
+      "id": 5,
+      "code": "STARRY_SKY",
+      "name": "Cielo estrellado",
+      "type": "VISUAL",
+      "mediaUrl": "stimuli/starry-sky.jpg",
+      "maxIntensity": 10,
+      "availableOffline": true,
+      "active": true
+    },
+    {
+      "id": 6,
+      "code": "GENTLE_RAIN",
+      "name": "Lluvia suave",
+      "type": "AUDITORY",
+      "mediaUrl": "stimuli/gentle-rain.jpg",
+      "maxIntensity": 10,
+      "availableOffline": true,
+      "active": true
+    }
+  ],
+  "favoriteResources": [
+    {
+      "id": 1,
+      "profileId": 1,
+      "resourceId": 1,
+      "markedAt": "2026-09-20T15:10:00.000Z"
+    },
+    {
+      "id": 2,
+      "profileId": 1,
+      "resourceId": 4,
+      "markedAt": "2026-09-27T19:30:00.000Z"
+    }
+  ],
+  "calmSessions": [
+    {
+      "id": 1,
+      "profileId": 1,
+      "resourceId": 1,
+      "status": "FINISHED",
+      "intensity": 6,
+      "lowStimulationActive": false,
+      "startedBySos": false,
+      "startedAt": "2026-10-02T16:02:00.000Z",
+      "endedAt": "2026-10-02T16:14:00.000Z",
+      "timer": {
+        "durationMinutes": 5,
+        "remainingSeconds": 0,
+        "running": false
+      }
+    }
+  ]
+}
