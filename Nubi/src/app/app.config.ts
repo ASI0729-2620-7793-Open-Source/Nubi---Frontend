@@ -10,6 +10,7 @@ import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { firstValueFrom } from 'rxjs';
 import { routes } from './app.routes';
+import { ProfileStore } from './shared/application/profile.store';
 import { TranslatedTitleStrategy } from './shared/presentation/translated-title-strategy';
 
 export const appConfig: ApplicationConfig = {
@@ -25,5 +26,7 @@ export const appConfig: ApplicationConfig = {
     }),
     // Se espera a tener el español cargado para no mostrar las claves al abrir la app
     provideAppInitializer(() => firstValueFrom(inject(TranslateService).use('es'))),
+    // Cuidador y perfil a cargo: los necesitan todas las vistas, con o sin barra lateral
+    provideAppInitializer(() => inject(ProfileStore).load()),
   ],
 };
