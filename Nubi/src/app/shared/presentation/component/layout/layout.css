@@ -1,7 +1,110 @@
-.layout {
+:host {
+  display: block;
   height: 100vh;
+  height: 100dvh;
+}
+
+.layout {
+  height: 100%;
+  --mat-sidenav-container-shape: 0;
+  --mat-sidenav-container-width: 240px;
+  --mat-sidenav-container-background-color: var(--nubi-surface);
+  --mat-sidenav-container-text-color: var(--nubi-text);
+  --mat-sidenav-container-divider-color: var(--nubi-border-soft);
+  --mat-sidenav-content-background-color: var(--nubi-background);
+  --mat-sidenav-content-text-color: var(--nubi-text);
+  --mat-sidenav-scrim-color: rgba(0, 55, 62, 0.4);
+}
+
+.side-navigation {
+  width: 240px;
 }
 
 .content {
-  padding: 24px;
+  position: relative;
+}
+
+.api-down {
+  display: flex;
+  align-items: center;
+  gap: var(--nubi-space-m);
+  margin: 40px 54px 0;
+  padding: var(--nubi-space-l);
+  border: 1px solid var(--nubi-border);
+  border-left: 6px solid var(--nubi-coral-red);
+  border-radius: var(--nubi-radius-l);
+  background: var(--nubi-surface);
+}
+
+.api-down > div {
+  flex: 1;
+}
+
+.api-down h2 {
+  font-size: 17px;
+}
+
+.api-down-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: var(--nubi-radius-l);
+  background: #fbe3e2;
+  color: #8f2f2b;
+}
+
+.api-down p {
+  margin: 4px 0 0;
+  color: var(--nubi-text-muted);
+}
+
+/* Botón flotante del Modo SOS en mobile, como el del Tablero CAA en los mock-ups */
+.sos-fab {
+  position: fixed;
+  right: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  background: var(--nubi-sos-gradient);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-decoration: none;
+  box-shadow:
+    0 0 0 6px rgba(225, 29, 72, 0.15),
+    0 8px 20px rgba(225, 29, 72, 0.35);
+}
+
+.sos-fab mat-icon {
+  margin-bottom: 2px;
+}
+
+.sos-fab:focus-visible {
+  outline: 2.5px solid var(--nubi-mint-teal);
+  outline-offset: 4px;
+}
+
+@media (max-width: 1024px) {
+  .api-down {
+    margin: var(--nubi-space-l);
+  }
+}
+
+@media (max-width: 768px) {
+  .api-down {
+    margin: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

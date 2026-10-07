@@ -1,12 +1,45 @@
 <mat-sidenav-container class="layout">
-  <mat-sidenav #sidenav mode="side" opened>
-    <app-sidenav></app-sidenav>
+  <mat-sidenav
+    class="side-navigation"
+    [mode]="isDesktop() ? 'side' : 'over'"
+    [opened]="isDesktop()"
+    [disableClose]="isDesktop()"
+  >
+    <app-sidenav (navigated)="closeMenu()"></app-sidenav>
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <app-toolbar (menuClick)="sidenav.toggle()"></app-toolbar>
+    @if (!isDesktop()) {
+      <app-toolbar [compact]="isMobile()" (menuClick)="openMenu()"></app-toolbar>
+    }
+
     <main class="content">
-      <router-outlet></router-outlet>
+      <!-- Si la API no responde, se explica qué pasó en vez de dejar la pantalla vacía -->
+      @if (profileStore.apiDown()) {
+        <div class="api-down" role="alert">
+          <span class="api-down-icon">
+            <mat-icon>cloud_off</mat-icon>
+          </span>
+          <div>
+            <h2>{{ 'app.apiDownTitle' | translate }}</h2>
+            <p>{{ 'app.apiDownBody' | translate }}</p>
+          </div>
+          <button class="btn btn-primary" type="button" (click)="retry()">
+            <mat-icon>refresh</mat-icon>
+            {{ 'app.retry' | translate }}
+          </button>
+        </div>
+      } @else {
+        <router-outlet></router-outlet>
+      }
     </main>
+
+    <!-- Mobile: el acceso al Modo SOS queda siempre visible (sección 4.1.2.6) -->
+    @if (isMobile()) {
+      <a class="sos-fab" routerLink="/modo-sos" [attr.aria-label]="'nav.sos' | translate">
+        <mat-icon>error</mat-icon>
+        <span>{{ 'nav.sosShort' | translate }}</span>
+      </a>
+    }
   </mat-sidenav-content>
 </mat-sidenav-container>

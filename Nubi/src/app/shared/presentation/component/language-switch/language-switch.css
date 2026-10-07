@@ -1,0 +1,47 @@
+:host {
+  display: block;
+}
+
+.language {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--nubi-border);
+  border-radius: 999px;
+  background: var(--nubi-surface);
+}
+
+/* El alto visible es menor, pero el área táctil de cada opción llega a 48 × 48 px */
+.lang-option {
+  position: relative;
+  min-width: 48px;
+  min-height: 32px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--nubi-text-soft);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.lang-option::before {
+  content: '';
+  position: absolute;
+  inset: -8px 0;
+}
+
+.lang-option:hover:not(.selected) {
+  background: var(--nubi-background);
+}
+
+.lang-option.selected {
+  background: var(--nubi-deep-teal);
+  color: #ffffff;
+}
+
+.lang-option:focus-visible {
+  outline: 2.5px solid var(--nubi-mint-teal);
+}
