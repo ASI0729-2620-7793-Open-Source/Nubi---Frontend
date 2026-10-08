@@ -1,6 +1,7 @@
 export const environment = {
   production: true,
-  apiBaseUrl: '/api',
+  // URL del servicio json-server desplegado (ver render.yaml); en desarrollo se usa el proxy
+  apiBaseUrl: 'https://nubi-api.onrender.com/api',
   calmingResourcesEndpoint: '/calmingResources',
   favoriteResourcesEndpoint: '/favoriteResources',
   communicationRequestsEndpoint: '/communicationRequests',
