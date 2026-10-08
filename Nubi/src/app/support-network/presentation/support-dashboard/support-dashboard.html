@@ -1,4 +1,7 @@
+<!-- Support Network dashboard -->
 <section class="dashboard" aria-labelledby="dashboard-title">
+
+  <!-- Page header -->
   <header class="page-header">
     <p class="eyebrow">Red de apoyo y seguimiento</p>
     <h1 id="dashboard-title">Hola, {{ caregiver.name }}</h1>
@@ -7,7 +10,10 @@
     </p>
   </header>
 
+  <!-- Main overview section -->
   <div class="overview-grid">
+
+    <!-- Latest communication card -->
     <article class="card request-card" aria-labelledby="request-title">
       <div class="card-heading">
         <div>
@@ -19,6 +25,7 @@
         <span class="message-time">{{ user.lastUpdate }} · Tablero de Comunicación</span>
       </div>
 
+      <!-- Communication preview -->
       <div class="request-preview">
         <span class="water-illustration" aria-hidden="true">
           <svg viewBox="0 0 48 48" role="presentation">
@@ -38,12 +45,14 @@
         <p>{{ user.lastMessageDescription }}</p>
       </div>
 
+      <!-- Communication actions -->
       <div class="request-actions">
         <button class="button button-primary" type="button">Confirmar recepción</button>
         <button class="button button-secondary" type="button">Ver tablero completo</button>
       </div>
     </article>
 
+    <!-- Current user status card -->
     <article class="card status-card" aria-labelledby="status-title">
       <p class="eyebrow">Bienestar</p>
       <h2 id="status-title">Estado actual de {{ user.name }}</h2>
@@ -54,7 +63,10 @@
     </article>
   </div>
 
+  <!-- Detailed monitoring section -->
   <div class="details-grid">
+
+    <!-- Recent activity card -->
     <article class="card activity-card" aria-labelledby="activity-title">
       <h2 id="activity-title">Actividad reciente</h2>
       <ul class="activity-list">
@@ -67,8 +79,11 @@
       </ul>
     </article>
 
+    <!-- Wellbeing analysis card -->
     <article class="card wellbeing-card" aria-labelledby="wellbeing-title">
       <h2 id="wellbeing-title">Análisis de bienestar</h2>
+
+      <!-- Weekly wellbeing chart -->
       <div
         class="chart"
         role="img"
@@ -88,6 +103,7 @@
           }
         </div>
       </div>
+
       <p class="chart-caption">Nivel de bienestar de los últimos días</p>
     </article>
   </div>
