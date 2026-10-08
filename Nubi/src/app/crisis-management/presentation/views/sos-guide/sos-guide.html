@@ -1,0 +1,115 @@
+@let step = store.currentStep();
+@let profile = store.sessionProfile();
+@let name = profile?.shortName ?? '';
+
+<header class="guide-header">
+  <button type="button" class="exit" (click)="exit()">
+    <mat-icon aria-hidden="true">chevron_left</mat-icon>
+    {{ 'sos.guide.exit' | translate }}
+  </button>
+
+  <span class="guide-title">{{ 'sos.title' | translate }}</span>
+
+  @if (step) {
+    <div class="progress">
+      <span class="progress-label">
+        {{
+          'sos.guide.stepOf'
+            | translate: { current: store.currentPosition(), total: store.steps().length }
+        }}
+      </span>
+      <span
+        class="progress-track"
+        role="progressbar"
+        [attr.aria-valuemin]="0"
+        [attr.aria-valuemax]="store.steps().length"
+        [attr.aria-valuenow]="store.currentPosition()"
+        [attr.aria-label]="'sos.guide.progressAria' | translate"
+      >
+        <span class="progress-fill" [style.width.%]="progress()"></span>
+      </span>
+    </div>
+  }
+</header>
+
+<main class="guide-body">
+  @if (store.error(); as error) {
+    <p class="error-message" role="alert">{{ error | translate }}</p>
+  }
+
+  @if (step) {
+    <h1>
+      {{
+        'sos.guide.stepTitle'
+          | translate
+            : {
+                number: store.currentPosition(),
+                title: 'crisisSteps.' + step.code + '.title' | translate,
+              }
+      }}
+    </h1>
+    <p class="lead">
+      {{ 'crisisSteps.' + step.code + '.description' | translate: { name: name } }}
+    </p>
+
+    @if (isBreathing()) {
+      <div class="breath" aria-hidden="true">
+        <div class="breath-core">
+          <span>{{ 'sos.guide.breathe' | translate }}</span>
+        </div>
+      </div>
+    }
+
+    @if (notices().length > 0) {
+      <div class="notice" role="note">
+        <mat-icon aria-hidden="true">info</mat-icon>
+        <div>
+          @for (trigger of notices(); track trigger) {
+            <p>{{ 'sos.guide.notice.' + trigger | translate: { name: name } }}</p>
+          }
+        </div>
+      </div>
+    } @else if (suggestsProfile()) {
+      <div class="notice" role="note">
+        <mat-icon aria-hidden="true">info</mat-icon>
+        <p>{{ 'sos.guide.completeProfile' | translate: { name: name } }}</p>
+      </div>
+    }
+
+    <div class="dots" aria-hidden="true">
+      @for (state of dots(); track $index) {
+        <span class="dot" [class]="'dot ' + state"></span>
+      }
+    </div>
+
+    @if (confirmingSkip()) {
+      <div
+        class="confirm"
+        role="alertdialog"
+        [attr.aria-label]="'sos.guide.mandatoryTitle' | translate"
+      >
+        <strong>{{ 'sos.guide.mandatoryTitle' | translate }}</strong>
+        <p>{{ 'sos.guide.mandatoryBody' | translate }}</p>
+        <div class="confirm-actions">
+          <button type="button" class="btn btn-primary" (click)="keepStep()">
+            {{ 'sos.guide.keepStep' | translate }}
+          </button>
+          <button type="button" class="btn btn-outline" (click)="confirmSkip()">
+            {{ 'sos.guide.confirmSkip' | translate }}
+          </button>
+        </div>
+      </div>
+    } @else {
+      <div class="actions">
+        <button type="button" class="next" (click)="next()">
+          {{ (store.isLastStep() ? 'sos.guide.finish' : 'sos.guide.next') | translate }}
+        </button>
+        <button type="button" class="skip" (click)="skip()">
+          {{ 'sos.guide.skip' | translate }}
+        </button>
+      </div>
+    }
+  } @else if (!store.error()) {
+    <p class="loading" role="status">{{ 'sos.guide.loading' | translate }}</p>
+  }
+</main>
