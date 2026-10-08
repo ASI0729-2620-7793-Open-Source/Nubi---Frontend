@@ -1,5 +1,5 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { finalize, forkJoin } from 'rxjs';
+import { catchError, finalize, forkJoin, of } from 'rxjs';
 import { Caregiver } from '../domain/model/caregiver.entity';
 import { ProfileSummary } from '../domain/model/profile-summary.entity';
 import { CaregiverApi } from '../infrastructure/caregiver-api';
@@ -36,14 +36,22 @@ export class ProfileStore {
     this.loadingState.set(true);
     this.apiDownState.set(false);
 
+    // Con la API vacía (sin cuidador ni perfiles) no es caída: solo sin datos.
+    // El aviso sale únicamente si AMBAS peticiones fallan (API inalcanzable).
     forkJoin({
-      caregiver: this.caregiverApi.getById(SIGNED_IN_CAREGIVER_ID),
-      profiles: this.profileApi.getAll(),
+      caregiver: this.caregiverApi.getById(SIGNED_IN_CAREGIVER_ID).pipe(catchError(() => of(null))),
+      profiles: this.profileApi.getAll().pipe(catchError(() => of(null))),
     })
       .pipe(finalize(() => this.loadingState.set(false)))
       .subscribe({
         next: ({ caregiver, profiles }) => {
-          const inCare = profiles.filter((profile) => caregiver.profileIds.includes(profile.id));
+          if (caregiver === null && profiles === null) {
+            this.apiDownState.set(true);
+            return;
+          }
+          const inCare = (profiles ?? []).filter(
+            (profile) => caregiver?.profileIds.includes(profile.id) ?? false,
+          );
           this.caregiverState.set(caregiver);
           this.profilesState.set(inCare);
           if (this.selectedIdState() === null && inCare.length > 0) {
