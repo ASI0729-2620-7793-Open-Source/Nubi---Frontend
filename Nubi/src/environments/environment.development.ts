@@ -3,6 +3,7 @@ export const environment = {
   apiBaseUrl: '/api',
   calmingResourcesEndpoint: '/calmingResources',
   favoriteResourcesEndpoint: '/favoriteResources',
+  communicationRequestsEndpoint: '/communicationRequests',
   calmSessionsEndpoint: '/calmSessions',
   profilesEndpoint: '/profiles',
   caregiversEndpoint: '/caregivers',
