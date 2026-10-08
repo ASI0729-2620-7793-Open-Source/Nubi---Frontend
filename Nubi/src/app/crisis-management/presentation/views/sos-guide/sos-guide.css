@@ -1,0 +1,310 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #f7f6f4;
+}
+
+h1 {
+  font-family: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+  color: var(--nubi-deep-teal);
+}
+
+/* ---------- Encabezado ---------- */
+
+/* Tres columnas: las laterales miden igual, así el título queda centrado en la pantalla */
+.guide-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--nubi-space-m);
+  min-height: 60px;
+  padding: 10px 48px;
+  background: var(--nubi-surface);
+}
+
+.exit {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 4px;
+  min-height: 44px;
+  padding: 0 8px 0 0;
+  border: none;
+  background: none;
+  color: var(--nubi-deep-teal);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.guide-title {
+  color: var(--nubi-deep-teal);
+  font-family: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-self: end;
+}
+
+.progress-label {
+  color: var(--nubi-text-muted);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.progress-track {
+  width: 200px;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e4e1db;
+}
+
+.progress-fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--nubi-mint-teal) 0%, var(--nubi-deep-teal) 100%);
+  transition: width 0.3s ease;
+}
+
+/* ---------- Paso ---------- */
+
+.guide-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  /* El paso queda centrado en el espacio que deja el encabezado */
+  justify-content: center;
+  gap: var(--nubi-space-l);
+  width: 100%;
+  max-width: 680px;
+  margin-inline: auto;
+  padding: var(--nubi-space-2xl) 24px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 48px;
+}
+
+.lead {
+  max-width: 512px;
+  margin: 0;
+  color: var(--nubi-text-muted);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.loading {
+  margin: 0;
+  color: var(--nubi-text-muted);
+}
+
+/* ---------- Círculo de respiración ---------- */
+
+.breath {
+  display: grid;
+  place-items: center;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(71% 71% at 50% 50%, #e3f7f4 0%, rgba(227, 247, 244, 0) 70%);
+}
+
+.breath-core {
+  display: grid;
+  place-items: center;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(
+    99% 99% at 30% 30%,
+    var(--nubi-mint-teal) 0%,
+    var(--nubi-deep-teal) 100%
+  );
+  box-shadow: 0 10px 25px rgba(0, 55, 62, 0.15);
+  color: #ffffff;
+  font-family: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  animation: breathe 8s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(0.88);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .breath-core {
+    animation: none;
+  }
+}
+
+/* ---------- Aviso según el perfil ---------- */
+
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--nubi-space-s);
+  width: 100%;
+  padding: 16px 18px;
+  border: 1px solid var(--nubi-deep-teal);
+  border-radius: var(--nubi-radius-l);
+  background: var(--nubi-mint-soft);
+  color: var(--nubi-deep-teal);
+  font-size: 14px;
+  line-height: 21px;
+  text-align: left;
+}
+
+.notice mat-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+}
+
+.notice p {
+  margin: 0;
+}
+
+.notice p + p {
+  margin-top: 4px;
+}
+
+/* ---------- Progreso por puntos ---------- */
+
+.dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background: #e4e1db;
+  transition: width 0.2s ease;
+}
+
+.dot.done {
+  background: var(--nubi-mint-teal);
+}
+
+.dot.current {
+  width: 24px;
+  background: var(--nubi-deep-teal);
+}
+
+/* ---------- Acciones ---------- */
+
+.actions,
+.confirm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--nubi-space-s);
+  width: 100%;
+}
+
+.next {
+  width: 100%;
+  max-width: 320px;
+  min-height: 55px;
+  border: none;
+  border-radius: 999px;
+  background: var(--nubi-deep-teal);
+  color: #ffffff;
+  font-family: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.next:hover {
+  background: var(--nubi-deep-teal-hover);
+}
+
+.skip {
+  min-height: 44px;
+  padding: 0 16px;
+  border: none;
+  background: none;
+  color: var(--nubi-text-muted);
+  font: inherit;
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.confirm {
+  padding: var(--nubi-space-l);
+  border: 1px solid var(--nubi-coral-red);
+  border-radius: var(--nubi-radius-l);
+  background: var(--nubi-surface);
+}
+
+.confirm strong {
+  color: var(--nubi-deep-teal);
+}
+
+.confirm p {
+  margin: 0;
+  color: var(--nubi-text-muted);
+  font-size: 14px;
+}
+
+.confirm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--nubi-space-m);
+}
+
+@media (max-width: 768px) {
+  .guide-header {
+    padding-inline: var(--nubi-space-m);
+  }
+
+  /* La barra de progreso pasa a una segunda fila a lo ancho */
+  .progress {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+  }
+
+  .progress-track {
+    flex: 1;
+    width: auto;
+  }
+
+  .guide-body {
+    padding-block: var(--nubi-space-xl);
+  }
+
+  h1 {
+    font-size: 26px;
+    line-height: 36px;
+  }
+}

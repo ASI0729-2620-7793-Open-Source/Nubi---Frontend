@@ -74,6 +74,117 @@
     "backToStimulus": "Volver al estímulo",
     "loadError": "No se pudo cargar el temporizador."
   },
+  "sos": {
+    "title": "Modo SOS",
+    "pageTitle": "Modo SOS",
+    "loadError": "No se pudo conectar con el Modo SOS. Revisa tu conexión e inténtalo de nuevo.",
+    "intensity": {
+      "CALM": "Baja",
+      "RESTLESS": "Moderada",
+      "ALTERED": "Alta",
+      "CRISIS": "Muy alta"
+    },
+    "trigger": {
+      "AUDITORY": "Auditivo",
+      "VISUAL": "Visual",
+      "TACTILE": "Táctil",
+      "NONE": "Sin identificar"
+    },
+    "state": {
+      "CALM": "En calma",
+      "TIRED": "Con cansancio",
+      "SENSITIVE": "Sensible",
+      "IRRITABLE": "Irritable"
+    },
+    "activation": {
+      "lead": "Respira. Vamos a acompañarte paso a paso durante este momento. Toca el círculo cuando estés listo para comenzar.",
+      "activate": "Activar SOS",
+      "tapOnce": "Toca una vez",
+      "emergency": "Si es una emergencia médica, llama al servicio de emergencias local.",
+      "selectProfile": "Selecciona un perfil para activar el Modo SOS.",
+      "inProgress": "Hay una guía en curso para {{name}}.",
+      "resume": "Retomar guía",
+      "finishNow": "Finalizar episodio",
+      "forWhomTitle": "¿Para quién es esta guía?",
+      "forWhomHint": "La guía se personaliza según las sensibilidades registradas del perfil seleccionado.",
+      "ageDiagnosis": "{{age}} años · {{diagnosis}}",
+      "featuresAria": "Cómo funciona el Modo SOS",
+      "stepByStepTitle": "Guía paso a paso",
+      "stepByStepBody": "Verás una acción a la vez, sin sobrecarga de información.",
+      "new": "Nuevo",
+      "adaptedTitle": "Adaptada al perfil",
+      "adaptedBody": "Los pasos se ajustan a las sensibilidades de {{name}}.",
+      "autoRecordTitle": "Registro automático",
+      "autoRecordBody": "El episodio se guarda solo al finalizar."
+    },
+    "guide": {
+      "pageTitle": "Guía SOS",
+      "exit": "Salir",
+      "stepOf": "Paso {{current}} de {{total}}",
+      "progressAria": "Progreso de la guía",
+      "stepTitle": "Paso {{number}}: {{title}}",
+      "breathe": "Inhala... Exhala",
+      "next": "Siguiente",
+      "finish": "Ver resumen",
+      "skip": "Omitir paso",
+      "mandatoryTitle": "Este paso es importante",
+      "mandatoryBody": "¿Seguro que quieres omitirlo?",
+      "keepStep": "Volver al paso",
+      "confirmSkip": "Sí, omitir",
+      "loading": "Cargando...",
+      "completeProfile": "Completa el perfil de {{name}} para que la guía se adapte a sus sensibilidades.",
+      "notice": {
+        "AUDITORY": "{{name}} tiene sensibilidad auditiva alta. Mantén la voz baja y evita ruidos repentinos.",
+        "VISUAL": "{{name}} tiene sensibilidad visual alta. Baja las luces y evita destellos o cambios bruscos.",
+        "TACTILE": "{{name}} tiene sensibilidad táctil alta. Evita el contacto físico sin avisar."
+      }
+    },
+    "summary": {
+      "pageTitle": "Resumen del episodio",
+      "title": "Resumen del episodio",
+      "save": "Finalizar y Guardar",
+      "backHome": "Volver al inicio",
+      "goodJob": "¡Buen trabajo! El episodio ha pasado.",
+      "recorded": "Hemos registrado los detalles para tu historial. ¿Cómo se encuentra {{name}} ahora?",
+      "duration": "Duración",
+      "minutes": "{{value}} min",
+      "initialIntensity": "Intensidad inicial",
+      "finalIntensity": "Intensidad final",
+      "trigger": "Detonante",
+      "stateTitle": "Estado actual de {{name}}",
+      "stepsTitle": "Pasos completados",
+      "skipped": "(omitido)",
+      "noSteps": "Todavía no se completó ningún paso.",
+      "footnote": "Al finalizar, esta información se añadirá al reporte semanal de {{name}}.",
+      "savedToast": "Episodio guardado correctamente en el historial"
+    }
+  },
+  "crisisSteps": {
+    "SENSORY_ISOLATION": {
+      "title": "Aislamiento sensorial",
+      "description": "Aleja a {{name}} de ruidos, luces fuertes y multitudes. Busca un espacio tranquilo y seguro."
+    },
+    "EMOTIONAL_VALIDATION": {
+      "title": "Validación emocional",
+      "description": "Dile a {{name}} que lo que siente es válido y que estás aquí. Usa frases cortas y una voz tranquila."
+    },
+    "SAFE_SPACE": {
+      "title": "Espacio seguro",
+      "description": "Ayuda a {{name}} a ubicarse en un lugar cómodo donde se sienta protegido y retira los objetos que puedan lastimarlo."
+    },
+    "BITE_TOOL": {
+      "title": "Uso de mordedor",
+      "description": "Si lo necesita, ofrécele su mordedor u otro objeto sensorial para canalizar la tensión."
+    },
+    "CALM_BREATHING": {
+      "title": "Calma y Respiración",
+      "description": "Sincroniza tu respiración con el círculo. Esto ayudará a {{name}} a regularse por imitación."
+    },
+    "FINAL_CHECK": {
+      "title": "Revisión final",
+      "description": "Observa cómo se encuentra {{name}}. Cuando su respiración y su cuerpo estén más relajados, cierra el episodio."
+    }
+  },
   "resources": {
     "FLOATING_BUBBLES": {
       "name": "Burbujas flotantes",

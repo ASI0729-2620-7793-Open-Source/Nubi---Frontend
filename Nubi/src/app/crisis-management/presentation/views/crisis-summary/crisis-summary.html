@@ -1,0 +1,114 @@
+@let current = session();
+@let profile = store.sessionProfile();
+@let name = profile?.shortName ?? '';
+
+<header class="summary-header">
+  <h2>{{ 'sos.summary.title' | translate }}</h2>
+  @if (isFinished()) {
+    <a class="btn btn-primary save" routerLink="/inicio">{{
+      'sos.summary.backHome' | translate
+    }}</a>
+  } @else {
+    <button
+      type="button"
+      class="btn btn-primary save"
+      [disabled]="!current || store.loading()"
+      (click)="save()"
+    >
+      {{ 'sos.summary.save' | translate }}
+    </button>
+  }
+</header>
+
+<main class="summary-body">
+  @if (store.error(); as error) {
+    <p class="error-message" role="alert">{{ error | translate }}</p>
+  }
+
+  @if (current) {
+    <div class="success">
+      <span class="success-icon" aria-hidden="true">
+        <mat-icon>eco</mat-icon>
+      </span>
+      <h1>{{ 'sos.summary.goodJob' | translate }}</h1>
+      <p>{{ 'sos.summary.recorded' | translate: { name: name } }}</p>
+    </div>
+
+    <dl class="stats">
+      <div class="stat">
+        <dt>{{ 'sos.summary.duration' | translate }}</dt>
+        <dd>{{ 'sos.summary.minutes' | translate: { value: current.durationMinutes() } }}</dd>
+      </div>
+      <div class="stat">
+        <dt>{{ 'sos.summary.initialIntensity' | translate }}</dt>
+        <dd>{{ 'sos.intensity.' + current.initialIntensity | translate }}</dd>
+      </div>
+      <div class="stat">
+        <dt>{{ 'sos.summary.finalIntensity' | translate }}</dt>
+        <dd>
+          @if (finalIntensity(); as intensity) {
+            {{ 'sos.intensity.' + intensity | translate }}
+          } @else {
+            <span aria-label="-">&mdash;</span>
+          }
+        </dd>
+      </div>
+      <div class="stat">
+        <dt>{{ 'sos.summary.trigger' | translate }}</dt>
+        <dd>{{ 'sos.trigger.' + current.trigger | translate }}</dd>
+      </div>
+    </dl>
+
+    <section aria-labelledby="state-title">
+      <h2 id="state-title">{{ 'sos.summary.stateTitle' | translate: { name: name } }}</h2>
+      <div class="states" role="radiogroup" [attr.aria-labelledby]="'state-title'">
+        @for (state of states; track state.value) {
+          <button
+            type="button"
+            role="radio"
+            class="state"
+            [class.selected]="state.value === selectedState()"
+            [attr.aria-checked]="state.value === selectedState()"
+            [disabled]="isFinished()"
+            (click)="choose(state.value)"
+          >
+            <mat-icon aria-hidden="true">{{ state.icon }}</mat-icon>
+            {{ 'sos.state.' + state.value | translate }}
+          </button>
+        }
+      </div>
+    </section>
+
+    <section aria-labelledby="steps-title">
+      <h2 id="steps-title">{{ 'sos.summary.stepsTitle' | translate }}</h2>
+      <ul class="steps">
+        @for (handled of store.handledSteps(); track handled.step.id) {
+          <li class="step" [class.skipped]="handled.skipped">
+            <span class="step-mark" aria-hidden="true">
+              <mat-icon>{{ handled.skipped ? 'remove' : 'check' }}</mat-icon>
+            </span>
+            <span>
+              {{ 'crisisSteps.' + handled.step.code + '.title' | translate }}
+              @if (handled.skipped) {
+                {{ 'sos.summary.skipped' | translate }}
+              }
+            </span>
+          </li>
+        } @empty {
+          <li class="step skipped">{{ 'sos.summary.noSteps' | translate }}</li>
+        }
+      </ul>
+    </section>
+
+    <p class="footnote">{{ 'sos.summary.footnote' | translate: { name: name } }}</p>
+  } @else if (!store.error()) {
+    <p class="loading" role="status">{{ 'sos.guide.loading' | translate }}</p>
+  }
+</main>
+
+@if (saved()) {
+  <div class="toast" role="status">
+    <mat-icon aria-hidden="true">check_circle</mat-icon>
+    {{ 'sos.summary.savedToast' | translate }}
+  </div>
+}
