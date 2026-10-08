@@ -27,6 +27,14 @@ export const routes: Routes = [
             (m) => m.StimulusGallery,
           ),
       },
+      {
+        path: 'autocuidado/estimulos/:resourceId',
+        title: 'session.pageTitle',
+        loadComponent: () =>
+          import('./self-regulation/presentation/stimulus-session/stimulus-session').then(
+            (m) => m.StimulusSession,
+          ),
+      },
     ],
   },
 

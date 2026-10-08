@@ -1,0 +1,117 @@
+<section class="page">
+  @let calmingResource = resource();
+  @let calmSession = session();
+  @let name = calmingResource ? ('resources.' + calmingResource.code + '.name' | translate) : '';
+
+  <nav class="breadcrumbs" [attr.aria-label]="'nav.breadcrumb' | translate">
+    <span>{{ 'nav.home' | translate }}</span>
+    <span class="separator">/</span>
+    <span>{{ 'nav.selfcare' | translate }}</span>
+    <span class="separator">/</span>
+    <a routerLink="/autocuidado">{{ 'gallery.title' | translate }}</a>
+    @if (calmingResource) {
+      <span class="separator">/</span>
+      <span aria-current="page">{{ name }}</span>
+    }
+  </nav>
+
+  @if (resourceStore.error() ?? sessionStore.error(); as error) {
+    <p class="error-message" role="alert">{{ error | translate }}</p>
+  }
+
+  @if (calmingResource) {
+    @let favorite = resourceStore.isFavorite(calmingResource.id);
+
+    <header class="title-row">
+      <h1>{{ name }}</h1>
+      <button
+        type="button"
+        class="favorite-tag large"
+        [class.active]="favorite"
+        [attr.aria-pressed]="favorite"
+        [attr.aria-label]="
+          (favorite ? 'gallery.removeFavorite' : 'gallery.addFavorite') | translate: { name: name }
+        "
+        (click)="resourceStore.toggleFavorite(calmingResource)"
+      >
+        {{ (favorite ? 'gallery.inFavorites' : 'gallery.favorite') | translate }}
+      </button>
+    </header>
+
+    <app-stimulus-stage
+      [code]="calmingResource.code"
+      [intensity]="intensityRatio()"
+      [lowStimulation]="calmSession?.lowStimulationActive ?? false"
+    >
+      @if (calmingResource.isAuditory() && calmSession) {
+        <button
+          type="button"
+          class="sound-toggle"
+          (click)="toggleSound(calmingResource, calmSession)"
+        >
+          <mat-icon>{{ soundPlaying() ? 'pause' : 'play_arrow' }}</mat-icon>
+          {{ (soundPlaying() ? 'session.pauseSound' : 'session.playSound') | translate }}
+        </button>
+      }
+    </app-stimulus-stage>
+
+    <p class="instruction">
+      {{ 'resources.' + calmingResource.code + '.instruction' | translate }}
+    </p>
+
+    <div class="controls" [class.is-loading]="!calmSession">
+      <label class="intensity">
+        <span class="control-title">{{ 'session.intensity' | translate }}</span>
+        <input
+          type="range"
+          min="1"
+          [max]="calmingResource.maxIntensity"
+          [value]="calmSession?.intensity ?? 1"
+          [disabled]="!calmSession"
+          [style.--fill]="fillPercent() + '%'"
+          (input)="onIntensityInput($any($event.target).valueAsNumber, calmingResource)"
+          (change)="sessionStore.saveIntensity()"
+        />
+        <span class="range-labels" aria-hidden="true">
+          <span>{{ 'session.soft' | translate }}</span>
+          <span>{{ 'session.intense' | translate }}</span>
+        </span>
+      </label>
+
+      <div class="control-row">
+        <span class="control-text">
+          <span class="control-title strong" id="low-stimulation-label">
+            {{ 'session.lowStimulation' | translate }}
+          </span>
+          <span class="control-hint">{{ 'session.lowStimulationHint' | translate }}</span>
+        </span>
+        <button
+          type="button"
+          role="switch"
+          class="switch"
+          aria-labelledby="low-stimulation-label"
+          [attr.aria-checked]="calmSession?.lowStimulationActive ?? false"
+          [disabled]="!calmSession"
+          (click)="calmSession && toggleLowStimulation(calmSession)"
+        >
+          <span class="switch-thumb"></span>
+        </button>
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-outline btn-block"
+        [disabled]="!calmSession"
+        (click)="calmSession && useTimer(calmSession)"
+      >
+        {{ 'session.useTimer' | translate }}
+      </button>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn btn-primary" [disabled]="!calmSession" (click)="finish()">
+        {{ 'session.finish' | translate }}
+      </button>
+    </div>
+  }
+</section>
