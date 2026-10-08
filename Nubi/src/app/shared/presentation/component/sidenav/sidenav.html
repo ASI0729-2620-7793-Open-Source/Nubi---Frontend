@@ -1,17 +1,40 @@
-<div class="brand">Nubi</div>
+<aside class="sidebar">
+  <a class="brand" routerLink="/inicio" (click)="navigated.emit()">
+    <img src="logo-nubi-symbol.png" alt="" class="brand-logo" />
+    <span class="brand-name">Nubi</span>
+  </a>
 
-<!-- Ítems de ejemplo: cada equipo agrega su routerLink cuando tenga su página. -->
-<mat-nav-list>
-  <a mat-list-item>
-    <mat-icon matListItemIcon>home</mat-icon>
-    <span matListItemTitle>Inicio</span>
-  </a>
-  <a mat-list-item>
-    <mat-icon matListItemIcon>person</mat-icon>
-    <span matListItemTitle>Perfil</span>
-  </a>
-  <a mat-list-item>
-    <mat-icon matListItemIcon>settings</mat-icon>
-    <span matListItemTitle>Ajustes</span>
-  </a>
-</mat-nav-list>
+  <!-- Cada equipo agrega su ruta en app.routes.ts; los enlaces están en navigation-links.ts -->
+  <nav class="nav" [attr.aria-label]="'nav.mainNavigation' | translate">
+    @for (link of links; track link.path) {
+      <a
+        class="nav-item"
+        [routerLink]="link.path"
+        routerLinkActive="active"
+        (click)="navigated.emit()"
+      >
+        <mat-icon>{{ link.icon }}</mat-icon>
+        <span>{{ link.labelKey | translate }}</span>
+      </a>
+    }
+  </nav>
+
+  <div class="sidebar-footer">
+    <app-language-switch></app-language-switch>
+
+    @if (profileStore.caregiver(); as caregiver) {
+      <div class="caregiver">
+        <img class="caregiver-avatar" [src]="caregiver.avatarUrl" alt="" />
+        <span class="caregiver-data">
+          <strong>{{ caregiver.fullName }}</strong>
+          <span>{{ 'caregiverRole.' + caregiver.role | translate }}</span>
+        </span>
+      </div>
+    }
+
+    <a class="sos-button" routerLink="/modo-sos" (click)="navigated.emit()">
+      <mat-icon>error</mat-icon>
+      {{ 'nav.sos' | translate }}
+    </a>
+  </div>
+</aside>

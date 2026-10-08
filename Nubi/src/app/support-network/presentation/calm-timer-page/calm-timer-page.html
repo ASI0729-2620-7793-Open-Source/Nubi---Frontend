@@ -1,0 +1,101 @@
+@let calmingResource = resource();
+@let calmTimer = timer();
+@let shortName = profileStore.selectedProfile()?.shortName ?? '';
+
+<header class="timer-header">
+  <div>
+    <h1>{{ 'timer.title' | translate }}</h1>
+    @if (calmingResource) {
+      <p>
+        {{
+          'timer.continuingWith'
+            | translate: { name: ('resources.' + calmingResource.code + '.name' | translate) }
+        }}
+      </p>
+    }
+  </div>
+  <button type="button" class="btn btn-outline btn-small" (click)="exit()">
+    {{ 'timer.exit' | translate }}
+  </button>
+</header>
+
+<main class="timer-body">
+  @if (sessionStore.error(); as error) {
+    <p class="error-message" role="alert">{{ error | translate }}</p>
+  }
+
+  @if (calmTimer) {
+    @if (!calmTimer.isExpired()) {
+      <p class="lead">{{ 'timer.takeThisMoment' | translate }}</p>
+    } @else {
+      <p class="lead">{{ 'timer.timeUp' | translate }}</p>
+    }
+
+    <div class="ring" role="timer" aria-live="off">
+      <svg viewBox="0 0 340 340" aria-hidden="true">
+        <circle class="ring-track" cx="170" cy="170" [attr.r]="ringRadius" />
+        <circle
+          class="ring-progress"
+          cx="170"
+          cy="170"
+          [attr.r]="ringRadius"
+          [attr.stroke-dasharray]="ringLength"
+          [attr.stroke-dashoffset]="ringOffset()"
+        />
+      </svg>
+      <div class="ring-text">
+        <span class="time">{{ clock(calmTimer.remainingSeconds) }}</span>
+        <span class="time-total">
+          {{ 'timer.remainingOf' | translate: { total: total(calmTimer.durationMinutes) } }}
+        </span>
+      </div>
+    </div>
+
+    @if (!calmTimer.isExpired()) {
+      <div class="durations" role="group" [attr.aria-label]="'timer.durationAria' | translate">
+        @for (minutes of durations; track minutes) {
+          <button
+            type="button"
+            class="duration"
+            [class.selected]="calmTimer.durationMinutes === minutes"
+            [attr.aria-pressed]="calmTimer.durationMinutes === minutes"
+            (click)="selectDuration(minutes)"
+          >
+            {{ 'timer.minutes' | translate: { value: minutes } }}
+          </button>
+        }
+      </div>
+
+      <button type="button" class="btn btn-primary pause" (click)="togglePause(calmTimer.running)">
+        {{ (calmTimer.running ? 'timer.pause' : 'timer.resume') | translate }}
+      </button>
+
+      <p class="note">{{ 'timer.note' | translate: { name: shortName } }}</p>
+    } @else {
+      <!-- Al terminar se pregunta cómo se siente; si no se calma, se sugiere pedir ayuda -->
+      <div class="closing" aria-live="polite">
+        @if (!helpSuggested()) {
+          <p class="question">{{ 'timer.howFeels' | translate: { name: shortName } }}</p>
+          <div class="closing-actions">
+            <button type="button" class="btn btn-primary" (click)="feelsBetter()">
+              {{ 'timer.feelsBetter' | translate }}
+            </button>
+            <button type="button" class="btn btn-outline" (click)="helpSuggested.set(true)">
+              {{ 'timer.notCalmYet' | translate }}
+            </button>
+          </div>
+        } @else {
+          <p class="question">{{ 'timer.suggestHelp' | translate: { name: shortName } }}</p>
+          <div class="closing-actions">
+            <a class="btn btn-primary" routerLink="/comunicacion">
+              {{ 'timer.askForHelp' | translate }}
+            </a>
+            <button type="button" class="btn btn-outline" (click)="backToStimulus()">
+              {{ 'timer.backToStimulus' | translate }}
+            </button>
+          </div>
+        }
+      </div>
+    }
+  }
+</main>

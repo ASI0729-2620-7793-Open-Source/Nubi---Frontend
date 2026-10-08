@@ -1,0 +1,215 @@
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--nubi-space-m);
+}
+
+.sound-toggle {
+  position: absolute;
+  left: var(--nubi-space-m);
+  bottom: var(--nubi-space-m);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 18px 0 12px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--nubi-deep-teal);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+
+.sound-toggle:hover {
+  background: #ffffff;
+}
+
+.instruction {
+  max-width: 580px;
+  margin: 0 auto;
+  color: var(--nubi-text-soft);
+  text-align: center;
+}
+
+/* ---------- Panel de controles ---------- */
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  padding: var(--nubi-space-l);
+  border: 1px solid var(--nubi-border);
+  border-radius: var(--nubi-radius-l);
+  background: var(--nubi-surface);
+  transition: opacity 0.2s ease;
+}
+
+.controls.is-loading {
+  opacity: 0.6;
+}
+
+.intensity {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: var(--nubi-space-m);
+  border-bottom: 1px solid var(--nubi-border-soft);
+}
+
+.control-title {
+  color: var(--nubi-text);
+  font-size: 15px;
+}
+
+.control-title.strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.control-hint {
+  color: var(--nubi-text-muted);
+  font-size: 13px;
+}
+
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  color: var(--nubi-text-muted);
+  font-size: 13px;
+}
+
+/* Control deslizante como en el mock-up: tramo recorrido en Deep Teal y perilla blanca */
+input[type='range'] {
+  --fill: 60%;
+  width: 100%;
+  height: 24px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--nubi-deep-teal) var(--fill),
+    var(--nubi-border) var(--fill)
+  );
+}
+
+input[type='range']::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--nubi-border);
+}
+
+input[type='range']::-moz-range-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--nubi-deep-teal);
+}
+
+input[type='range']::-webkit-slider-thumb {
+  width: 20px;
+  height: 20px;
+  margin-top: -7px;
+  border: 2px solid var(--nubi-deep-teal);
+  border-radius: 50%;
+  background: #ffffff;
+  appearance: none;
+}
+
+input[type='range']::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--nubi-deep-teal);
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+input[type='range']:disabled {
+  cursor: default;
+}
+
+.control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--nubi-space-m);
+  padding: var(--nubi-space-m) 0;
+  border-bottom: 1px solid var(--nubi-border-soft);
+  margin-bottom: var(--nubi-space-m);
+}
+
+.control-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Interruptor del modo de baja estimulación */
+.switch {
+  position: relative;
+  flex-shrink: 0;
+  width: 44px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: var(--nubi-border);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.switch::before {
+  /* Objetivo táctil de 48 px sin cambiar el tamaño visible */
+  content: '';
+  position: absolute;
+  inset: -12px -2px;
+}
+
+.switch-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(17, 24, 39, 0.2);
+  transition: translate 0.2s ease;
+}
+
+.switch[aria-checked='true'] {
+  background: var(--nubi-deep-teal);
+}
+
+.switch[aria-checked='true'] .switch-thumb {
+  translate: 20px 0;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .controls {
+    padding: 20px;
+  }
+
+  .actions .btn {
+    width: 100%;
+  }
+
+  .instruction {
+    font-size: 15px;
+  }
+}

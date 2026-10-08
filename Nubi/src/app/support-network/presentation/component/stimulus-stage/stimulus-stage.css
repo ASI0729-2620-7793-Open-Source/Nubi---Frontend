@@ -1,0 +1,127 @@
+:host {
+  position: relative;
+  display: block;
+  height: clamp(240px, 30vw, 416px);
+  border-radius: 20px;
+  overflow: hidden;
+  isolation: isolate;
+  container-type: size;
+  transition: filter 0.6s ease;
+}
+
+/* Modo de baja estimulación: menos brillo y saturación, y solo se mueve la respiración */
+:host(.low-stimulation) {
+  filter: saturate(0.55) brightness(0.92);
+}
+
+:host(.low-stimulation) .particle,
+:host(.low-stimulation) .wave,
+:host(.low-stimulation) .waves {
+  animation-play-state: paused;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+}
+
+.particle {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* ---------- Círculo de respiración, común a todos los estímulos ---------- */
+
+.breath {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(110px, 38cqh, 160px);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border: 3px solid rgba(255, 255, 255, 0.65);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  font-size: clamp(16px, 6cqh, 22px);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
+  animation: breathe 10s ease-in-out infinite;
+}
+
+:host(.low-stimulation) .breath {
+  animation-duration: 12s;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    scale: 0.88;
+  }
+  40%,
+  55% {
+    scale: 1.12;
+  }
+}
+
+.waves {
+  position: absolute;
+  inset: 0;
+}
+
+.wave {
+  position: absolute;
+  left: 0;
+  width: 200%;
+  animation: wave-drift linear infinite;
+}
+
+@keyframes wave-drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.nebula {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 70% 40%, rgba(146, 120, 220, 0.28), transparent 55%),
+    radial-gradient(ellipse at 25% 75%, rgba(76, 203, 187, 0.16), transparent 50%);
+}
+
+.leaves {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 85% 105%, rgba(46, 125, 50, 0.55), transparent 45%),
+    radial-gradient(ellipse at 10% 110%, rgba(76, 175, 80, 0.4), transparent 40%);
+}
+
+.glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.55), transparent 55%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .particle,
+  .wave,
+  .waves {
+    animation-play-state: paused;
+  }
+
+  .breath {
+    animation-duration: 14s;
+  }
+}
