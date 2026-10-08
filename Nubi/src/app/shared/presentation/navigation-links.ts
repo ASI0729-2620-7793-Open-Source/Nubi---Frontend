@@ -23,6 +23,5 @@ export const NAVIGATION_LINKS: readonly NavigationLink[] = [
   { path: '/perfil', labelKey: 'nav.profile', icon: 'person' },
   { path: '/autocuidado', labelKey: 'nav.selfcare', icon: 'favorite' },
   { path: '/comunicacion', labelKey: 'nav.communication', icon: 'sms' },
-  { path: '/historial', labelKey: 'nav.history', icon: 'history' },
-  { path: '/ajustes', labelKey: 'nav.settings', icon: 'settings' },
+  { path: '/support-network', labelKey: 'nav.support', icon: 'groups' },
 ];

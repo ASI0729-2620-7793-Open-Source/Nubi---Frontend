@@ -63,6 +63,7 @@ export const routes: Routes = [
       // ---------- Dashboard de Red de Apoyo y Seguimiento ----------
       {
         path: 'support-network',
+        title: 'nav.support',
         loadComponent: () =>
           import('./support-network/presentation/support-dashboard/support-dashboard').then(
             (component) => component.SupportDashboard,

@@ -1,6 +1,29 @@
 {
-  "caregivers": [],
-  "profiles": [],
+  "caregivers": [
+    {
+      "id": 1,
+      "fullName": "María López",
+      "role": "CAREGIVER",
+      "avatarUrl": "caregiver-avatar.png",
+      "profileIds": [
+        1
+      ]
+    }
+  ],
+  "profiles": [
+    {
+      "id": 1,
+      "fullName": "Diana Ríos",
+      "age": 15,
+      "diagnosis": "TEA nivel 1",
+      "sensoryProfile": {
+        "auditorySensitivity": "HIGH",
+        "visualSensitivity": "MEDIUM",
+        "tactileSensitivity": "LOW",
+        "prioritizeVisuals": true
+      }
+    }
+  ],
   "calmingResources": [
     {
       "id": 1,
