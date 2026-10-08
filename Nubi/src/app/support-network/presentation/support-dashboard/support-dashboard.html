@@ -1,0 +1,94 @@
+<section class="dashboard" aria-labelledby="dashboard-title">
+  <header class="page-header">
+    <p class="eyebrow">Red de apoyo y seguimiento</p>
+    <h1 id="dashboard-title">Hola, {{ caregiver.name }}</h1>
+    <p class="page-description">
+      Este es lo que necesitas saber sobre {{ user.name }} ahora mismo.
+    </p>
+  </header>
+
+  <div class="overview-grid">
+    <article class="card request-card" aria-labelledby="request-title">
+      <div class="card-heading">
+        <div>
+          <p class="eyebrow">Última comunicación</p>
+          <h2 id="request-title">
+            {{ user.name }} necesita: "{{ user.lastMessage }}"
+          </h2>
+        </div>
+        <span class="message-time">{{ user.lastUpdate }} · Tablero de Comunicación</span>
+      </div>
+
+      <div class="request-preview">
+        <span class="water-illustration" aria-hidden="true">
+          <svg viewBox="0 0 48 48" role="presentation">
+            <path
+              d="M24 5.5c-4.8 7.1-12 15.8-12 23.2a12 12 0 0 0 24 0C36 21.3 28.8 12.6 24 5.5Z"
+              fill="currentColor"
+            />
+            <path
+              d="M17.5 29.2c.2 3.3 2.5 5.4 5.5 5.9"
+              fill="none"
+              stroke="white"
+              stroke-linecap="round"
+              stroke-width="2.5"
+            />
+          </svg>
+        </span>
+        <p>{{ user.lastMessageDescription }}</p>
+      </div>
+
+      <div class="request-actions">
+        <button class="button button-primary" type="button">Confirmar recepción</button>
+        <button class="button button-secondary" type="button">Ver tablero completo</button>
+      </div>
+    </article>
+
+    <article class="card status-card" aria-labelledby="status-title">
+      <p class="eyebrow">Bienestar</p>
+      <h2 id="status-title">Estado actual de {{ user.name }}</h2>
+      <p class="status-value">{{ user.status }}</p>
+      <p class="status-description">
+        Este es el estado actual de {{ user.name }} según la comunicación de los últimos minutos.
+      </p>
+    </article>
+  </div>
+
+  <div class="details-grid">
+    <article class="card activity-card" aria-labelledby="activity-title">
+      <h2 id="activity-title">Actividad reciente</h2>
+      <ul class="activity-list">
+        @for (item of activities; track item.activity) {
+          <li class="activity-item">
+            <span>{{ item.activity }}</span>
+            <time>{{ item.time }}</time>
+          </li>
+        }
+      </ul>
+    </article>
+
+    <article class="card wellbeing-card" aria-labelledby="wellbeing-title">
+      <h2 id="wellbeing-title">Análisis de bienestar</h2>
+      <div
+        class="chart"
+        role="img"
+        aria-label="Gráfico de barras con niveles de bienestar de los últimos siete días"
+      >
+        <div class="chart-bars">
+          @for (value of wellbeing; track $index) {
+            <div class="bar-column">
+              <div
+                class="bar"
+                [class.bar-highlight]="$index === 3"
+                [style.height.%]="value"
+                [attr.aria-label]="'Nivel ' + value"
+              ></div>
+              <span class="bar-day">{{ chartDays[$index] }}</span>
+            </div>
+          }
+        </div>
+      </div>
+      <p class="chart-caption">Nivel de bienestar de los últimos días</p>
+    </article>
+  </div>
+</section>
