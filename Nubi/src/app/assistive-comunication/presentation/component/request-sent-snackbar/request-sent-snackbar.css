@@ -1,0 +1,11 @@
+:host {
+  display: flex;
+  align-items: center;
+}
+
+.sent-time {
+  margin-right: var(--nubi-space-xs);
+  color: #9ca3af;
+  font-size: 12px;
+  white-space: nowrap;
+}

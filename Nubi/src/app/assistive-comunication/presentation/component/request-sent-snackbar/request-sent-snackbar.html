@@ -1,0 +1,17 @@
+<span matSnackBarLabel>
+  {{ 'board.sentNotice' | translate: { caregiver: data.caregiverName, name: data.profileName } }}
+  <strong>{{ data.phraseKey | translate }}.</strong>
+</span>
+
+<span matSnackBarActions>
+  <span class="sent-time">{{ 'board.justNow' | translate }}</span>
+  <button
+    matIconButton
+    matSnackBarAction
+    type="button"
+    [attr.aria-label]="'board.closeNotice' | translate"
+    (click)="snackBarRef.dismiss()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</span>
