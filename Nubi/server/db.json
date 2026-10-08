@@ -5,7 +5,9 @@
       "fullName": "María López",
       "role": "CAREGIVER",
       "avatarUrl": "caregiver-avatar.png",
-      "profileIds": [1]
+      "profileIds": [
+        1
+      ]
     }
   ],
   "profiles": [
@@ -115,5 +117,6 @@
         "running": false
       }
     }
-  ]
+  ],
+  "communicationRequests": []
 }

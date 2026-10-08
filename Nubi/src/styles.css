@@ -273,3 +273,11 @@ input:focus-visible {
 .mat-mdc-tooltip {
   --mat-tooltip-container-color: var(--nubi-deep-teal);
 }
+
+/* Aviso del tablero CAA: "Le avisamos a María que Diana necesita…" */
+.nubi-snackbar {
+  --mat-snack-bar-container-color: #111827;
+  --mat-snack-bar-supporting-text-color: #ffffff;
+  --mat-snack-bar-button-color: #ffffff;
+  --mat-snack-bar-container-shape: var(--nubi-radius-m);
+}
