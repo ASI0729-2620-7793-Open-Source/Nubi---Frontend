@@ -24,6 +24,7 @@
     "@ngx-translate/core": "^18.0.0",
     "@ngx-translate/http-loader": "^18.0.0",
     "@primeuix/themes": "^3.0.1",
+    "firebase-admin": "^14.5.0",
     "json-server": "^0.17.4",
     "primeng": "^22.1.2",
     "rxjs": "~7.8.0",

@@ -1,0 +1,10 @@
+rules_version = '2';
+
+// Solo la API (Admin SDK, que no pasa por estas reglas) lee y escribe los datos.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

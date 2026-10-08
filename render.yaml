@@ -8,3 +8,7 @@ services:
     buildCommand: npm ci --omit=dev
     startCommand: npm run api
     healthCheckPath: /api/caregivers
+    envVars:
+      # Clave de cuenta de servicio de Firebase (JSON completo). Se pega en Render, no va en el repo.
+      - key: FIREBASE_SERVICE_ACCOUNT
+        sync: false
