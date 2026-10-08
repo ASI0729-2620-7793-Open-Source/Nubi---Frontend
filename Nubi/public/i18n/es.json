@@ -99,5 +99,118 @@
       "name": "Piano relajante",
       "instruction": "Escucha las notas lentas del piano y deja que tu respiración siga su ritmo. No hay una forma correcta de hacerlo."
     }
+  },
+  "board": {
+    "title": "Configurar tablero CAA",
+    "breadcrumb": "Configurar tablero",
+    "subtitle": "Organiza los pictogramas para facilitar la comunicación de {{name}}.",
+    "addCustom": "Agregar pictograma personalizado",
+    "filterAria": "Filtrar pictogramas por categoría",
+    "all": "Todos",
+    "move": "Mover {{name}}",
+    "addFavorite": "Agregar {{name}} a favoritos",
+    "removeFavorite": "Quitar {{name}} de favoritos",
+    "communicate": "Comunicar: {{phrase}}",
+    "sentNotice": "Le avisamos a {{caregiver}} que {{name}} necesita:",
+    "justNow": "Hace un momento",
+    "closeNotice": "Cerrar aviso",
+    "loadError": "No se pudo cargar lo que se comunicó con el tablero.",
+    "sendError": "No se pudo enviar el aviso. Inténtalo otra vez."
+  },
+  "home": {
+    "title": "Inicio",
+    "breadcrumb": "Vista General",
+    "greeting": "Hola, {{name}}",
+    "subtitle": "Esto es lo que necesitas saber sobre {{name}} ahora mismo.",
+    "pendingAria": "Avisos sin confirmar: {{count}}",
+    "sourceTag": "TABLERO CAA",
+    "source": "Tablero de Comunicación",
+    "justNow": "Hace un momento",
+    "minuteAgo": "Hace {{count}} minuto",
+    "minutesAgo": "Hace {{count}} minutos",
+    "hourAgo": "Hace {{count}} hora",
+    "hoursAgo": "Hace {{count}} horas",
+    "needs": "{{name}} necesita:",
+    "viewBoard": "Ver tablero completo",
+    "confirm": "Confirmar recepción",
+    "confirmed": "Recepción confirmada",
+    "interactedWith": "{{name}} ha interactuado con la categoría \"{{category}}\"",
+    "viewHistory": "Ver historial",
+    "assistanceOnTheWay": "Asistencia en camino",
+    "confirmedBy": "Confirmado por {{name}} a las {{time}}",
+    "confirmedTag": "Confirmado",
+    "emptyTitle": "{{name}} no ha comunicado nada todavía",
+    "emptyBody": "Cuando {{name}} toque un pictograma del tablero, lo verás aquí.",
+    "statusTitle": "Estado actual de {{name}}",
+    "statusCalm": "Calma",
+    "statusNote": "{{name}} está usando el tablero de comunicación de forma autónoma.",
+    "statusNoSos": "No se requiere activar el Modo SOS.",
+    "supportTitle": "Red de Apoyo rápida",
+    "contactNeurologist": "Neurólogo",
+    "contactPrimaryNetwork": "Red Primaria",
+    "confirmError": "No se pudo confirmar la recepción. Inténtalo otra vez."
+  },
+  "pictogramCategories": {
+    "BASIC_NEEDS": "Necesidades básicas",
+    "EMOTIONS": "Emociones",
+    "ACTIVITIES": "Actividades"
+  },
+  "pictograms": {
+    "WATER": {
+      "label": "Agua",
+      "phrase": "Tengo sed"
+    },
+    "FOOD": {
+      "label": "Comida",
+      "phrase": "Tengo hambre"
+    },
+    "BATHROOM": {
+      "label": "Baño",
+      "phrase": "Quiero ir al baño"
+    },
+    "REST": {
+      "label": "Descanso",
+      "phrase": "Estoy cansada"
+    },
+    "PAIN": {
+      "label": "Dolor",
+      "phrase": "Me duele algo"
+    },
+    "HELP": {
+      "label": "Ayuda",
+      "phrase": "Necesito ayuda"
+    },
+    "HAPPY": {
+      "label": "Alegría",
+      "phrase": "Estoy feliz"
+    },
+    "SAD": {
+      "label": "Tristeza",
+      "phrase": "Estoy triste"
+    },
+    "ANGRY": {
+      "label": "Enojo",
+      "phrase": "Estoy molesta"
+    },
+    "SCARED": {
+      "label": "Miedo",
+      "phrase": "Tengo miedo"
+    },
+    "PLAY": {
+      "label": "Jugar",
+      "phrase": "Quiero jugar"
+    },
+    "MUSIC": {
+      "label": "Música",
+      "phrase": "Quiero escuchar música"
+    },
+    "READ": {
+      "label": "Leer",
+      "phrase": "Quiero leer"
+    },
+    "GO_OUT": {
+      "label": "Salir",
+      "phrase": "Quiero salir"
+    }
   }
 }

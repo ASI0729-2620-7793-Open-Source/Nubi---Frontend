@@ -99,5 +99,118 @@
       "name": "Relaxing piano",
       "instruction": "Listen to the slow piano notes and let your breathing follow their rhythm. There is no right way to do it."
     }
+  },
+  "board": {
+    "title": "Set up AAC board",
+    "breadcrumb": "Set up board",
+    "subtitle": "Arrange the pictograms to make communication easier for {{name}}.",
+    "addCustom": "Add custom pictogram",
+    "filterAria": "Filter pictograms by category",
+    "all": "All",
+    "move": "Move {{name}}",
+    "addFavorite": "Add {{name}} to favorites",
+    "removeFavorite": "Remove {{name}} from favorites",
+    "communicate": "Communicate: {{phrase}}",
+    "sentNotice": "We let {{caregiver}} know that {{name}} needs:",
+    "justNow": "Just now",
+    "closeNotice": "Close notice",
+    "loadError": "Could not load what was communicated with the board.",
+    "sendError": "Could not send the notice. Please try again."
+  },
+  "home": {
+    "title": "Home",
+    "breadcrumb": "Overview",
+    "greeting": "Hi, {{name}}",
+    "subtitle": "This is what you need to know about {{name}} right now.",
+    "pendingAria": "Unconfirmed notices: {{count}}",
+    "sourceTag": "AAC BOARD",
+    "source": "Communication Board",
+    "justNow": "Just now",
+    "minuteAgo": "{{count}} minute ago",
+    "minutesAgo": "{{count}} minutes ago",
+    "hourAgo": "{{count}} hour ago",
+    "hoursAgo": "{{count}} hours ago",
+    "needs": "{{name}} needs:",
+    "viewBoard": "View full board",
+    "confirm": "Confirm receipt",
+    "confirmed": "Receipt confirmed",
+    "interactedWith": "{{name}} has interacted with the \"{{category}}\" category",
+    "viewHistory": "View history",
+    "assistanceOnTheWay": "Help is on the way",
+    "confirmedBy": "Confirmed by {{name}} at {{time}}",
+    "confirmedTag": "Confirmed",
+    "emptyTitle": "{{name}} has not communicated anything yet",
+    "emptyBody": "When {{name}} taps a pictogram on the board, you will see it here.",
+    "statusTitle": "{{name}}'s current state",
+    "statusCalm": "Calm",
+    "statusNote": "{{name}} is using the communication board on her own.",
+    "statusNoSos": "There is no need to activate SOS Mode.",
+    "supportTitle": "Quick Support Network",
+    "contactNeurologist": "Neurologist",
+    "contactPrimaryNetwork": "Primary Network",
+    "confirmError": "Could not confirm receipt. Please try again."
+  },
+  "pictogramCategories": {
+    "BASIC_NEEDS": "Basic needs",
+    "EMOTIONS": "Emotions",
+    "ACTIVITIES": "Activities"
+  },
+  "pictograms": {
+    "WATER": {
+      "label": "Water",
+      "phrase": "I'm thirsty"
+    },
+    "FOOD": {
+      "label": "Food",
+      "phrase": "I'm hungry"
+    },
+    "BATHROOM": {
+      "label": "Bathroom",
+      "phrase": "I want to go to the bathroom"
+    },
+    "REST": {
+      "label": "Rest",
+      "phrase": "I'm tired"
+    },
+    "PAIN": {
+      "label": "Pain",
+      "phrase": "Something hurts"
+    },
+    "HELP": {
+      "label": "Help",
+      "phrase": "I need help"
+    },
+    "HAPPY": {
+      "label": "Joy",
+      "phrase": "I'm happy"
+    },
+    "SAD": {
+      "label": "Sadness",
+      "phrase": "I'm sad"
+    },
+    "ANGRY": {
+      "label": "Anger",
+      "phrase": "I'm upset"
+    },
+    "SCARED": {
+      "label": "Fear",
+      "phrase": "I'm scared"
+    },
+    "PLAY": {
+      "label": "Play",
+      "phrase": "I want to play"
+    },
+    "MUSIC": {
+      "label": "Music",
+      "phrase": "I want to listen to music"
+    },
+    "READ": {
+      "label": "Read",
+      "phrase": "I want to read"
+    },
+    "GO_OUT": {
+      "label": "Go out",
+      "phrase": "I want to go out"
+    }
   }
 }
