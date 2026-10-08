@@ -74,6 +74,117 @@
     "backToStimulus": "Back to the stimulus",
     "loadError": "The timer could not be loaded."
   },
+  "sos": {
+    "title": "SOS Mode",
+    "pageTitle": "SOS Mode",
+    "loadError": "Could not reach SOS Mode. Check your connection and try again.",
+    "intensity": {
+      "CALM": "Low",
+      "RESTLESS": "Moderate",
+      "ALTERED": "High",
+      "CRISIS": "Very high"
+    },
+    "trigger": {
+      "AUDITORY": "Auditory",
+      "VISUAL": "Visual",
+      "TACTILE": "Tactile",
+      "NONE": "Not identified"
+    },
+    "state": {
+      "CALM": "Calm",
+      "TIRED": "Tired",
+      "SENSITIVE": "Sensitive",
+      "IRRITABLE": "Irritable"
+    },
+    "activation": {
+      "lead": "Breathe. We will guide you step by step through this moment. Tap the circle when you are ready to begin.",
+      "activate": "Activate SOS",
+      "tapOnce": "Tap once",
+      "emergency": "If this is a medical emergency, call your local emergency services.",
+      "selectProfile": "Select a profile to activate SOS Mode.",
+      "inProgress": "There is a guide in progress for {{name}}.",
+      "resume": "Resume guide",
+      "finishNow": "Finish episode",
+      "forWhomTitle": "Who is this guide for?",
+      "forWhomHint": "The guide is personalized to the registered sensitivities of the selected profile.",
+      "ageDiagnosis": "{{age}} years old · {{diagnosis}}",
+      "featuresAria": "How SOS Mode works",
+      "stepByStepTitle": "Step-by-step guide",
+      "stepByStepBody": "You will see one action at a time, with no information overload.",
+      "new": "New",
+      "adaptedTitle": "Adapted to the profile",
+      "adaptedBody": "The steps adjust to {{name}}'s sensitivities.",
+      "autoRecordTitle": "Automatic record",
+      "autoRecordBody": "The episode is saved on its own when it ends."
+    },
+    "guide": {
+      "pageTitle": "SOS guide",
+      "exit": "Exit",
+      "stepOf": "Step {{current}} of {{total}}",
+      "progressAria": "Guide progress",
+      "stepTitle": "Step {{number}}: {{title}}",
+      "breathe": "Inhale... Exhale",
+      "next": "Next",
+      "finish": "View summary",
+      "skip": "Skip step",
+      "mandatoryTitle": "This step is important",
+      "mandatoryBody": "Are you sure you want to skip it?",
+      "keepStep": "Back to the step",
+      "confirmSkip": "Yes, skip",
+      "loading": "Loading...",
+      "completeProfile": "Complete {{name}}'s profile so the guide adapts to their sensitivities.",
+      "notice": {
+        "AUDITORY": "{{name}} has high auditory sensitivity. Keep your voice low and avoid sudden noises.",
+        "VISUAL": "{{name}} has high visual sensitivity. Dim the lights and avoid flashes or sudden changes.",
+        "TACTILE": "{{name}} has high tactile sensitivity. Avoid physical contact without warning."
+      }
+    },
+    "summary": {
+      "pageTitle": "Episode summary",
+      "title": "Episode summary",
+      "save": "Finish and Save",
+      "backHome": "Back to home",
+      "goodJob": "Well done! The episode has passed.",
+      "recorded": "We have recorded the details for your history. How is {{name}} now?",
+      "duration": "Duration",
+      "minutes": "{{value}} min",
+      "initialIntensity": "Initial intensity",
+      "finalIntensity": "Final intensity",
+      "trigger": "Trigger",
+      "stateTitle": "{{name}}'s current state",
+      "stepsTitle": "Completed steps",
+      "skipped": "(skipped)",
+      "noSteps": "No step has been completed yet.",
+      "footnote": "When you finish, this information will be added to {{name}}'s weekly report.",
+      "savedToast": "Episode saved to the history"
+    }
+  },
+  "crisisSteps": {
+    "SENSORY_ISOLATION": {
+      "title": "Sensory isolation",
+      "description": "Move {{name}} away from noise, bright lights and crowds. Find a quiet, safe space."
+    },
+    "EMOTIONAL_VALIDATION": {
+      "title": "Emotional validation",
+      "description": "Tell {{name}} that what they feel is valid and that you are here. Use short phrases and a calm voice."
+    },
+    "SAFE_SPACE": {
+      "title": "Safe space",
+      "description": "Help {{name}} settle in a comfortable place where they feel protected, and remove anything that could hurt them."
+    },
+    "BITE_TOOL": {
+      "title": "Chew tool",
+      "description": "If they need it, offer their chew tool or another sensory object to release the tension."
+    },
+    "CALM_BREATHING": {
+      "title": "Calm and Breathing",
+      "description": "Sync your breathing with the circle. This will help {{name}} regulate by imitation."
+    },
+    "FINAL_CHECK": {
+      "title": "Final check",
+      "description": "Notice how {{name}} is doing. When their breathing and body are more relaxed, close the episode."
+    }
+  },
   "resources": {
     "FLOATING_BUBBLES": {
       "name": "Floating bubbles",
