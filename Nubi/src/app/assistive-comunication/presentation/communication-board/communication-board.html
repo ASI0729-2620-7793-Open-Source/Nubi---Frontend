@@ -1,0 +1,101 @@
+<section class="page">
+  <nav class="breadcrumbs" [attr.aria-label]="'nav.breadcrumb' | translate">
+    <a routerLink="/inicio">{{ 'nav.home' | translate }}</a>
+    <mat-icon class="separator" aria-hidden="true">chevron_right</mat-icon>
+    <span>{{ 'nav.communication' | translate }}</span>
+    <mat-icon class="separator" aria-hidden="true">chevron_right</mat-icon>
+    <span aria-current="page">{{ 'board.breadcrumb' | translate }}</span>
+  </nav>
+
+  @let profile = profileStore.selectedProfile();
+
+  <header class="page-header board-header">
+    <div>
+      <h1>{{ 'board.title' | translate }}</h1>
+      @if (profile) {
+        <p class="subtitle">{{ 'board.subtitle' | translate: { name: profile.shortName } }}</p>
+      }
+    </div>
+
+    <!-- Todavía no hay vista para crear pictogramas: el botón queda deshabilitado -->
+    <button matButton="outlined" type="button" disabled>
+      <mat-icon>add</mat-icon>
+      {{ 'board.addCustom' | translate }}
+    </button>
+  </header>
+
+  <mat-chip-listbox
+    class="category-filters"
+    required
+    hideSingleSelectionIndicator
+    [attr.aria-label]="'board.filterAria' | translate"
+    [value]="selectedFilter()"
+    (change)="filterBy($event)"
+  >
+    @for (filter of filters; track filter.value) {
+      <mat-chip-option [value]="filter.value">{{ filter.labelKey | translate }}</mat-chip-option>
+    }
+  </mat-chip-listbox>
+
+  @if (store.error(); as error) {
+    <p class="error-message" role="alert">{{ error | translate }}</p>
+  }
+
+  <div
+    class="pictogram-grid"
+    cdkDropList
+    cdkDropListOrientation="mixed"
+    (cdkDropListDropped)="drop($event)"
+  >
+    @for (pictogram of store.boardPictograms(); track pictogram.id) {
+      @let label = 'pictograms.' + pictogram.code + '.label' | translate;
+      @let phrase = 'pictograms.' + pictogram.code + '.phrase' | translate;
+
+      <mat-card
+        cdkDrag
+        appearance="outlined"
+        class="pictogram-card"
+        [class.selected]="pictogram.code === selectedCode()"
+      >
+        <div class="card-tools">
+          <button
+            matIconButton
+            cdkDragHandle
+            type="button"
+            class="drag-handle"
+            [attr.aria-label]="'board.move' | translate: { name: label }"
+          >
+            <mat-icon>drag_indicator</mat-icon>
+          </button>
+
+          <button
+            matIconButton
+            type="button"
+            class="favorite-button"
+            [class.active]="pictogram.favorite"
+            [attr.aria-pressed]="pictogram.favorite"
+            [attr.aria-label]="
+              (pictogram.favorite ? 'board.removeFavorite' : 'board.addFavorite')
+                | translate: { name: label }
+            "
+            (click)="store.toggleFavorite(pictogram)"
+          >
+            <mat-icon>{{ pictogram.favorite ? 'favorite' : 'favorite_border' }}</mat-icon>
+          </button>
+        </div>
+
+        <button
+          type="button"
+          class="pictogram-tile"
+          [attr.aria-label]="'board.communicate' | translate: { phrase: phrase }"
+          (click)="select(pictogram)"
+        >
+          <mat-icon>{{ pictogram.icon }}</mat-icon>
+          <span class="pictogram-label">{{ label }}</span>
+        </button>
+
+        <mat-card-footer class="pictogram-phrase">{{ phrase }}</mat-card-footer>
+      </mat-card>
+    }
+  </div>
+</section>
