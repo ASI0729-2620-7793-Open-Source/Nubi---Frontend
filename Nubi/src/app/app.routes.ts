@@ -35,6 +35,15 @@ export const routes: Routes = [
             (m) => m.StimulusSession,
           ),
       },
+
+      // ---------- Dashboard de Red de Apoyo y Seguimiento ----------
+      {
+        path: 'support-network',
+        loadComponent: () =>
+          import('./support-network/presentation/support-dashboard/support-dashboard').then(
+            (component) => component.SupportDashboard,
+          ),
+      },
     ],
   },
 
