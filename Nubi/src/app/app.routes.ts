@@ -38,5 +38,15 @@ export const routes: Routes = [
     ],
   },
 
+  // Pantalla de foco único: sin barra lateral, como en el mock-up del temporizador
+  {
+    path: 'autocuidado/temporizador/:sessionId',
+    title: 'timer.title',
+    loadComponent: () =>
+      import('./self-regulation/presentation/calm-timer-page/calm-timer-page').then(
+        (m) => m.CalmTimerPage,
+      ),
+  },
+
   { path: '**', redirectTo: 'autocuidado' },
 ];
