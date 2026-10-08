@@ -35,12 +35,12 @@ export const routes: Routes = [
           ),
       },
 
-      // ---------- Red de Apoyo y Seguimiento ----------
+      // ---------- Autorregulación ----------
       {
         path: 'autocuidado',
         title: 'gallery.title',
         loadComponent: () =>
-          import('./support-network/presentation/stimulus-gallery/stimulus-gallery').then(
+          import('./self-regulation/presentation/stimulus-gallery/stimulus-gallery').then(
             (m) => m.StimulusGallery,
           ),
       },
@@ -48,7 +48,7 @@ export const routes: Routes = [
         path: 'autocuidado/estimulos/:resourceId',
         title: 'session.pageTitle',
         loadComponent: () =>
-          import('./support-network/presentation/stimulus-session/stimulus-session').then(
+          import('./self-regulation/presentation/stimulus-session/stimulus-session').then(
             (m) => m.StimulusSession,
           ),
       },
@@ -69,7 +69,7 @@ export const routes: Routes = [
     path: 'autocuidado/temporizador/:sessionId',
     title: 'timer.title',
     loadComponent: () =>
-      import('./support-network/presentation/calm-timer-page/calm-timer-page').then(
+      import('./self-regulation/presentation/calm-timer-page/calm-timer-page').then(
         (m) => m.CalmTimerPage,
       ),
   },

@@ -1,0 +1,109 @@
+.notice {
+  margin: 0;
+  padding: var(--nubi-space-m) var(--nubi-space-m);
+  border-radius: var(--nubi-radius-m);
+  background: var(--nubi-mint-soft);
+  color: var(--nubi-text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.gallery-filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--nubi-space-s);
+  flex-wrap: wrap;
+  margin-top: var(--nubi-space-xs);
+}
+
+.chips {
+  display: flex;
+  gap: var(--nubi-space-xs);
+  flex-wrap: wrap;
+}
+
+.stimulus-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--nubi-space-l);
+  transition: opacity 0.2s ease;
+}
+
+.stimulus-grid.is-loading {
+  opacity: 0.6;
+}
+
+.stimulus-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--nubi-border);
+  border-radius: var(--nubi-radius-m);
+  background: var(--nubi-surface);
+  transition:
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.stimulus-card:hover {
+  box-shadow: 0 10px 24px rgba(17, 24, 39, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Último estímulo usado: se destaca como elemento seleccionado, igual que en el mock-up */
+.stimulus-card.selected {
+  border: 2px solid var(--nubi-deep-teal);
+}
+
+.stimulus-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.stimulus-link:focus-visible {
+  outline: 2.5px solid var(--nubi-mint-teal);
+  outline-offset: -3px;
+  border-radius: var(--nubi-radius-m);
+}
+
+.stimulus-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 350 / 160;
+  object-fit: cover;
+}
+
+.stimulus-name {
+  display: block;
+  padding: var(--nubi-space-m) 120px var(--nubi-space-m) var(--nubi-space-m);
+  min-height: 60px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--nubi-text);
+}
+
+.favorite-tag {
+  position: absolute;
+  right: var(--nubi-space-m);
+  bottom: 14px;
+}
+
+.empty {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--nubi-text-muted);
+}
+
+@media (max-width: 1024px) {
+  .stimulus-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .stimulus-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--nubi-space-m);
+  }
+}
