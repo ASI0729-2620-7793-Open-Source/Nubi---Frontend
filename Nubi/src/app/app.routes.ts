@@ -1,4 +1,8 @@
 import { Routes } from '@angular/router';
+import {
+  crisisManagementFocusRoutes,
+  crisisManagementRoutes,
+} from './crisis-management/presentation/crisis-management.routes';
 import { Layout } from './shared/presentation/component/layout/layout';
 
 /**
@@ -17,6 +21,9 @@ export const routes: Routes = [
     component: Layout,
     children: [
       { path: '', redirectTo: 'autocuidado', pathMatch: 'full' },
+
+      // ---------- Gestión de Crisis (Modo SOS) ----------
+      ...crisisManagementRoutes,
 
       // ---------- Red de Apoyo y Seguimiento ----------
       {
@@ -47,6 +54,9 @@ export const routes: Routes = [
         (m) => m.CalmTimerPage,
       ),
   },
+
+  // Gestión de Crisis: guía paso a paso y resumen, también de foco único
+  ...crisisManagementFocusRoutes,
 
   { path: '**', redirectTo: 'autocuidado' },
 ];
