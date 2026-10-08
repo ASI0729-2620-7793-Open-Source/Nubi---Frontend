@@ -1,0 +1,30 @@
+<p-panel header="Reportar incidencia">
+  <div class="form">
+    <label>Asunto <input pInputText [(ngModel)]="subject" /></label>
+    <label>Detalle <textarea pTextarea rows="3" [(ngModel)]="description"></textarea></label>
+    <p-button label="Enviar" (onClick)="send()"></p-button>
+  </div>
+</p-panel>
+
+<p-panel header="Tickets">
+  @if (store.loading()) {
+    <p-skeleton width="100%" height="120px"></p-skeleton>
+  } @else if (store.tickets().length === 0) {
+    <p-message severity="info">Sin tickets. Reporta tu primera incidencia.</p-message>
+  } @else {
+    <p-table [value]="store.tickets()">
+      <ng-template #header><tr><th>Asunto</th><th>Estado</th><th></th></tr></ng-template>
+      <ng-template #body let-ticket>
+        <tr>
+          <td>{{ ticket.subject }}</td>
+          <td><p-tag [value]="ticket.status" [icon]="icon(ticket.status)" [severity]="severity(ticket.status)"></p-tag></td>
+          <td>
+            @if (ticket.status !== 'CLOSED') {
+              <p-button label="Cerrar" variant="outlined" (onClick)="store.closeTicket(ticket)"></p-button>
+            }
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  }
+</p-panel>
