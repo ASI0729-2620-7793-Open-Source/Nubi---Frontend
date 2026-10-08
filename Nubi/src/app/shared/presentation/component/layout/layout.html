@@ -14,7 +14,7 @@
     }
 
     <main class="content">
-      <!-- Si la API no responde, se explica qué pasó en vez de dejar la pantalla vacía -->
+      <!-- Aviso no bloqueante: la vista se muestra igual con datos mock -->
       @if (profileStore.apiDown()) {
         <div class="api-down" role="alert">
           <span class="api-down-icon">
@@ -29,9 +29,8 @@
             {{ 'app.retry' | translate }}
           </button>
         </div>
-      } @else {
-        <router-outlet></router-outlet>
       }
+      <router-outlet></router-outlet>
     </main>
 
     <!-- Mobile: el acceso al Modo SOS queda siempre visible (sección 4.1.2.6) -->
