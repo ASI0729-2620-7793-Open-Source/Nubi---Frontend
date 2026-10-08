@@ -16,7 +16,9 @@
     "language": "Language",
     "openMenu": "Open menu",
     "mainNavigation": "Main navigation",
-    "breadcrumb": "Breadcrumb"
+    "breadcrumb": "Breadcrumb",
+    "institution": "Institución",
+    "students": "Estudiantes"
   },
   "caregiverRole": {
     "CAREGIVER": "Caregiver"
@@ -98,6 +100,99 @@
     "RELAXING_PIANO": {
       "name": "Relaxing piano",
       "instruction": "Listen to the slow piano notes and let your breathing follow their rhythm. There is no right way to do it."
+    }
+  },
+  "profile": {
+    "list": {
+      "title": "Profiles",
+      "subtitle": "Pick a profile to see details",
+      "empty": "No profiles yet. Create the first one.",
+      "open": "Open",
+      "loadError": "List could not load. Showing a sample."
+    },
+    "detail": {
+      "title": "Profile detail"
+    },
+    "create": {
+      "title": "Create profile"
+    },
+    "form": {
+      "noChanges": "No changes: everything stays the same.",
+      "saveError": "Could not save. Try again."
+    },
+    "sensitivities": {
+      "saveError": "Could not save sensitivities."
+    },
+    "diagnosis": {
+      "saveError": "Could not save diagnosis."
+    },
+    "caregivers": {
+      "inviteError": "Could not invite caregiver."
+    },
+    "contacts": {
+      "linkError": "Could not link contact."
+    },
+    "limits": {
+      "profilesReached": "Profile limit reached. Upgrade your plan.",
+      "caregiversReached": "Caregiver limit reached. Upgrade your plan."
+    },
+    "caregiver": {
+      "title": "My caregiver profile"
+    }
+  },
+  "photo": {
+    "errors": {
+      "type": "Invalid format. Use jpg, png or webp.",
+      "size": "Image exceeds 2 MB.",
+      "rejected": "Photo rejected: check format and size."
+    }
+  },
+  "account": {
+    "caregiver": {
+      "title": "My account"
+    },
+    "admin": {
+      "title": "Institution"
+    },
+    "teacher": {
+      "title": "Students"
+    },
+    "denied": {
+      "title": "Access denied"
+    },
+    "errors": {
+      "load": "Account could not load."
+    },
+    "members": {
+      "notFound": "No account with that email.",
+      "inactive": "That account is inactive.",
+      "self": "You cannot add yourself.",
+      "added": "Member added."
+    },
+    "students": {
+      "assigned": "Profile assigned. Still visible to family."
+    },
+    "payments": {
+      "failed": "Payment did not complete, do not worry: you keep your current plan."
+    },
+    "support": {
+      "required": "Write a subject.",
+      "sent": "Issue reported."
+    },
+    "subscription": {
+      "upgraded": "Plan activated.",
+      "cancelled": "Subscription cancelled. Back to the free plan.",
+      "none": "You do not have a plan yet. Choose one below to start."
+    }
+  },
+  "auth": {
+    "signIn": {
+      "title": "Sign in",
+      "invalid": "Incorrect email or password."
+    },
+    "signUp": {
+      "title": "Sign up",
+      "emailInUse": "That email is already in use. Sign in or use another."
     }
   }
 }

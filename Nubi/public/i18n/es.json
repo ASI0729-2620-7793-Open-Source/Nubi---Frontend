@@ -16,7 +16,9 @@
     "language": "Idioma",
     "openMenu": "Abrir menú",
     "mainNavigation": "Navegación principal",
-    "breadcrumb": "Ruta de navegación"
+    "breadcrumb": "Ruta de navegación",
+    "institution": "Institución",
+    "students": "Estudiantes"
   },
   "caregiverRole": {
     "CAREGIVER": "Cuidadora"
@@ -98,6 +100,99 @@
     "RELAXING_PIANO": {
       "name": "Piano relajante",
       "instruction": "Escucha las notas lentas del piano y deja que tu respiración siga su ritmo. No hay una forma correcta de hacerlo."
+    }
+  },
+  "profile": {
+    "list": {
+      "title": "Perfiles",
+      "subtitle": "Elige un perfil para ver su detalle",
+      "empty": "Aún no hay perfiles. Crea el primero.",
+      "open": "Abrir",
+      "loadError": "No se pudo cargar la lista. Se muestra un ejemplo."
+    },
+    "detail": {
+      "title": "Detalle del perfil"
+    },
+    "create": {
+      "title": "Crear perfil"
+    },
+    "form": {
+      "noChanges": "Sin cambios: todo sigue igual.",
+      "saveError": "No se pudo guardar. Inténtalo de nuevo."
+    },
+    "sensitivities": {
+      "saveError": "No se pudieron guardar las sensibilidades."
+    },
+    "diagnosis": {
+      "saveError": "No se pudo guardar el diagnóstico."
+    },
+    "caregivers": {
+      "inviteError": "No se pudo invitar al cuidador."
+    },
+    "contacts": {
+      "linkError": "No se pudo vincular el contacto."
+    },
+    "limits": {
+      "profilesReached": "Se alcanzó el límite de perfiles de tu plan. Mejora tu plan para crear más.",
+      "caregiversReached": "Se alcanzó el límite de cuidadores de tu plan. Mejora tu plan para invitar más."
+    },
+    "caregiver": {
+      "title": "Mi perfil cuidador"
+    }
+  },
+  "photo": {
+    "errors": {
+      "type": "Formato no válido. Usa jpg, png o webp.",
+      "size": "La imagen supera los 2 MB.",
+      "rejected": "Foto rechazada: revisa formato y tamaño."
+    }
+  },
+  "account": {
+    "caregiver": {
+      "title": "Mi cuenta"
+    },
+    "admin": {
+      "title": "Institución"
+    },
+    "teacher": {
+      "title": "Estudiantes"
+    },
+    "denied": {
+      "title": "Sin acceso"
+    },
+    "errors": {
+      "load": "No se pudo cargar la cuenta."
+    },
+    "members": {
+      "notFound": "No existe una cuenta con ese correo.",
+      "inactive": "Esa cuenta está inactiva.",
+      "self": "No puedes agregarte a ti mismo.",
+      "added": "Miembro agregado."
+    },
+    "students": {
+      "assigned": "Perfil asignado. Sigue visible para su familia."
+    },
+    "payments": {
+      "failed": "El pago no se completó, no te preocupes: sigues en tu plan actual."
+    },
+    "support": {
+      "required": "Escribe el asunto.",
+      "sent": "Incidencia reportada."
+    },
+    "subscription": {
+      "upgraded": "Plan activado. Ya puedes usar sus funciones.",
+      "cancelled": "Suscripción cancelada. Vuelves al plan gratuito.",
+      "none": "Aún no tienes un plan. Elige uno abajo para empezar."
+    }
+  },
+  "auth": {
+    "signIn": {
+      "title": "Iniciar sesión",
+      "invalid": "Correo o contraseña incorrectos."
+    },
+    "signUp": {
+      "title": "Crear cuenta",
+      "emailInUse": "Ese correo ya está en uso. Inicia sesión o usa otro."
     }
   }
 }
