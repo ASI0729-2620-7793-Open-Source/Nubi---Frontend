@@ -1,0 +1,139 @@
+/* Los componentes de Material toman aquí los colores de Nubi en vez de los del tema */
+:host {
+  display: block;
+  --mat-sys-primary: var(--nubi-deep-teal);
+  --mat-sys-on-primary: #ffffff;
+  --mat-sys-secondary-container: var(--nubi-deep-teal);
+  --mat-sys-on-secondary-container: #ffffff;
+  --mat-card-outlined-container-color: var(--nubi-surface);
+  --mat-card-outlined-outline-color: var(--nubi-border);
+  --mat-card-outlined-container-shape: var(--nubi-radius-l);
+  --mat-chip-container-shape-radius: 999px;
+  --mat-button-outlined-container-shape: 8px;
+}
+
+.separator {
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+}
+
+.board-header {
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--nubi-space-m);
+}
+
+.board-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.pictogram-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--nubi-space-l);
+}
+
+.pictogram-card {
+  padding: var(--nubi-space-s);
+  transition: box-shadow 0.15s ease;
+}
+
+.pictogram-card:hover {
+  box-shadow: 0 10px 24px rgba(17, 24, 39, 0.08);
+}
+
+/* Necesidad comunicada que espera confirmación: se destaca como en el mock-up */
+.pictogram-card.selected {
+  outline: 3px solid var(--nubi-deep-teal);
+  outline-offset: -1px;
+}
+
+.card-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--nubi-space-xs);
+}
+
+.drag-handle {
+  color: var(--nubi-text-muted);
+  cursor: grab;
+}
+
+.favorite-button {
+  color: var(--nubi-text-muted);
+}
+
+.favorite-button.active {
+  background: var(--nubi-favorite-bg);
+  color: var(--nubi-favorite-text);
+}
+
+.pictogram-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--nubi-space-s);
+  width: 100%;
+  aspect-ratio: 1;
+  border: none;
+  border-radius: var(--nubi-radius-m);
+  background: var(--nubi-mint-soft);
+  color: var(--nubi-deep-teal);
+  font: inherit;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.pictogram-tile:hover {
+  filter: brightness(0.97);
+}
+
+.pictogram-tile mat-icon {
+  width: 40px;
+  height: 40px;
+  font-size: 40px;
+}
+
+.pictogram-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pictogram-phrase {
+  padding: var(--nubi-space-m) var(--nubi-space-xs) var(--nubi-space-xs);
+  color: var(--nubi-text);
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ---------- Arrastrar y soltar (Angular CDK) ---------- */
+
+.cdk-drag-preview {
+  border-radius: var(--nubi-radius-l);
+  box-shadow: 0 16px 32px rgba(17, 24, 39, 0.18);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.35;
+}
+
+@media (max-width: 1024px) {
+  .pictogram-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .pictogram-grid {
+    gap: var(--nubi-space-m);
+  }
+}
