@@ -1,0 +1,276 @@
+:host {
+  display: block;
+}
+
+.sos-page {
+  max-width: 1100px;
+  margin-inline: auto;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+  color: var(--nubi-deep-teal);
+}
+
+.breadcrumbs strong {
+  color: var(--nubi-deep-teal);
+}
+
+/* ---------- Activación ---------- */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--nubi-space-l);
+  padding: 48px var(--nubi-space-l) var(--nubi-space-xl);
+  border: 1px solid #e4e1db;
+  border-radius: 20px;
+  background: linear-gradient(117deg, #f9e6d0 0%, #f7f6f4 100%);
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 36px;
+}
+
+.hero-lead {
+  max-width: 640px;
+  margin: 0;
+  color: var(--nubi-text-muted);
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.sos-trigger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 220px;
+  height: 220px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: radial-gradient(99% 99% at 30% 30%, #e88075 0%, var(--nubi-coral-red) 100%);
+  box-shadow: 0 12px 32px rgba(224, 96, 91, 0.35);
+  color: #ffffff;
+  font-family: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.sos-trigger:hover:not(:disabled) {
+  transform: scale(1.03);
+  box-shadow: 0 16px 36px rgba(224, 96, 91, 0.45);
+}
+
+.sos-trigger:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.sos-trigger-title {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 33px;
+}
+
+.sos-trigger-hint {
+  font-size: 13px;
+  line-height: 20px;
+  opacity: 0.9;
+}
+
+.resume {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--nubi-space-m);
+  max-width: 560px;
+  padding: var(--nubi-space-l);
+  border: 1px solid var(--nubi-deep-teal);
+  border-radius: var(--nubi-radius-l);
+  background: var(--nubi-mint-soft);
+}
+
+.resume p {
+  margin: 0;
+  color: var(--nubi-deep-teal);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.resume-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--nubi-space-m);
+}
+
+.emergency {
+  margin: 0;
+  color: var(--nubi-text-muted);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+/* ---------- ¿Para quién es esta guía? ---------- */
+
+.for-whom {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nubi-space-xs);
+  padding: 25px;
+  border: 1px solid #e4e1db;
+  border-radius: 20px;
+  background: var(--nubi-surface);
+}
+
+.for-whom h2 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.for-whom-hint {
+  margin: 0 0 var(--nubi-space-m);
+  color: var(--nubi-text-muted);
+  font-size: 13px;
+}
+
+.profiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--nubi-space-m);
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: var(--nubi-space-m);
+  min-height: 82px;
+  padding: 17px;
+  border: 1px solid #e4e1db;
+  border-radius: var(--nubi-radius-l);
+  background: var(--nubi-surface);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.profile:hover:not(.selected) {
+  border-color: var(--nubi-deep-teal);
+}
+
+.profile.selected {
+  border-color: transparent;
+  background: var(--nubi-mint-soft);
+}
+
+.profile-avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--nubi-deep-teal);
+  color: #ffffff;
+  font-family: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.profile-data {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.profile-data strong {
+  color: var(--nubi-deep-teal);
+  font-size: 16px;
+}
+
+.profile-data span {
+  color: var(--nubi-text-muted);
+  font-size: 12px;
+}
+
+.profile-check {
+  flex-shrink: 0;
+  color: var(--nubi-deep-teal);
+}
+
+/* ---------- Cómo funciona ---------- */
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--nubi-space-l);
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--nubi-space-xs);
+  padding: 25px;
+  border: 1px solid #e4e1db;
+  border-radius: 20px;
+  background: var(--nubi-surface);
+  text-align: center;
+}
+
+.feature h3 {
+  margin-top: var(--nubi-space-xs);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.feature p {
+  margin: 0;
+  color: var(--nubi-text-muted);
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.feature-number {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--nubi-deep-teal);
+  border-radius: 50%;
+  color: var(--nubi-deep-teal);
+  font-weight: 700;
+}
+
+.feature-badge {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: #e3f7f4;
+  color: #359c8f;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding-block: var(--nubi-space-xl);
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+  }
+}

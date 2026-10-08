@@ -1,0 +1,94 @@
+@let selected = store.selectedProfile();
+@let open = store.inProgress();
+
+<div class="page sos-page">
+  <nav class="breadcrumbs" [attr.aria-label]="'nav.breadcrumb' | translate">
+    <a routerLink="/inicio">{{ 'nav.home' | translate }}</a>
+    <span aria-hidden="true">/</span>
+    <strong>{{ 'sos.title' | translate }}</strong>
+  </nav>
+
+  <section class="hero" aria-labelledby="sos-title">
+    <h1 id="sos-title">{{ 'sos.title' | translate }}</h1>
+    <p class="hero-lead">{{ 'sos.activation.lead' | translate }}</p>
+
+    @if (open && selected) {
+      <div class="resume" role="status">
+        <p>{{ 'sos.activation.inProgress' | translate: { name: selected.shortName } }}</p>
+        <div class="resume-actions">
+          <button type="button" class="btn btn-primary" (click)="resume(open)">
+            {{ 'sos.activation.resume' | translate }}
+          </button>
+          <button type="button" class="btn btn-outline" (click)="finishNow(open)">
+            {{ 'sos.activation.finishNow' | translate }}
+          </button>
+        </div>
+      </div>
+    } @else {
+      <button type="button" class="sos-trigger" [disabled]="store.loading()" (click)="activate()">
+        <span class="sos-trigger-title">{{ 'sos.activation.activate' | translate }}</span>
+        <span class="sos-trigger-hint">{{ 'sos.activation.tapOnce' | translate }}</span>
+      </button>
+    }
+
+    @if (store.error(); as error) {
+      <p class="error-message" role="alert">{{ error | translate }}</p>
+    }
+
+    <p class="emergency">{{ 'sos.activation.emergency' | translate }}</p>
+  </section>
+
+  <section class="for-whom" aria-labelledby="for-whom-title">
+    <h2 id="for-whom-title">{{ 'sos.activation.forWhomTitle' | translate }}</h2>
+    <p class="for-whom-hint">{{ 'sos.activation.forWhomHint' | translate }}</p>
+
+    <div
+      class="profiles"
+      role="radiogroup"
+      [attr.aria-label]="'sos.activation.forWhomTitle' | translate"
+    >
+      @for (profile of store.profiles(); track profile.id) {
+        <button
+          type="button"
+          role="radio"
+          class="profile"
+          [class.selected]="profile.id === store.selectedProfileId()"
+          [attr.aria-checked]="profile.id === store.selectedProfileId()"
+          (click)="store.selectProfile(profile.id)"
+        >
+          <span class="profile-avatar" aria-hidden="true">{{ profile.initials }}</span>
+          <span class="profile-data">
+            <strong>{{ profile.fullName }}</strong>
+            <span>
+              {{
+                'sos.activation.ageDiagnosis'
+                  | translate: { age: profile.age, diagnosis: profile.diagnosis }
+              }}
+            </span>
+          </span>
+          @if (profile.id === store.selectedProfileId()) {
+            <mat-icon class="profile-check" aria-hidden="true">check_circle</mat-icon>
+          }
+        </button>
+      }
+    </div>
+  </section>
+
+  <section class="features" [attr.aria-label]="'sos.activation.featuresAria' | translate">
+    <article class="feature">
+      <span class="feature-number" aria-hidden="true">1</span>
+      <h3>{{ 'sos.activation.stepByStepTitle' | translate }}</h3>
+      <p>{{ 'sos.activation.stepByStepBody' | translate }}</p>
+    </article>
+    <article class="feature">
+      <span class="feature-badge">{{ 'sos.activation.new' | translate }}</span>
+      <h3>{{ 'sos.activation.adaptedTitle' | translate }}</h3>
+      <p>{{ 'sos.activation.adaptedBody' | translate: { name: selected?.shortName ?? '' } }}</p>
+    </article>
+    <article class="feature">
+      <span class="feature-number" aria-hidden="true">3</span>
+      <h3>{{ 'sos.activation.autoRecordTitle' | translate }}</h3>
+      <p>{{ 'sos.activation.autoRecordBody' | translate }}</p>
+    </article>
+  </section>
+</div>
