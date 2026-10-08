@@ -12,6 +12,29 @@ export const routes: Routes = [
   {
     path: '',
     component: Layout,
-    children: [],
+    children: [
+      { path: '', redirectTo: 'inicio', pathMatch: 'full' },
+
+      // ---------- Comunicación Asistida ----------
+      {
+        path: 'inicio',
+        title: 'home.title',
+        loadComponent: () =>
+          import('./assistive-comunication/presentation/home-overview/home-overview').then(
+            (m) => m.HomeOverview,
+          ),
+      },
+      {
+        path: 'comunicacion',
+        title: 'board.title',
+        loadComponent: () =>
+          import('./assistive-comunication/presentation/communication-board/communication-board').then(
+            (m) => m.CommunicationBoard,
+          ),
+      },
+    ],
   },
+
+  // Las rutas de la barra lateral que todavía no existen vuelven a Inicio
+  { path: '**', redirectTo: 'inicio' },
 ];
