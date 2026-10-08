@@ -115,5 +115,86 @@
         "running": false
       }
     }
-  ]
+  ],
+  "actionGuides": [
+    {
+      "id": 1,
+      "version": 1,
+      "active": true,
+      "steps": [
+        {
+          "id": 1,
+          "guideId": 1,
+          "stepOrder": 1,
+          "code": "SENSORY_ISOLATION",
+          "mandatory": true,
+          "relatedTrigger": "AUDITORY",
+          "alternativeTechniques": [
+            {
+              "id": 1,
+              "stepId": 1,
+              "code": "NOISE_CANCELLING_HEADPHONES"
+            },
+            {
+              "id": 2,
+              "stepId": 1,
+              "code": "DIM_THE_LIGHTS"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "guideId": 1,
+          "stepOrder": 2,
+          "code": "EMOTIONAL_VALIDATION",
+          "mandatory": false,
+          "relatedTrigger": "NONE",
+          "alternativeTechniques": []
+        },
+        {
+          "id": 3,
+          "guideId": 1,
+          "stepOrder": 3,
+          "code": "SAFE_SPACE",
+          "mandatory": false,
+          "relatedTrigger": "VISUAL",
+          "alternativeTechniques": []
+        },
+        {
+          "id": 4,
+          "guideId": 1,
+          "stepOrder": 4,
+          "code": "BITE_TOOL",
+          "mandatory": false,
+          "relatedTrigger": "TACTILE",
+          "alternativeTechniques": [
+            {
+              "id": 3,
+              "stepId": 4,
+              "code": "CHEWABLE_SNACK"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "guideId": 1,
+          "stepOrder": 5,
+          "code": "CALM_BREATHING",
+          "mandatory": false,
+          "relatedTrigger": "NONE",
+          "alternativeTechniques": []
+        },
+        {
+          "id": 6,
+          "guideId": 1,
+          "stepOrder": 6,
+          "code": "FINAL_CHECK",
+          "mandatory": false,
+          "relatedTrigger": "NONE",
+          "alternativeTechniques": []
+        }
+      ]
+    }
+  ],
+  "sosSessions": []
 }
