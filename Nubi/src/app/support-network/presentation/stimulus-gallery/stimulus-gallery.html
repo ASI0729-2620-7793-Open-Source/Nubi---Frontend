@@ -1,0 +1,94 @@
+<section class="page">
+  <nav class="breadcrumbs" [attr.aria-label]="'nav.breadcrumb' | translate">
+    <span>{{ 'nav.home' | translate }}</span>
+    <span class="separator">/</span>
+    <span>{{ 'nav.selfcare' | translate }}</span>
+    <span class="separator">/</span>
+    <span aria-current="page">{{ 'gallery.title' | translate }}</span>
+  </nav>
+
+  @let profile = profileStore.selectedProfile();
+
+  <header class="page-header">
+    <h1>{{ 'gallery.title' | translate }}</h1>
+    @if (profile) {
+      <p class="subtitle">{{ 'gallery.subtitle' | translate: { name: profile.shortName } }}</p>
+    }
+  </header>
+
+  @if (noticeKey(); as key) {
+    @if (profile) {
+      <p class="notice">{{ key | translate: { name: profile.shortName } }}</p>
+    }
+  }
+
+  <div class="gallery-filters">
+    <div class="chips" role="group" [attr.aria-label]="'gallery.filterAria' | translate">
+      @for (filter of filters; track filter.labelKey) {
+        <button
+          type="button"
+          class="chip"
+          [class.selected]="resourceStore.typeFilter() === filter.type"
+          [attr.aria-pressed]="resourceStore.typeFilter() === filter.type"
+          (click)="resourceStore.filterByType(filter.type)"
+        >
+          {{ filter.labelKey | translate }}
+        </button>
+      }
+    </div>
+
+    <button
+      type="button"
+      class="chip"
+      [class.selected]="resourceStore.favoritesOnly()"
+      [attr.aria-pressed]="resourceStore.favoritesOnly()"
+      (click)="resourceStore.toggleFavoritesOnly()"
+    >
+      {{ 'gallery.favorites' | translate }}
+    </button>
+  </div>
+
+  @if (resourceStore.error(); as error) {
+    <p class="error-message" role="alert">{{ error | translate }}</p>
+  }
+
+  <div class="stimulus-grid" [class.is-loading]="resourceStore.loading()">
+    @for (resource of resourceStore.galleryResources(); track resource.id) {
+      @let name = 'resources.' + resource.code + '.name' | translate;
+      @let favorite = resourceStore.isFavorite(resource.id);
+
+      <article
+        class="stimulus-card"
+        [class.selected]="resource.id === sessionStore.lastResourceId()"
+      >
+        <a class="stimulus-link" [routerLink]="['/autocuidado/estimulos', resource.id]">
+          <img class="stimulus-image" [src]="resource.mediaUrl" alt="" />
+          <span class="stimulus-name">{{ name }}</span>
+        </a>
+
+        <button
+          type="button"
+          class="favorite-tag"
+          [class.active]="favorite"
+          [attr.aria-pressed]="favorite"
+          [attr.aria-label]="
+            (favorite ? 'gallery.removeFavorite' : 'gallery.addFavorite')
+              | translate: { name: name }
+          "
+          (click)="resourceStore.toggleFavorite(resource)"
+        >
+          {{ (favorite ? 'gallery.inFavorites' : 'gallery.favorite') | translate }}
+        </button>
+      </article>
+    } @empty {
+      @if (!resourceStore.loading() && resourceStore.resources().length > 0) {
+        <p class="empty">
+          {{
+            (resourceStore.favoritesOnly() ? 'gallery.noFavorites' : 'gallery.noResults')
+              | translate
+          }}
+        </p>
+      }
+    }
+  </div>
+</section>

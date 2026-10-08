@@ -1,0 +1,103 @@
+{
+  "app": {
+    "apiDownTitle": "Could not connect to the API",
+    "apiDownBody": "The fake API did not respond. Make sure ng serve is still running and try again.",
+    "retry": "Retry"
+  },
+  "nav": {
+    "home": "Home",
+    "profile": "Profile",
+    "selfcare": "Self-care",
+    "communication": "Communication",
+    "history": "History",
+    "settings": "Settings",
+    "sos": "SOS MODE",
+    "sosShort": "SOS",
+    "language": "Language",
+    "openMenu": "Open menu",
+    "mainNavigation": "Main navigation",
+    "breadcrumb": "Breadcrumb"
+  },
+  "caregiverRole": {
+    "CAREGIVER": "Caregiver"
+  },
+  "gallery": {
+    "title": "Stimulus gallery",
+    "subtitle": "Choose a visual or auditory stimulus to help {{name}} regain calm.",
+    "noticeAuditoryAndVisual": "Since {{name}} has high auditory sensitivity and prefers visual stimuli, we show the visual options. You can change the filter at any time.",
+    "noticeAuditory": "Since {{name}} has high auditory sensitivity, we show the visual options. You can change the filter at any time.",
+    "noticeVisual": "Since {{name}} prefers visual stimuli, we show the visual options. You can change the filter at any time.",
+    "filterAria": "Filter stimuli by type",
+    "all": "All",
+    "visual": "Visual",
+    "auditory": "Auditory",
+    "favorites": "Favorites",
+    "inFavorites": "In favorites",
+    "favorite": "Favorite",
+    "addFavorite": "Add {{name}} to favorites",
+    "removeFavorite": "Remove {{name}} from favorites",
+    "noFavorites": "There are no favorite stimuli yet. Mark them from each card.",
+    "noResults": "There are no stimuli of this type.",
+    "loadError": "The stimulus gallery could not be loaded."
+  },
+  "session": {
+    "pageTitle": "Stimulus in use",
+    "breathe": "BREATHE",
+    "intensity": "Intensity",
+    "soft": "Soft",
+    "intense": "Intense",
+    "lowStimulation": "Low stimulation mode",
+    "lowStimulationHint": "Lowers the brightness and stops intense animations.",
+    "useTimer": "Use the calm timer meanwhile",
+    "finish": "End session and go back to the gallery",
+    "playSound": "Play sound",
+    "pauseSound": "Pause sound",
+    "loadError": "The stimulus could not be opened."
+  },
+  "timer": {
+    "title": "Calm timer",
+    "continuingWith": "Continuing with {{name}}",
+    "exit": "Exit timer",
+    "takeThisMoment": "Take this moment",
+    "remainingOf": "left of {{total}}",
+    "durationAria": "Timer duration",
+    "minutes": "{{value}} min",
+    "pause": "Pause",
+    "resume": "Resume",
+    "note": "When it ends, we will ask you how {{name}} feels now.",
+    "timeUp": "Time is up",
+    "howFeels": "How does {{name}} feel now?",
+    "feelsBetter": "Feeling better",
+    "notCalmYet": "Not calm yet",
+    "suggestHelp": "If {{name}} is still not calm, ask their support network for help.",
+    "askForHelp": "Ask for help",
+    "backToStimulus": "Back to the stimulus",
+    "loadError": "The timer could not be loaded."
+  },
+  "resources": {
+    "FLOATING_BUBBLES": {
+      "name": "Floating bubbles",
+      "instruction": "Follow the rhythm of the circle while you watch the bubbles rise. There is no right way to do it."
+    },
+    "COLOR_WAVES": {
+      "name": "Color waves",
+      "instruction": "Breathe with the circle while the colors move like waves. You can keep looking at the color you like most."
+    },
+    "STARRY_SKY": {
+      "name": "Starry sky",
+      "instruction": "Breathe with the circle while the stars slowly twinkle. If you like, pick one and follow it with your eyes."
+    },
+    "GENTLE_RAIN": {
+      "name": "Gentle rain",
+      "instruction": "Listen to the rain falling slowly and breathe with the circle. You don't have to do anything else."
+    },
+    "OCEAN_SOUNDS": {
+      "name": "Ocean sounds",
+      "instruction": "Listen to the waves come and go, and breathe in and out with them. You can close your eyes if it helps."
+    },
+    "RELAXING_PIANO": {
+      "name": "Relaxing piano",
+      "instruction": "Listen to the slow piano notes and let your breathing follow their rhythm. There is no right way to do it."
+    }
+  }
+}
