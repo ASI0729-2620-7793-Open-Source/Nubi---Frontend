@@ -6,7 +6,9 @@ import { ProfileSummary } from '../domain/model/profile-summary.entity';
 
 export interface ProfileSummaryResource {
   id: number;
-  fullName: string;
+  fullName?: string;
+  firstName?: string;
+  lastName?: string;
   age: number;
 }
 
@@ -22,6 +24,9 @@ export class ProfileApi {
   }
 
   private toEntity(resource: ProfileSummaryResource): ProfileSummary {
-    return new ProfileSummary(resource.id, resource.fullName, resource.age);
+    const fullName =
+      resource.fullName ??
+      `${resource.firstName ?? ''} ${resource.lastName ?? ''}`.trim();
+    return new ProfileSummary(resource.id, fullName, resource.age);
   }
 }

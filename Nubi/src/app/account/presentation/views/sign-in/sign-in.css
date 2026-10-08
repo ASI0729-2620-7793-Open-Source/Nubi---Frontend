@@ -1,0 +1,4 @@
+.auth-page { display: flex; justify-content: center; padding: 48px 20px; }
+.auth-page p-card { width: min(420px, 100%); }
+.form { display: flex; flex-direction: column; gap: 12px; margin: 12px 0; }
+.form label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; }

@@ -1,0 +1,59 @@
+<p-confirmdialog></p-confirmdialog>
+
+@if (store.info()) {
+  <p-message severity="info">{{ store.info() }}</p-message>
+}
+
+@if (store.subscription(); as sub) {
+  <!-- RF-02: plan, estado, inicio y vencimiento -->
+  <p-panel header="Mis suscripciones: {{ sub.plan }}">
+    <p-tag [value]="sub.status" [severity]="sub.status === 'ACTIVE' ? 'success' : 'danger'"></p-tag>
+    <p><strong>Plan:</strong> {{ sub.plan }}</p>
+    <p><strong>Inicio:</strong> {{ sub.startedAt.toLocaleDateString() }}</p>
+    <p><strong>Vencimiento:</strong> {{ sub.endsAt ? sub.endsAt.toLocaleDateString() : 'Sin vencimiento' }}</p>
+
+    <!-- RF-03: límites y uso actual -->
+    <p><strong>Perfiles:</strong> {{ profilesUsed() }} de {{ sub.maxProfiles }}</p>
+    <p-progressbar [value]="usagePercent(profilesUsed(), sub.maxProfiles)"></p-progressbar>
+    <p><strong>Cuidadores por perfil:</strong> {{ caregiversUsed() }} de {{ sub.maxCaregiversPerProfile }}</p>
+    <p-progressbar [value]="usagePercent(caregiversUsed(), sub.maxCaregiversPerProfile)"></p-progressbar>
+    @if (!sub.allowsAnotherProfile(profilesUsed())) {
+      <p-message severity="warn">Alcanzaste el límite de perfiles. Mejora tu plan para crear más.</p-message>
+    }
+    @if (!sub.allowsAnotherCaregiver(caregiversUsed())) {
+      <p-message severity="warn">Alcanzaste el límite de cuidadores. Mejora tu plan para invitar más.</p-message>
+    }
+
+    <!-- RF-07: cancelar con confirmación -->
+    @if (sub.plan !== PlanType.FREEMIUM) {
+      <p-button label="Cancelar suscripción" severity="danger" variant="outlined" (onClick)="askCancel()"></p-button>
+    }
+  </p-panel>
+} @else {
+  <p-message severity="info">Aún no tienes un plan. Elige uno abajo para empezar.</p-message>
+}
+
+<!-- RF-04: comparador de planes (siempre visible, aun sin plan) -->
+<p-panel header="Comparar planes">
+  <p-table [value]="plans">
+    <ng-template #header><tr><th>Plan</th><th>Precio</th><th>Perfiles</th><th>Cuidadores</th><th></th></tr></ng-template>
+    <ng-template #body let-row>
+      <tr>
+        <td>{{ row.plan }} @if (store.subscription()?.plan === row.plan) { <p-tag value="Actual" severity="success"></p-tag> }</td>
+        <td>{{ row.price }}</td>
+        <td>{{ row.profiles }}</td>
+        <td>{{ row.caregivers }}</td>
+        <td>
+          @if (row.plan !== store.subscription()?.plan) {
+            <p-button label="Cambiar a este plan" (onClick)="store.changePlan(row.plan)"></p-button>
+          }
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-panel>
+
+<!-- RF-11: funciones no incluidas -->
+@if (store.subscription()?.plan === PlanType.FREEMIUM) {
+  <p-message severity="info">Tu plan no incluye reportes institucionales ni gestión de miembros. Mejora tu plan para usarlos.</p-message>
+}

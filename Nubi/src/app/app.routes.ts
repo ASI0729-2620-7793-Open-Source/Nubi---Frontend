@@ -68,7 +68,32 @@ export const routes: Routes = [
             (component) => component.SupportDashboard,
           ),
       },
+
+      // ---------- Perfil y Personalización ----------
+      {
+        path: 'perfil',
+        loadChildren: () =>
+          import('./profile/presentation/profile.routes').then((m) => m.profileRoutes),
+      },
+      {
+        path: 'my-plan',
+        loadChildren: () =>
+          import('./account/presentation/account.routes').then((m) => m.accountRoutes),
+      },
     ],
+  },
+  // US-46 y US-47: autenticación pública, fuera del shell con menú.
+  {
+    path: 'auth/sign-in',
+    loadComponent: () =>
+      import('./account/presentation/views/sign-in/sign-in').then((m) => m.SignIn),
+    title: 'auth.signIn.title',
+  },
+  {
+    path: 'auth/sign-up',
+    loadComponent: () =>
+      import('./account/presentation/views/sign-up/sign-up').then((m) => m.SignUp),
+    title: 'auth.signUp.title',
   },
 
   // Pantalla de foco único: sin barra lateral, como en el mock-up del temporizador

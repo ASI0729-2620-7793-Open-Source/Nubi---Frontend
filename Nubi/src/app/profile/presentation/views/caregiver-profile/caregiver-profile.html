@@ -1,0 +1,50 @@
+<div class="page profile-page">
+  <p-breadcrumb [model]="crumbs"></p-breadcrumb>
+
+  <div class="page-header">
+    <h1>Mi perfil cuidador</h1>
+    <p class="subtitle">Tus invitaciones y tu rol en cada perfil.</p>
+  </div>
+
+  <p-panel header="Mis invitaciones">
+    @if (store.pendingInvitations().length === 0) {
+      <p-message severity="info">No tienes invitaciones pendientes.</p-message>
+    } @else {
+      @for (item of store.pendingInvitations(); track item.caregiver.id) {
+        <div class="caregiver-row">
+          <p-avatar [label]="initials(item.profile.fullName)" shape="circle"></p-avatar>
+          <div>
+            <strong>{{ item.profile.fullName }}</strong>
+            <p class="subtitle">Rol ofrecido: {{ item.caregiver.role }} · {{ item.caregiver.invitedEmail }}</p>
+          </div>
+          <p-tag value="PENDING" icon="pi pi-clock" severity="warn"></p-tag>
+          <p-button
+            label="Aceptar"
+            icon="pi pi-check"
+            (onClick)="store.acceptInvitation(item.profile, item.caregiver.id)"
+          ></p-button>
+        </div>
+      }
+    }
+  </p-panel>
+
+  <p-panel header="Mis perfiles">
+    @for (profile of store.profiles(); track profile.id) {
+      <div class="caregiver-row">
+        <p-avatar [label]="initials(profile.fullName)" shape="circle"></p-avatar>
+        <a [routerLink]="['/perfil', profile.id]">{{ profile.fullName }}</a>
+        <p-tag value="ACTIVE" icon="pi pi-check" severity="success"></p-tag>
+      </div>
+    } @empty {
+      <p-message severity="info">Aún no tienes perfiles a tu cargo.</p-message>
+    }
+  </p-panel>
+
+  <p-panel header="Mi plan">
+    <app-subscription-panel
+      [profilesUsed]="store.profiles().length"
+      [caregiversUsed]="store.selectedProfile()?.caregivers.length ?? 0"
+    ></app-subscription-panel>
+    <app-payments-table></app-payments-table>
+  </p-panel>
+</div>

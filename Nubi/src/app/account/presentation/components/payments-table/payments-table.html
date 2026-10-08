@@ -1,0 +1,20 @@
+<p-panel header="Pagos">
+  @if (store.loading()) {
+    <p-skeleton width="100%" height="120px"></p-skeleton>
+  } @else if (store.payments().length === 0) {
+    <p-message severity="info">Sin pagos registrados.</p-message>
+  } @else {
+    <p-table [value]="store.payments()">
+      <ng-template #header><tr><th>Fecha</th><th>Monto</th><th>Moneda</th><th>Referencia</th><th>Estado</th></tr></ng-template>
+      <ng-template #body let-pay>
+        <tr>
+          <td>{{ pay.paidAt ? pay.paidAt.toLocaleDateString() : '—' }}</td>
+          <td>{{ pay.amount }}</td>
+          <td>{{ pay.currency }}</td>
+          <td>{{ pay.gatewayReference ?? '—' }}</td>
+          <td><p-tag [value]="pay.status" [icon]="icon(pay.status)" [severity]="severity(pay.status)"></p-tag></td>
+        </tr>
+      </ng-template>
+    </p-table>
+  }
+</p-panel>

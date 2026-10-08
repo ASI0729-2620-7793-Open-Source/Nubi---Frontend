@@ -1,0 +1,55 @@
+<div class="page">
+  <h1>{{ 'profile.list.title' | translate }}</h1>
+  <p class="subtitle">{{ 'profile.list.subtitle' | translate }}</p>
+  <a routerLink="/perfil/cuidador">Ver mi perfil cuidador</a>
+
+  @if (store.error()) {
+    <p-message severity="warn">{{ store.error() }}</p-message>
+  }
+
+  @if (store.loading()) {
+    <div class="cards">
+      <p-skeleton width="100%" height="120px"></p-skeleton>
+      <p-skeleton width="100%" height="120px"></p-skeleton>
+    </div>
+  } @else if (!hasProfiles()) {
+    <p-message severity="info">{{ 'profile.list.empty' | translate }}</p-message>
+  } @else {
+    <p-dataview [value]="store.profiles()">
+      <ng-template #list let-items>
+        <div class="cards">
+          @for (profile of items; track profile.id) {
+            <div class="card">
+              <p-avatar
+                [label]="profile.displayName.slice(0, 2).toUpperCase()"
+                shape="circle"
+                size="large"
+              ></p-avatar>
+              <div>
+                <strong>{{ profile.fullName }}</strong>
+                <p class="subtitle">{{ profile.age }} años</p>
+              </div>
+              <p-tag value="Perfil activo" severity="success"></p-tag>
+              <p-button
+                [routerLink]="['/perfil', profile.id]"
+                [label]="'profile.list.open' | translate"
+              ></p-button>
+            </div>
+          }
+        </div>
+      </ng-template>
+    </p-dataview>
+  }
+
+  <p-button [label]="'profile.create.title' | translate" icon="pi pi-plus" (onClick)="open.set(true)"></p-button>
+</div>
+
+<p-dialog header="Crear perfil" [(visible)]="open" [modal]="true">
+  <div class="form">
+    <label>Nombre <input pInputText [(ngModel)]="firstName" /></label>
+    <label>Apellidos <input pInputText [(ngModel)]="lastName" /></label>
+    <label>Edad <p-inputnumber [(ngModel)]="age" [min]="0" [max]="17"></p-inputnumber></label>
+    <label>Condición <p-select [options]="conditionOptions" [(ngModel)]="condition" optionLabel="label" optionValue="value"></p-select></label>
+    <p-button label="Crear" (onClick)="create()"></p-button>
+  </div>
+</p-dialog>

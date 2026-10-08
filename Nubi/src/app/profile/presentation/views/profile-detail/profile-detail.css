@@ -1,0 +1,20 @@
+.profile-page { max-width: 1200px; }
+.hero { background: var(--nubi-surface); border: 1px solid var(--nubi-border); border-radius: var(--nubi-radius-l); overflow: hidden; }
+.hero-band { height: 72px; background: var(--nubi-mint-soft); }
+.hero-body { display: flex; gap: 20px; align-items: center; padding: 0 24px 20px; margin-top: -28px; flex-wrap: wrap; }
+.hero-avatar { width: 72px !important; height: 72px !important; font-size: 24px; }
+.hero-text { flex: 1 1 320px; }
+.hero-text h1 { font-size: 28px; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.hero-actions { display: flex; gap: 12px; }
+.grid-2 { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; align-items: start; }
+.col, .side { display: flex; flex-direction: column; gap: 20px; }
+.sens-row { display: grid; grid-template-columns: 90px auto auto; gap: 8px 12px; align-items: center; padding: 12px 0; }
+.sens-row p-slider { grid-column: 1 / -1; }
+.marks { grid-column: 1 / -1; display: flex; justify-content: space-between; font-size: 12px; color: var(--nubi-text-muted); }
+.pref { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; }
+.form { display: flex; flex-direction: column; gap: 12px; }
+.form label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; }
+.caregiver-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.order { min-width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--nubi-mint-soft); font-weight: 700; }
+@media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .hero-body { padding: 0 16px 16px; } }

@@ -281,3 +281,11 @@ input:focus-visible {
   --mat-snack-bar-button-color: #ffffff;
   --mat-snack-bar-container-shape: var(--nubi-radius-m);
 }
+
+/* PrimeNG 22 verifica la licencia PrimeUI al arrancar y, sin clave, pega un
+   aviso rojo fijo ("Invalid PrimeUI License"). Solo es nagware en consola y
+   pantalla: no bloquea nada. Se oculta por CSS; la solución oficial es
+   registrar una clave gratuita y pasarla como `license` en providePrimeNG. */
+#p-license-host {
+  display: none !important;
+}

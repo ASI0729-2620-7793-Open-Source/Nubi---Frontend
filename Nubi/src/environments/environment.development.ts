@@ -9,4 +9,9 @@ export const environment = {
   caregiversEndpoint: '/caregivers',
   actionGuidesEndpoint: '/actionGuides',
   sosSessionsEndpoint: '/sosSessions',
+  accountsEndpoint: '/accounts',
+  institutionsEndpoint: '/institutions',
+  myPlanEndpoint: '/subscriptions',
+  paymentsEndpoint: '/payments',
+  ticketsEndpoint: '/tickets',
 };

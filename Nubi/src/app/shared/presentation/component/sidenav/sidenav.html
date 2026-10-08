@@ -6,7 +6,7 @@
 
   <!-- Cada equipo agrega su ruta en app.routes.ts; los enlaces están en navigation-links.ts -->
   <nav class="nav" [attr.aria-label]="'nav.mainNavigation' | translate">
-    @for (link of links; track link.path) {
+    @for (link of links(); track link.path) {
       <a
         class="nav-item"
         [routerLink]="link.path"

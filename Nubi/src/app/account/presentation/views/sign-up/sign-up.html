@@ -1,0 +1,14 @@
+<div class="auth-page">
+  <p-card header="Crear cuenta">
+    @if (auth.error()) {
+      <p-message severity="error">{{ auth.error() }}</p-message>
+    }
+    <div class="form">
+      <label>Nombre completo <input pInputText [(ngModel)]="fullName" autocomplete="name" /></label>
+      <label>Correo <input pInputText [(ngModel)]="email" type="email" autocomplete="email" /></label>
+      <p-message severity="info">Al registrarte se activa el plan FREEMIUM y podrás crear tu primer perfil.</p-message>
+      <p-button label="Registrarme" [loading]="auth.loading()" (onClick)="submit()"></p-button>
+    </div>
+    <p>¿Ya tienes cuenta? <a routerLink="/auth/sign-in">Inicia sesión</a></p>
+  </p-card>
+</div>
