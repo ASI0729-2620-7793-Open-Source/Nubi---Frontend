@@ -1,0 +1,25 @@
+<div class="page">
+  <p-breadcrumb [model]="[{label:'Inicio'},{label:'Estudiantes'}]"></p-breadcrumb>
+  <p-tabs value="students">
+    <p-tablist>
+      <p-tab value="students">Perfiles de estudiantes</p-tab>
+      <p-tab value="help">Soporte</p-tab>
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel value="students">
+        <p-panel header="Asignados">
+          @for (id of store.institution()?.profileIds ?? []; track id) {
+            <div class="row">
+              <p-avatar label="P{{ id }}" shape="circle"></p-avatar>
+              <span>Perfil {{ id }}</span>
+              <a routerLink="/perfil/{{ id }}">Ver perfil</a>
+            </div>
+          } @empty {
+            <p-message severity="info">Sin estudiantes asignados.</p-message>
+          }
+        </p-panel>
+      </p-tabpanel>
+      <p-tabpanel value="help"><app-support-panel></app-support-panel></p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+</div>

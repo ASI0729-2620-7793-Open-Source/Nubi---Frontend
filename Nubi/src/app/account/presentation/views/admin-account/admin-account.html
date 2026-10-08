@@ -1,0 +1,92 @@
+<div class="page">
+  <p-breadcrumb [model]="[{label:'Inicio'},{label:'Institución'}]"></p-breadcrumb>
+  @if (store.error()) { <p-message severity="error">{{ store.error() }}</p-message> }
+  @if (store.info()) { <p-message severity="success">{{ store.info() }}</p-message> }
+
+  <p-tabs value="overview">
+    <p-tablist>
+      <p-tab value="overview">Resumen</p-tab>
+      <p-tab value="members">Miembros</p-tab>
+      <p-tab value="students">Perfiles</p-tab>
+      <p-tab value="sub">Mis suscripciones</p-tab>
+      <p-tab value="help">Soporte</p-tab>
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel value="overview">
+        @if (store.loading()) {
+          <p-skeleton width="100%" height="140px"></p-skeleton>
+        } @else if (store.institution(); as institution) {
+          <p-panel header="{{ institution.name }}">
+            <p-tag [value]="institution.type" severity="info"></p-tag>
+            <p>{{ institution.contactEmail }}</p>
+            <p-button label="Editar" variant="outlined"></p-button>
+          </p-panel>
+          <div class="counters">
+            <p-panel header="Miembros"><strong>{{ store.members().length }}</strong></p-panel>
+            <p-panel header="Perfiles"><strong>{{ institution.profileIds.length }}</strong></p-panel>
+            <p-panel header="Tickets abiertos"><strong>{{ store.openTickets().length }}</strong></p-panel>
+          </div>
+        } @else {
+          <p-message severity="info">Sin institución asociada.</p-message>
+        }
+      </p-tabpanel>
+
+      <p-tabpanel value="members">
+        @if (store.loading()) {
+          <p-skeleton width="100%" height="160px"></p-skeleton>
+        } @else if (store.members().length === 0) {
+          <p-message severity="info">Aún no hay miembros. Agrega el primero.</p-message>
+        } @else {
+          <p-table [value]="store.members()">
+            <ng-template #header><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Estado</th></tr></ng-template>
+            <ng-template #body let-member>
+              <tr>
+                <td>{{ member.fullName }}</td><td>{{ member.email }}</td><td>{{ member.role }}</td>
+                <td>{{ member.active ? 'Activo' : 'Inactivo' }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        }
+        <p-button label="Agregar miembro" icon="pi pi-plus" (onClick)="memberOpen.set(true)"></p-button>
+      </p-tabpanel>
+
+      <p-tabpanel value="students">
+        <p-message severity="info">Solo nombre, edad y estado. El detalle está en la vista de perfil.</p-message>
+        <p-dataview [value]="[]">
+          <ng-template #list let-items>
+            @for (id of store.institution()?.profileIds ?? []; track id) {
+              <div class="row">
+                <p-avatar label="P{{ id }}" shape="circle"></p-avatar>
+                <div><strong>Perfil {{ id }}</strong></div>
+                <a routerLink="/perfil/{{ id }}">Ver perfil</a>
+              </div>
+            }
+          </ng-template>
+          <ng-template #emptymessage>Sin perfiles gestionados.</ng-template>
+        </p-dataview>
+        <p-button label="Asignar perfil" icon="pi pi-plus" (onClick)="assignOpen.set(true)"></p-button>
+      </p-tabpanel>
+
+      <p-tabpanel value="sub">
+        <app-subscription-panel [institutional]="true" [profilesUsed]="store.institution()?.profileIds.length ?? 0" [caregiversUsed]="store.members().length"></app-subscription-panel>
+        <app-payments-table></app-payments-table>
+      </p-tabpanel>
+
+      <p-tabpanel value="help"><app-support-panel></app-support-panel></p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+</div>
+
+<p-dialog header="Agregar miembro" [(visible)]="memberOpen" [modal]="true">
+  <div class="form">
+    <label>Correo de cuenta existente <input pInputText [(ngModel)]="memberEmail" type="email" /></label>
+    <p-button label="Agregar" (onClick)="addMember()"></p-button>
+  </div>
+</p-dialog>
+
+<p-dialog header="Asignar perfil" [(visible)]="assignOpen" [modal]="true">
+  <div class="form">
+    <label>ID de perfil <input pInputText [(ngModel)]="profileId" type="number" /></label>
+    <p-button label="Asignar" (onClick)="assign()"></p-button>
+  </div>
+</p-dialog>

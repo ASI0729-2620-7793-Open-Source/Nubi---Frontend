@@ -1,0 +1,25 @@
+<div class="page">
+  <p-breadcrumb [model]="[{label:'Inicio'},{label:'Mi cuenta'}]"></p-breadcrumb>
+  @if (store.institution()) {
+    <p-message severity="info">Tu cuenta está vinculada a una institución, pero aquí solo gestionas tu familia.</p-message>
+  }
+  <p-tabs value="account">
+    <p-tablist>
+      <p-tab value="account">Datos de cuenta</p-tab>
+      <p-tab value="sub">Suscripción</p-tab>
+      <p-tab value="pay">Pagos</p-tab>
+      <p-tab value="help">Soporte</p-tab>
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel value="account">
+        <p-panel header="Datos de cuenta">
+          <p><strong>Nombre:</strong> {{ auth.account()?.fullName ?? '—' }}</p>
+          <p><strong>Correo:</strong> {{ auth.account()?.email ?? '—' }}</p>
+        </p-panel>
+      </p-tabpanel>
+      <p-tabpanel value="sub"><app-subscription-panel [profilesUsed]="profiles.profiles().length" [caregiversUsed]="profiles.selectedProfile()?.caregivers.length ?? 0"></app-subscription-panel></p-tabpanel>
+      <p-tabpanel value="pay"><app-payments-table></app-payments-table></p-tabpanel>
+      <p-tabpanel value="help"><app-support-panel></app-support-panel></p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+</div>
