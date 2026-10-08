@@ -1,0 +1,294 @@
+/* Los componentes de Material toman aquí los colores de Nubi en vez de los del tema */
+:host {
+  display: block;
+  --mat-sys-primary: var(--nubi-deep-teal);
+  --mat-sys-on-primary: #ffffff;
+  --mat-card-outlined-container-color: var(--nubi-surface);
+  --mat-card-outlined-outline-color: var(--nubi-border);
+  --mat-card-outlined-container-shape: 16px;
+  --mat-card-elevated-container-shape: 16px;
+  --mat-card-title-text-size: 16px;
+  --mat-chip-container-shape-radius: 999px;
+  --mat-button-outlined-container-shape: 8px;
+  --mat-button-filled-container-shape: 8px;
+  --mat-card-title-text-weight: 700;
+}
+
+.separator {
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+}
+
+.home-header {
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--nubi-space-m);
+}
+
+.home-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.pending-bell {
+  margin: var(--nubi-space-xs);
+  color: var(--nubi-text-nav);
+  --mat-badge-background-color: var(--nubi-favorite-text);
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr);
+  align-items: start;
+  gap: var(--nubi-space-l);
+}
+
+.main-column,
+.side-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nubi-space-l);
+}
+
+/* ---------- Necesidad comunicada ---------- */
+
+.request-card {
+  overflow: hidden;
+  border-left: 4px solid var(--nubi-deep-teal);
+}
+
+.request-body {
+  display: flex;
+  align-items: center;
+  gap: var(--nubi-space-m);
+  padding: var(--nubi-space-l) var(--nubi-space-l) var(--nubi-space-m);
+}
+
+.request-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: var(--nubi-radius-l);
+  background: var(--nubi-mint-soft);
+  color: var(--nubi-deep-teal);
+}
+
+.request-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--nubi-space-xs);
+  margin: 0 0 4px;
+  color: var(--nubi-text-muted);
+  font-size: 12px;
+}
+
+.source-tag {
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: #e0e7ff;
+  color: #3730a3;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.request-body h2 {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.need-phrase {
+  color: var(--nubi-deep-teal);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.request-actions {
+  gap: var(--nubi-space-s);
+  padding: 0 var(--nubi-space-l) var(--nubi-space-l);
+}
+
+.request-actions > * {
+  flex: 1;
+  min-height: 48px;
+}
+
+.request-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--nubi-space-xs);
+  padding: var(--nubi-space-m) var(--nubi-space-l);
+  background: var(--nubi-background);
+  color: var(--nubi-text-soft);
+  font-size: 13px;
+}
+
+.request-footer mat-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+.request-footer a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  color: var(--nubi-deep-teal);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* ---------- Recepción confirmada ---------- */
+
+.confirmation-card {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--nubi-space-m);
+  padding: var(--nubi-space-m) var(--nubi-space-l);
+  --mat-chip-elevated-container-color: var(--nubi-mint-soft);
+  --mat-chip-label-text-color: var(--nubi-deep-teal);
+  --mat-chip-label-text-weight: 700;
+}
+
+.confirmation-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--nubi-mint-soft);
+  color: var(--nubi-deep-teal);
+}
+
+.confirmation-text {
+  flex: 1;
+}
+
+.confirmation-text h3 {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.confirmation-text p,
+.empty-card p {
+  margin: 0;
+  color: var(--nubi-text-muted);
+  font-size: 13px;
+}
+
+.empty-card mat-card-content {
+  padding: var(--nubi-space-l);
+}
+
+.empty-card h2 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* ---------- Estado actual ---------- */
+
+.status-ring {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 112px;
+  height: 112px;
+  margin: var(--nubi-space-l) auto;
+  border: 6px solid var(--nubi-mint-soft);
+  border-radius: 50%;
+}
+
+.status-core {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: var(--nubi-mint-soft);
+  color: var(--nubi-deep-teal);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status-note {
+  margin: 0;
+  padding: var(--nubi-space-s);
+  border-radius: var(--nubi-radius-m);
+  background: var(--nubi-background);
+  color: var(--nubi-text-soft);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.status-note strong {
+  color: var(--nubi-text);
+}
+
+/* ---------- Red de Apoyo rápida ---------- */
+
+.support-card {
+  --mat-card-elevated-container-color: #111827;
+  --mat-card-title-text-color: #ffffff;
+  --mat-list-list-item-label-text-color: #ffffff;
+  --mat-list-list-item-supporting-text-color: #9ca3af;
+  --mat-list-list-item-leading-icon-color: #9ca3af;
+  --mat-list-list-item-trailing-icon-color: #d1d5db;
+  --mat-list-list-item-label-text-size: 14px;
+  --mat-list-list-item-label-text-weight: 600;
+  --mat-list-list-item-supporting-text-size: 12px;
+  color: #ffffff;
+}
+
+.support-card mat-card-title {
+  color: #ffffff;
+}
+
+.support-contact {
+  margin-top: var(--nubi-space-xs);
+  border-radius: var(--nubi-radius-m);
+  background: #1f2937;
+}
+
+/* Tablet y mobile: una sola columna */
+@media (max-width: 1024px) {
+  .home-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .request-body {
+    align-items: flex-start;
+  }
+
+  .request-body h2 {
+    font-size: 22px;
+  }
+
+  .request-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .request-footer {
+    flex-wrap: wrap;
+  }
+
+  .confirmation-card {
+    flex-wrap: wrap;
+  }
+}

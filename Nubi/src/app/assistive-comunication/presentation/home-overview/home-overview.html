@@ -1,0 +1,174 @@
+<section class="page">
+  <nav class="breadcrumbs" [attr.aria-label]="'nav.breadcrumb' | translate">
+    <span>{{ 'nav.home' | translate }}</span>
+    <mat-icon class="separator" aria-hidden="true">chevron_right</mat-icon>
+    <span aria-current="page">{{ 'home.breadcrumb' | translate }}</span>
+  </nav>
+
+  @let profile = profileStore.selectedProfile();
+  @let profileName = profile?.shortName ?? '';
+
+  <header class="page-header home-header">
+    <div>
+      <h1>{{ 'home.greeting' | translate: { name: caregiverName() } }}</h1>
+      <p class="subtitle">{{ 'home.subtitle' | translate: { name: profileName } }}</p>
+    </div>
+
+    <mat-icon
+      class="pending-bell"
+      aria-hidden="false"
+      [attr.aria-label]="'home.pendingAria' | translate: { count: store.pendingCount() }"
+      [matBadge]="store.pendingCount()"
+      [matBadgeHidden]="store.pendingCount() === 0"
+    >
+      notifications
+    </mat-icon>
+  </header>
+
+  @if (store.error(); as error) {
+    <p class="error-message" role="alert">{{ error | translate }}</p>
+  }
+
+  <div class="home-grid">
+    <div class="main-column">
+      @if (store.latestRequest(); as request) {
+        <mat-card appearance="outlined" class="request-card">
+          <mat-card-content class="request-body">
+            <span class="request-icon">
+              <mat-icon>{{ requestIcon() }}</mat-icon>
+            </span>
+
+            <div>
+              <p class="request-meta">
+                <span class="source-tag">{{ 'home.sourceTag' | translate }}</span>
+                @if (elapsed(); as time) {
+                  <span>
+                    {{ time.key | translate: { count: time.count } }} ·
+                    {{ 'home.source' | translate }}
+                  </span>
+                }
+              </p>
+              <h2>
+                {{ 'home.needs' | translate: { name: profileName } }}
+                <span class="need-phrase">{{
+                  'pictograms.' + request.pictogramCode + '.phrase' | translate
+                }}</span>
+              </h2>
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions class="request-actions">
+            <a matButton="outlined" routerLink="/comunicacion">
+              <mat-icon>layers</mat-icon>
+              {{ 'home.viewBoard' | translate }}
+            </a>
+            <button
+              matButton="filled"
+              type="button"
+              [disabled]="!request.isPending()"
+              (click)="store.confirmLatest()"
+            >
+              <mat-icon>done_all</mat-icon>
+              {{ (request.isPending() ? 'home.confirm' : 'home.confirmed') | translate }}
+            </button>
+          </mat-card-actions>
+
+          <mat-card-footer class="request-footer">
+            <mat-icon>info</mat-icon>
+            <span>
+              {{
+                'home.interactedWith'
+                  | translate
+                    : {
+                        name: profileName,
+                        category: 'pictogramCategories.' + request.category | translate,
+                      }
+              }}
+            </span>
+            <a routerLink="/historial">
+              {{ 'home.viewHistory' | translate }}
+              <mat-icon>arrow_forward</mat-icon>
+            </a>
+          </mat-card-footer>
+        </mat-card>
+
+        @if (!request.isPending() && request.confirmedAt) {
+          <mat-card appearance="outlined" class="confirmation-card">
+            <span class="confirmation-icon">
+              <mat-icon>check_circle</mat-icon>
+            </span>
+            <div class="confirmation-text">
+              <h3>{{ 'home.assistanceOnTheWay' | translate }}</h3>
+              <p>
+                {{
+                  'home.confirmedBy'
+                    | translate
+                      : {
+                          name: caregiverName(),
+                          time: request.confirmedAt | date: 'shortTime',
+                        }
+                }}
+              </p>
+            </div>
+            <mat-chip-set>
+              <mat-chip>{{ 'home.confirmedTag' | translate }}</mat-chip>
+            </mat-chip-set>
+          </mat-card>
+        }
+      } @else if (!store.loading()) {
+        <mat-card appearance="outlined" class="empty-card">
+          <mat-card-content>
+            <h2>{{ 'home.emptyTitle' | translate: { name: profileName } }}</h2>
+            <p>{{ 'home.emptyBody' | translate: { name: profileName } }}</p>
+          </mat-card-content>
+          <mat-card-actions class="request-actions">
+            <a matButton="outlined" routerLink="/comunicacion">
+              <mat-icon>layers</mat-icon>
+              {{ 'home.viewBoard' | translate }}
+            </a>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+
+    <aside class="side-column">
+      <mat-card appearance="outlined" class="status-card">
+        <mat-card-header>
+          <mat-card-title>{{
+            'home.statusTitle' | translate: { name: profileName }
+          }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="status-ring">
+            <span class="status-core">
+              <mat-icon>spa</mat-icon>
+              {{ 'home.statusCalm' | translate }}
+            </span>
+          </div>
+          <p class="status-note">
+            {{ 'home.statusNote' | translate: { name: profileName } }}
+            <strong>{{ 'home.statusNoSos' | translate }}</strong>
+          </p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="support-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'home.supportTitle' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list>
+            @for (contact of supportContacts; track contact.name) {
+              <mat-list-item class="support-contact">
+                <mat-icon matListItemIcon>account_circle</mat-icon>
+                <span matListItemTitle>{{ contact.name }}</span>
+                <span matListItemLine>{{ contact.roleKey | translate }}</span>
+                <mat-icon matListItemMeta>{{ contact.icon }}</mat-icon>
+              </mat-list-item>
+            }
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </aside>
+  </div>
+</section>
