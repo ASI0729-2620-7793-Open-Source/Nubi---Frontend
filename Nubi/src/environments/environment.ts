@@ -6,4 +6,9 @@ export const environment = {
   calmSessionsEndpoint: '/calmSessions',
   profilesEndpoint: '/profiles',
   caregiversEndpoint: '/caregivers',
+  accountsEndpoint: '/accounts',
+  institutionsEndpoint: '/institutions',
+  myPlanEndpoint: '/subscriptions',
+  paymentsEndpoint: '/payments',
+  ticketsEndpoint: '/tickets',
 };

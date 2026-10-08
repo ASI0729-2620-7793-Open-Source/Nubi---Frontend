@@ -1,27 +1,6 @@
 {
-  "caregivers": [
-    {
-      "id": 1,
-      "fullName": "María López",
-      "role": "CAREGIVER",
-      "avatarUrl": "caregiver-avatar.png",
-      "profileIds": [1]
-    }
-  ],
-  "profiles": [
-    {
-      "id": 1,
-      "fullName": "Diana Ríos",
-      "age": 15,
-      "diagnosis": "TEA nivel 1",
-      "sensoryProfile": {
-        "auditorySensitivity": "HIGH",
-        "visualSensitivity": "MEDIUM",
-        "tactileSensitivity": "LOW",
-        "prioritizeVisuals": true
-      }
-    }
-  ],
+  "caregivers": [],
+  "profiles": [],
   "calmingResources": [
     {
       "id": 1,
@@ -115,5 +94,115 @@
         "running": false
       }
     }
-  ]
+  ],
+  "accounts": [
+    {
+      "id": 1,
+      "email": "maria@example.com",
+      "fullName": "María López",
+      "authProvider": "LOCAL",
+      "googleSubject": null,
+      "role": "CAREGIVER",
+      "active": true,
+      "institutionId": null,
+      "createdAt": "2024-01-10T10:00:00.000Z",
+      "updatedAt": "2024-01-10T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "email": "admin@colegio.edu",
+      "fullName": "Dirección Colegio",
+      "authProvider": "GOOGLE",
+      "googleSubject": "g-001",
+      "role": "INSTITUTION_ADMIN",
+      "active": true,
+      "institutionId": 1,
+      "createdAt": "2024-01-10T10:00:00.000Z",
+      "updatedAt": "2024-01-10T10:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "email": "ana@colegio.edu",
+      "fullName": "Ana Torres",
+      "authProvider": "LOCAL",
+      "googleSubject": null,
+      "role": "TEACHER",
+      "active": true,
+      "institutionId": 1,
+      "createdAt": "2024-01-10T10:00:00.000Z",
+      "updatedAt": "2024-01-10T10:00:00.000Z"
+    }
+  ],
+  "institutions": [
+    {
+      "id": 1,
+      "name": "Colegio San Martín",
+      "type": "SCHOOL",
+      "contactEmail": "contacto@colegio.edu",
+      "memberIds": [
+        2,
+        3
+      ],
+      "profileIds": [],
+      "accountId": 2,
+      "createdAt": "2024-01-10T10:00:00.000Z",
+      "updatedAt": "2024-01-10T10:00:00.000Z"
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": 1,
+      "accountId": 1,
+      "plan": "FREEMIUM",
+      "status": "ACTIVE",
+      "maxProfiles": 1,
+      "maxCaregiversPerProfile": 2,
+      "startedAt": "2024-01-10T10:00:00.000Z",
+      "endsAt": null,
+      "createdAt": "2024-01-10T10:00:00.000Z",
+      "updatedAt": "2024-01-10T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "accountId": 2,
+      "plan": "INSTITUTIONAL",
+      "status": "ACTIVE",
+      "maxProfiles": 200,
+      "maxCaregiversPerProfile": 50,
+      "startedAt": "2024-01-10T10:00:00.000Z",
+      "endsAt": null,
+      "createdAt": "2024-01-10T10:00:00.000Z",
+      "updatedAt": "2024-01-10T10:00:00.000Z"
+    }
+  ],
+  "payments": [
+    {
+      "id": 1,
+      "subscriptionId": 2,
+      "amount": 49.9,
+      "currency": "USD",
+      "status": "PAID",
+      "gatewayReference": "GW-1",
+      "paidAt": "2024-01-10T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "subscriptionId": 2,
+      "amount": 49.9,
+      "currency": "USD",
+      "status": "PENDING",
+      "gatewayReference": null,
+      "paidAt": null
+    },
+    {
+      "id": 3,
+      "subscriptionId": 2,
+      "amount": 49.9,
+      "currency": "USD",
+      "status": "FAILED",
+      "gatewayReference": null,
+      "paidAt": null
+    }
+  ],
+  "tickets": []
 }
