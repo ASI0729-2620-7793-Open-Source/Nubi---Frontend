@@ -52,8 +52,3 @@
     </ng-template>
   </p-table>
 </p-panel>
-
-<!-- RF-11: funciones no incluidas -->
-@if (store.subscription()?.plan === PlanType.FREEMIUM) {
-  <p-message severity="info">Tu plan no incluye reportes institucionales ni gestión de miembros. Mejora tu plan para usarlos.</p-message>
-}
