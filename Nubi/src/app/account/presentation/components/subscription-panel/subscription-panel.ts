@@ -44,10 +44,14 @@ export class SubscriptionPanel {
   readonly institutional = input(false);
 
   protected readonly plans: { plan: PlanType; price: string; profiles: number; caregivers: number }[] = [
-    { plan: PlanType.FREEMIUM, price: 'Gratis', profiles: 1, caregivers: 2 },
     { plan: PlanType.FAMILY_PREMIUM, price: 'USD 9.90', profiles: 3, caregivers: 4 },
     { plan: PlanType.INSTITUTIONAL, price: 'USD 49.90', profiles: 200, caregivers: 50 },
   ];
+
+  /** El plan gratuito se muestra como STANDARD; el valor guardado sigue siendo FREEMIUM. */
+  protected planLabel(plan: PlanType): string {
+    return plan === PlanType.FREEMIUM ? 'STANDARD' : plan;
+  }
 
   protected usagePercent(used: number, max: number): number {
     return max <= 0 ? 0 : Math.min(100, Math.round((used / max) * 100));
