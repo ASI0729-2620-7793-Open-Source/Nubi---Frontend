@@ -5,9 +5,12 @@ import { environment } from '../../../environments/environment';
 import { SensitivityLevel, SensoryProfileSnapshot } from '../domain/model/sensory-profile-snapshot';
 
 interface SensoryProfileResource {
-  auditorySensitivity: string;
-  visualSensitivity: string;
-  tactileSensitivity: string;
+  auditorySensitivity?: string;
+  auditory?: string;
+  visualSensitivity?: string;
+  visual?: string;
+  tactileSensitivity?: string;
+  tactile?: string;
   prioritizeVisuals: boolean;
 }
 
@@ -34,9 +37,12 @@ export class ProfileContextFacade {
           (profile) =>
             new SensoryProfileSnapshot(
               profile.id,
-              profile.sensoryProfile.auditorySensitivity as SensitivityLevel,
-              profile.sensoryProfile.visualSensitivity as SensitivityLevel,
-              profile.sensoryProfile.tactileSensitivity as SensitivityLevel,
+              (profile.sensoryProfile.auditorySensitivity ??
+                profile.sensoryProfile.auditory) as SensitivityLevel,
+              (profile.sensoryProfile.visualSensitivity ??
+                profile.sensoryProfile.visual) as SensitivityLevel,
+              (profile.sensoryProfile.tactileSensitivity ??
+                profile.sensoryProfile.tactile) as SensitivityLevel,
               profile.sensoryProfile.prioritizeVisuals,
             ),
         ),

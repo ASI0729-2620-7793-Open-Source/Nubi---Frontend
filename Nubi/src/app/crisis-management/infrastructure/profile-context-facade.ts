@@ -7,13 +7,19 @@ import { SosProfile } from '../domain/model/sos-profile.entity';
 
 interface ProfileResource {
   id: number;
-  fullName: string;
+  // El contexto de Perfil guarda nombre, diagnóstico y perfil sensorial con otras claves
+  fullName?: string;
+  firstName?: string;
+  lastName?: string;
   age: number;
-  diagnosis: string;
+  diagnosis: string | { condition: string; customDescription: string | null } | null;
   sensoryProfile: {
-    auditorySensitivity: string;
-    visualSensitivity: string;
-    tactileSensitivity: string;
+    auditorySensitivity?: string;
+    visualSensitivity?: string;
+    tactileSensitivity?: string;
+    auditory?: string;
+    visual?: string;
+    tactile?: string;
   };
 }
 
@@ -38,14 +44,22 @@ export class ProfileContextFacade {
               (resource) =>
                 new SosProfile(
                   resource.id,
-                  resource.fullName,
+                  resource.fullName ??
+                    `${resource.firstName ?? ''} ${resource.lastName ?? ''}`.trim(),
                   resource.age,
-                  resource.diagnosis,
+                  typeof resource.diagnosis === 'string'
+                    ? resource.diagnosis
+                    : (resource.diagnosis?.customDescription ??
+                        resource.diagnosis?.condition ??
+                        ''),
                   new SensoryProfileSnapshot(
                     resource.id,
-                    resource.sensoryProfile.auditorySensitivity as SensitivityLevel,
-                    resource.sensoryProfile.visualSensitivity as SensitivityLevel,
-                    resource.sensoryProfile.tactileSensitivity as SensitivityLevel,
+                    (resource.sensoryProfile.auditorySensitivity ??
+                      resource.sensoryProfile.auditory) as SensitivityLevel,
+                    (resource.sensoryProfile.visualSensitivity ??
+                      resource.sensoryProfile.visual) as SensitivityLevel,
+                    (resource.sensoryProfile.tactileSensitivity ??
+                      resource.sensoryProfile.tactile) as SensitivityLevel,
                   ),
                 ),
             ),

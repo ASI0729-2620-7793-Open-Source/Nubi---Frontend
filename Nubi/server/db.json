@@ -13,15 +13,43 @@
   "profiles": [
     {
       "id": 1,
-      "fullName": "Diana Ríos",
+      "firstName": "Diana",
+      "lastName": "Ríos",
+      "nickname": null,
       "age": 15,
-      "diagnosis": "TEA nivel 1",
+      "gender": "FEMALE",
+      "photoUrl": null,
+      "communicativeNeed": "PICTOGRAMS",
+      "active": true,
       "sensoryProfile": {
-        "auditorySensitivity": "HIGH",
-        "visualSensitivity": "MEDIUM",
-        "tactileSensitivity": "LOW",
-        "prioritizeVisuals": true
-      }
+        "auditory": "HIGH",
+        "visual": "MEDIUM",
+        "tactile": "LOW",
+        "lowStimulationEnabled": false,
+        "prioritizeVisuals": true,
+        "confirmAudio": false
+      },
+      "diagnosis": {
+        "condition": "ASD",
+        "customDescription": "TEA nivel 1",
+        "diagnosedBy": null,
+        "diagnosisDate": null,
+        "professionalNotes": null
+      },
+      "caregivers": [
+        {
+          "id": 1,
+          "accountId": 1,
+          "invitedEmail": "maria@example.com",
+          "role": "PRIMARY",
+          "status": "ACTIVE",
+          "invitedAt": "2024-01-10T10:00:00.000Z",
+          "acceptedAt": "2024-01-10T10:00:00.000Z"
+        }
+      ],
+      "trustedContacts": [],
+      "createdAt": "2024-01-10T10:00:00.000Z",
+      "updatedAt": "2024-01-10T10:00:00.000Z"
     }
   ],
   "calmingResources": [

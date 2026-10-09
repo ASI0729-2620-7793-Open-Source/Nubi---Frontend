@@ -41,7 +41,8 @@ async function start() {
   }
 
   const server = jsonServer.create();
-  const router = jsonServer.router(source);
+  // Sin claves foráneas: json-server falla al borrar si algún campo terminado en "Id" es null
+  const router = jsonServer.router(source, { foreignKeySuffix: '_id' });
 
   // Los defaults incluyen CORS: el frontend llama desde otro dominio
   server.use(jsonServer.defaults());

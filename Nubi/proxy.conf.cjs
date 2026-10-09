@@ -12,7 +12,10 @@ const API_PORT = 3000;
 
 if (!global.__nubiFakeApi) {
   const server = jsonServer.create();
-  const router = jsonServer.router(path.join(__dirname, 'server', 'db.json'));
+  // Sin claves foráneas: json-server falla al borrar si algún campo terminado en 'Id' es null
+  const router = jsonServer.router(path.join(__dirname, 'server', 'db.json'), {
+    foreignKeySuffix: '_id',
+  });
 
   server.use(jsonServer.defaults({ logger: false }));
   server.use('/api', router);
