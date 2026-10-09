@@ -6,9 +6,9 @@
 
 @if (store.subscription(); as sub) {
   <!-- RF-02: plan, estado, inicio y vencimiento -->
-  <p-panel header="Mis suscripciones: {{ sub.plan }}">
+  <p-panel header="Mis suscripciones: {{ planLabel(sub.plan) }}">
     <p-tag [value]="sub.status" [severity]="sub.status === 'ACTIVE' ? 'success' : 'danger'"></p-tag>
-    <p><strong>Plan:</strong> {{ sub.plan }}</p>
+    <p><strong>Plan:</strong> {{ planLabel(sub.plan) }}</p>
     <p><strong>Inicio:</strong> {{ sub.startedAt.toLocaleDateString() }}</p>
     <p><strong>Vencimiento:</strong> {{ sub.endsAt ? sub.endsAt.toLocaleDateString() : 'Sin vencimiento' }}</p>
 
@@ -39,7 +39,7 @@
     <ng-template #header><tr><th>Plan</th><th>Precio</th><th>Perfiles</th><th>Cuidadores</th><th></th></tr></ng-template>
     <ng-template #body let-row>
       <tr>
-        <td>{{ row.plan }} @if (store.subscription()?.plan === row.plan) { <p-tag value="Actual" severity="success"></p-tag> }</td>
+        <td>{{ planLabel(row.plan) }} @if (store.subscription()?.plan === row.plan) { <p-tag value="Actual" severity="success"></p-tag> }</td>
         <td>{{ row.price }}</td>
         <td>{{ row.profiles }}</td>
         <td>{{ row.caregivers }}</td>
