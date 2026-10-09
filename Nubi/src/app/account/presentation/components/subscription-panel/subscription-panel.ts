@@ -44,7 +44,6 @@ export class SubscriptionPanel {
   readonly institutional = input(false);
 
   protected readonly plans: { plan: PlanType; price: string; profiles: number; caregivers: number }[] = [
-    { plan: PlanType.FREEMIUM, price: 'Gratis', profiles: 1, caregivers: 2 },
     { plan: PlanType.FAMILY_PREMIUM, price: 'USD 9.90', profiles: 3, caregivers: 4 },
     { plan: PlanType.INSTITUTIONAL, price: 'USD 49.90', profiles: 200, caregivers: 50 },
   ];
