@@ -21,13 +21,12 @@ function openStateDocument() {
   const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT;
   if (!serviceAccount && !process.env.FIRESTORE_EMULATOR_HOST) return null;
 
-  const admin = require('firebase-admin');
-  admin.initializeApp(
-    serviceAccount
-      ? { credential: admin.credential.cert(JSON.parse(serviceAccount)) }
-      : { projectId: 'nubi-local' },
+  const { cert, initializeApp } = require('firebase-admin/app');
+  const { getFirestore } = require('firebase-admin/firestore');
+  initializeApp(
+    serviceAccount ? { credential: cert(JSON.parse(serviceAccount)) } : { projectId: 'nubi-local' },
   );
-  return admin.firestore().doc('nubi/db');
+  return getFirestore().doc('nubi/db');
 }
 
 async function start() {
