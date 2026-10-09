@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-support-dashboard',
+  imports: [TranslatePipe],
   templateUrl: './support-dashboard.html',
   styleUrl: './support-dashboard.css',
 })
@@ -15,25 +17,25 @@ export class SupportDashboard {
   // and the latest communication in the dashboard.
   protected readonly user = {
     name: 'Diana',
-    status: 'Calma',
-    lastMessage: 'Tengo sed',
-    lastMessageDescription: 'Diana quiere tomar agua.',
-    lastUpdate: 'Hace 1 minuto',
+    statusKey: 'supportNetwork.mock.statusCalm',
+    lastMessageKey: 'supportNetwork.mock.thirsty',
+    lastMessageDescriptionKey: 'supportNetwork.mock.thirstyDescription',
+    lastUpdateKey: 'supportNetwork.mock.oneMinuteAgo',
   };
 
   // Recent activities displayed to the caregiver
   // as part of the user's follow-up information.
   protected readonly activities = [
     {
-      activity: 'Uso de tablero',
+      activityKey: 'supportNetwork.mock.boardUse',
       time: '10:32 AM',
     },
     {
-      activity: 'Recurso de calma utilizado',
+      activityKey: 'supportNetwork.mock.calmResourceUsed',
       time: '09:45 AM',
     },
     {
-      activity: 'Descanso finalizado',
+      activityKey: 'supportNetwork.mock.breakFinished',
       time: '08:30 AM',
     },
   ];
@@ -42,6 +44,8 @@ export class SupportDashboard {
   // during the last seven days.
   protected readonly wellbeing = [45, 30, 85, 42, 38, 40, 50];
 
-  // Day labels used in the wellbeing chart.
-  protected readonly chartDays = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+  // Translation keys of the day labels used in the wellbeing chart.
+  protected readonly chartDayKeys = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'].map(
+    (day) => `supportNetwork.days.${day}`,
+  );
 }

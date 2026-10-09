@@ -3,10 +3,10 @@
 
   <!-- Page header -->
   <header class="page-header">
-    <p class="eyebrow">Red de apoyo y seguimiento</p>
-    <h1 id="dashboard-title">Hola, {{ caregiver.name }}</h1>
+    <p class="eyebrow">{{ 'supportNetwork.eyebrow' | translate }}</p>
+    <h1 id="dashboard-title">{{ 'supportNetwork.greeting' | translate: { name: caregiver.name } }}</h1>
     <p class="page-description">
-      Este es lo que necesitas saber sobre {{ user.name }} ahora mismo.
+      {{ 'supportNetwork.subtitle' | translate: { name: user.name } }}
     </p>
   </header>
 
@@ -17,12 +17,12 @@
     <article class="card request-card" aria-labelledby="request-title">
       <div class="card-heading">
         <div>
-          <p class="eyebrow">Última comunicación</p>
+          <p class="eyebrow">{{ 'supportNetwork.lastCommunication' | translate }}</p>
           <h2 id="request-title">
-            {{ user.name }} necesita: "{{ user.lastMessage }}"
+            {{ 'supportNetwork.needs' | translate: { name: user.name, message: user.lastMessageKey | translate } }}
           </h2>
         </div>
-        <span class="message-time">{{ user.lastUpdate }} · Tablero de Comunicación</span>
+        <span class="message-time">{{ user.lastUpdateKey | translate }} · {{ 'supportNetwork.boardSource' | translate }}</span>
       </div>
 
       <!-- Communication preview -->
@@ -42,23 +42,23 @@
             />
           </svg>
         </span>
-        <p>{{ user.lastMessageDescription }}</p>
+        <p>{{ user.lastMessageDescriptionKey | translate: { name: user.name } }}</p>
       </div>
 
       <!-- Communication actions -->
       <div class="request-actions">
-        <button class="button button-primary" type="button">Confirmar recepción</button>
-        <button class="button button-secondary" type="button">Ver tablero completo</button>
+        <button class="button button-primary" type="button">{{ 'supportNetwork.confirmReceipt' | translate }}</button>
+        <button class="button button-secondary" type="button">{{ 'supportNetwork.viewBoard' | translate }}</button>
       </div>
     </article>
 
     <!-- Current user status card -->
     <article class="card status-card" aria-labelledby="status-title">
-      <p class="eyebrow">Bienestar</p>
-      <h2 id="status-title">Estado actual de {{ user.name }}</h2>
-      <p class="status-value">{{ user.status }}</p>
+      <p class="eyebrow">{{ 'supportNetwork.wellbeing' | translate }}</p>
+      <h2 id="status-title">{{ 'supportNetwork.currentStatus' | translate: { name: user.name } }}</h2>
+      <p class="status-value">{{ user.statusKey | translate }}</p>
       <p class="status-description">
-        Este es el estado actual de {{ user.name }} según la comunicación de los últimos minutos.
+        {{ 'supportNetwork.statusDescription' | translate: { name: user.name } }}
       </p>
     </article>
   </div>
@@ -68,11 +68,11 @@
 
     <!-- Recent activity card -->
     <article class="card activity-card" aria-labelledby="activity-title">
-      <h2 id="activity-title">Actividad reciente</h2>
+      <h2 id="activity-title">{{ 'supportNetwork.recentActivity' | translate }}</h2>
       <ul class="activity-list">
-        @for (item of activities; track item.activity) {
+        @for (item of activities; track item.activityKey) {
           <li class="activity-item">
-            <span>{{ item.activity }}</span>
+            <span>{{ item.activityKey | translate }}</span>
             <time>{{ item.time }}</time>
           </li>
         }
@@ -81,13 +81,13 @@
 
     <!-- Wellbeing analysis card -->
     <article class="card wellbeing-card" aria-labelledby="wellbeing-title">
-      <h2 id="wellbeing-title">Análisis de bienestar</h2>
+      <h2 id="wellbeing-title">{{ 'supportNetwork.wellbeingAnalysis' | translate }}</h2>
 
       <!-- Weekly wellbeing chart -->
       <div
         class="chart"
         role="img"
-        aria-label="Gráfico de barras con niveles de bienestar de los últimos siete días"
+        [attr.aria-label]="'supportNetwork.chartAria' | translate"
       >
         <div class="chart-bars">
           @for (value of wellbeing; track $index) {
@@ -96,15 +96,15 @@
                 class="bar"
                 [class.bar-highlight]="$index === 3"
                 [style.height.%]="value"
-                [attr.aria-label]="'Nivel ' + value"
+                [attr.aria-label]="'supportNetwork.level' | translate: { value: value }"
               ></div>
-              <span class="bar-day">{{ chartDays[$index] }}</span>
+              <span class="bar-day">{{ chartDayKeys[$index] | translate }}</span>
             </div>
           }
         </div>
       </div>
 
-      <p class="chart-caption">Nivel de bienestar de los últimos días</p>
+      <p class="chart-caption">{{ 'supportNetwork.chartCaption' | translate }}</p>
     </article>
   </div>
 </section>
