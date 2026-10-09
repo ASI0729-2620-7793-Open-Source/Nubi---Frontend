@@ -48,6 +48,11 @@ export class SubscriptionPanel {
     { plan: PlanType.INSTITUTIONAL, price: 'USD 49.90', profiles: 200, caregivers: 50 },
   ];
 
+  /** El plan gratuito se muestra como STANDARD; el valor guardado sigue siendo FREEMIUM. */
+  protected planLabel(plan: PlanType): string {
+    return plan === PlanType.FREEMIUM ? 'STANDARD' : plan;
+  }
+
   protected usagePercent(used: number, max: number): number {
     return max <= 0 ? 0 : Math.min(100, Math.round((used / max) * 100));
   }
