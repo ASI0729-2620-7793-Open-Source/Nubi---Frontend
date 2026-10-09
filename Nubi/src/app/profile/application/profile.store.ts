@@ -65,6 +65,8 @@ export class ProfileStore {
   readonly error = computed(() => this.errorState());
   readonly info = computed(() => this.infoState());
   readonly limitReached = computed(() => this.limitReachedState());
+  /** Cupo de cuidadores por perfil que permite el plan (regla 3). */
+  readonly maxCaregiversPerProfile = computed(() => this.limits.maxCaregiversPerProfile);
 
   load(): void {
     this.loadingState.set(true);
@@ -90,6 +92,7 @@ export class ProfileStore {
   create(
     draft: Pick<NeurodivergentProfile, 'firstName' | 'lastName' | 'age'> &
       Partial<NeurodivergentProfile>,
+    onCreated?: (created: NeurodivergentProfile) => void,
   ): void {
     const now = new Date();
     const profile = new NeurodivergentProfile(
@@ -118,6 +121,7 @@ export class ProfileStore {
           this.profilesState.update((items) => [...items, created]);
           this.selectedIdState.set(created.id);
           this.activeProfiles.assign(created.id);
+          onCreated?.(created);
         },
         error: () => this.errorState.set('profile.create.error'),
       });

@@ -338,10 +338,82 @@
       "inUse": "En uso"
     },
     "detail": {
-      "title": "Detalle del perfil"
+      "title": "Detalle del perfil",
+      "years": "{{age}} años",
+      "likesName": "Le gusta que le llamen {{name}}",
+      "noDiagnosis": "Sin diagnóstico registrado",
+      "statusCalm": "Estado: Calma",
+      "caregiversCount": "{{count}} cuidadores",
+      "active": "Perfil activo",
+      "save": "Guardar cambios",
+      "history": "Ver historial",
+      "tabs": {
+        "general": "Datos generales",
+        "sensitivities": "Sensibilidades",
+        "diagnosis": "Diagnóstico",
+        "caregivers": "Cuidadores"
+      },
+      "lastNames": "Apellidos",
+      "need": "Necesidad comunicativa",
+      "photo": "Foto (jpg, png o webp, máx. 2 MB)",
+      "sensoryTitle": "Sensibilidades sensoriales",
+      "senses": {
+        "auditory": "Auditiva",
+        "visual": "Visual",
+        "tactile": "Táctil"
+      },
+      "level": "nivel {{value}}/4",
+      "prefsTitle": "Preferencias personales",
+      "lowStimulation": "Modo baja estimulación",
+      "prioritizeVisuals": "Priorizar visuales",
+      "confirmAudio": "Confirmar audio",
+      "condition": "Condición",
+      "description": "Descripción",
+      "descriptionRequired": "Descripción (obligatoria si es Otra)",
+      "diagnosedBy": "Diagnosticado por",
+      "date": "Fecha",
+      "you": "Tú",
+      "linkCaregiver": "Vincular nuevo cuidador",
+      "saved": "Guardado",
+      "missingRequired": "Falta un dato obligatorio",
+      "describeOther": "Describe la condición \"Otra\"",
+      "notFound": "No se encontró el perfil.",
+      "caregiversOne": "1 cuidador"
     },
     "create": {
-      "title": "Crear perfil"
+      "title": "Crear perfil",
+      "heading": "Crear nuevo perfil",
+      "lead": "Completa la información necesaria para personalizar la experiencia de cuidado.",
+      "steps": {
+        "basic": "Datos básicos",
+        "diagnosis": "Diagnóstico",
+        "sensitivities": "Sensibilidades"
+      },
+      "photoAdd": "Subir foto del perfil",
+      "photoHint": "Sube una foto clara para identificar fácilmente el perfil. Máx. 2 MB.",
+      "basicTitle": "Datos básicos",
+      "basicLead": "Información de identificación personal.",
+      "firstName": "Nombre",
+      "firstNamePh": "Ej. Alex",
+      "lastName": "Apellido",
+      "lastNamePh": "Ej. García",
+      "age": "Edad",
+      "ageHint": "Años cumplidos",
+      "gender": "Género",
+      "selectOption": "Seleccionar opción",
+      "nickname": "¿Cómo prefiere que le llamen?",
+      "nicknamePh": "Ej. Lex",
+      "diagnosisTitle": "Diagnóstico y condición",
+      "diagnosisLead": "Contexto médico básico para la aplicación.",
+      "condition": "Condición principal",
+      "selectCondition": "Seleccionar condición",
+      "notes": "Notas del profesional",
+      "notesPh": "Observaciones adicionales relevantes...",
+      "required": "Campos obligatorios",
+      "cancel": "Cancelar",
+      "continue": "Continuar",
+      "missing": "Completa los campos obligatorios. La edad debe estar entre 0 y 17 años.",
+      "error": "No se pudo crear el perfil. Inténtalo de nuevo."
     },
     "form": {
       "noChanges": "Sin cambios: todo sigue igual.",
@@ -354,7 +426,52 @@
       "saveError": "No se pudo guardar el diagnóstico."
     },
     "caregivers": {
-      "inviteError": "No se pudo invitar al cuidador."
+      "inviteError": "No se pudo invitar al cuidador.",
+      "title": "Cuidadores asociados",
+      "lead": "Gestiona el círculo de confianza que acompaña el bienestar de {{name}}.",
+      "invite": "Invitar cuidador",
+      "onlyPrimary": "Solo el cuidador principal puede invitar y revocar.",
+      "active": "Activos",
+      "activeText": "Cuidadores verificados",
+      "pending": "Pendientes",
+      "pendingText": "Invitaciones enviadas",
+      "max": "Máximo",
+      "maxText": "Cupos del plan",
+      "cols": {
+        "caregiver": "Cuidador",
+        "role": "Rol",
+        "status": "Estado",
+        "actions": "Acciones"
+      },
+      "revoke": "Revocar",
+      "resend": "Reenviar",
+      "resent": "Invitación reenviada",
+      "empty": "Aún no hay cuidadores asociados.",
+      "email": "Correo electrónico",
+      "emailPh": "ej. correo@servidor.com",
+      "assignRole": "Asignar rol",
+      "selectRole": "Seleccionar rol",
+      "info": "El cuidador invitado podrá ver el historial de {{name}}, recibir alertas y comunicarse con el resto del equipo una vez que acepte la invitación.",
+      "send": "Enviar invitación",
+      "close": "Cerrar",
+      "invalidInvite": "Escribe un correo válido y elige un rol.",
+      "revokeTitle": "Revocar cuidador",
+      "revokeMessage": "Se revocará el acceso de {{name}}.",
+      "myRole": "Mi rol en este perfil",
+      "myInvitations": "Ver mis invitaciones",
+      "contacts": {
+        "title": "Contactos de confianza",
+        "empty": "Aún no hay contactos de confianza.",
+        "add": "Agregar contacto",
+        "name": "Nombre",
+        "phone": "Teléfono",
+        "relation": "Parentesco",
+        "link": "Vincular",
+        "required": "Nombre y teléfono obligatorios",
+        "defaultRelation": "Familiar",
+        "up": "Subir prioridad",
+        "down": "Bajar prioridad"
+      }
     },
     "contacts": {
       "linkError": "No se pudo vincular el contacto."
@@ -365,6 +482,45 @@
     },
     "caregiver": {
       "title": "Mi perfil cuidador"
+    },
+    "crumbs": {
+      "home": "Inicio",
+      "profiles": "Perfiles",
+      "new": "Nuevo perfil",
+      "caregivers": "Cuidadores"
+    },
+    "genders": {
+      "FEMALE": "Femenino",
+      "MALE": "Masculino",
+      "NON_BINARY": "No binario",
+      "PREFER_NOT_TO_SAY": "Prefiero no decir"
+    },
+    "conditions": {
+      "ASD": "TEA",
+      "ADHD": "TDAH",
+      "OCD": "TOC",
+      "OTHER": "Otra"
+    },
+    "levels": {
+      "LOW": "Baja",
+      "MEDIUM": "Media",
+      "HIGH": "Alta",
+      "VERY_HIGH": "Muy alta"
+    },
+    "needs": {
+      "PICTOGRAMS": "Pictogramas",
+      "TEXT": "Texto",
+      "VOICE": "Voz"
+    },
+    "roles": {
+      "PRIMARY": "Principal",
+      "CAREGIVER": "Cuidador",
+      "THERAPIST": "Terapeuta"
+    },
+    "statuses": {
+      "ACTIVE": "Activo",
+      "PENDING": "Pendiente",
+      "REVOKED": "Revocado"
     }
   },
   "photo": {

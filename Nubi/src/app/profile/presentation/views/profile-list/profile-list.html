@@ -52,15 +52,9 @@
     </p-dataview>
   }
 
-  <p-button [label]="'profile.create.title' | translate" icon="pi pi-plus" (onClick)="open.set(true)"></p-button>
+  <p-button
+    routerLink="/perfil/nuevo"
+    [label]="'profile.create.title' | translate"
+    icon="pi pi-plus"
+  ></p-button>
 </div>
-
-<p-dialog header="Crear perfil" [(visible)]="open" [modal]="true">
-  <div class="form">
-    <label>Nombre <input pInputText [(ngModel)]="firstName" /></label>
-    <label>Apellidos <input pInputText [(ngModel)]="lastName" /></label>
-    <label>Edad <p-inputnumber [(ngModel)]="age" [min]="0" [max]="17"></p-inputnumber></label>
-    <label>Condición <p-select [options]="conditionOptions" [(ngModel)]="condition" optionLabel="label" optionValue="value"></p-select></label>
-    <p-button label="Crear" (onClick)="create()"></p-button>
-  </div>
-</p-dialog>

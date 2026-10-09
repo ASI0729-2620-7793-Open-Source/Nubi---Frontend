@@ -1,0 +1,242 @@
+/* Estilos comunes de las vistas de Perfil, con las medidas y colores de los mock-ups. */
+:host {
+  --pf-teal: #00373e;
+  --pf-muted: #8a8a8a;
+  --pf-line: #e4e1db;
+  --pf-mint: #d9e4e3;
+  --pf-bg: #f7f6f4;
+  --pf-coral: #e0605b;
+  --pf-yellow: rgba(239, 192, 29, 0.2);
+  --pf-display: 'Bricolage Grotesque', 'Inter', sans-serif;
+  display: block;
+  min-height: 100%;
+  background: var(--pf-bg);
+  color: var(--pf-teal);
+}
+
+.pf-page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 1200px;
+  padding: 48px;
+}
+
+.pf-crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--pf-muted);
+  font-size: 14px;
+  line-height: 20px;
+}
+.pf-crumbs li + li::before {
+  content: '/';
+  margin-right: 8px;
+}
+.pf-crumbs a {
+  color: inherit;
+  text-decoration: none;
+}
+.pf-crumbs a:hover {
+  text-decoration: underline;
+}
+.pf-crumbs [aria-current] {
+  color: var(--pf-teal);
+  font-weight: 700;
+}
+
+.pf-title {
+  margin: 0;
+  color: var(--pf-teal);
+  font: 700 32px/40px var(--pf-display);
+}
+.pf-lead {
+  margin: 4px 0 0;
+  color: var(--pf-muted);
+}
+
+.pf-card {
+  padding: 32px;
+  border: 1px solid var(--pf-line);
+  border-radius: 24px;
+  background: #fff;
+}
+.pf-card h2 {
+  margin: 0 0 24px;
+  color: var(--pf-teal);
+  font: 700 20px/28px var(--pf-display);
+}
+
+.pf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 50px;
+  padding: 0 24px;
+  border: 1px solid var(--pf-teal);
+  border-radius: 9999px;
+  background: #fff;
+  color: var(--pf-teal);
+  font: 700 16px/24px var(--pf-display);
+  text-decoration: none;
+  cursor: pointer;
+}
+.pf-btn.primary {
+  background: var(--pf-teal);
+  color: #fff;
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+.pf-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.pf-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--pf-teal);
+  font:
+    700 14px/20px 'Inter',
+    sans-serif;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.pf-link.coral {
+  color: var(--pf-coral);
+}
+
+.pf-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--pf-teal);
+  font:
+    700 14px/20px 'Inter',
+    sans-serif;
+}
+.pf-field input,
+.pf-field select,
+.pf-field textarea {
+  width: 100%;
+  height: 46px;
+  padding: 0 16px;
+  border: 1px solid var(--pf-line);
+  border-radius: 12px;
+  background: #fff;
+  color: #111827;
+  font:
+    400 14px/20px 'Inter',
+    sans-serif;
+}
+.pf-field select {
+  background: #efefef;
+}
+.pf-field textarea {
+  height: 106px;
+  padding: 13px 16px;
+  resize: vertical;
+}
+.pf-field ::placeholder {
+  color: #9ca3af;
+}
+.pf-hint {
+  color: var(--pf-muted);
+  font:
+    400 10px/15px 'Inter',
+    sans-serif;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.pf-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 12px;
+  border-radius: 9999px;
+  background: var(--pf-mint);
+  color: var(--pf-teal);
+  font:
+    700 12px/16px 'Inter',
+    sans-serif;
+  white-space: nowrap;
+}
+.pf-pill.dark {
+  background: var(--pf-teal);
+  color: #fff;
+}
+.pf-pill.yellow {
+  background: var(--pf-yellow);
+}
+.pf-pill.coral {
+  background: rgba(224, 96, 91, 0.1);
+  color: var(--pf-coral);
+}
+.pf-pill.grey {
+  background: var(--pf-line);
+  color: var(--pf-muted);
+}
+
+.pf-avatar {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--pf-teal);
+  color: #fff;
+  font: 700 14px/20px var(--pf-display);
+}
+.pf-avatar.soft {
+  background: var(--pf-mint);
+  color: var(--pf-teal);
+}
+.pf-avatar.grey {
+  background: var(--pf-line);
+  color: var(--pf-muted);
+}
+.pf-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pf-alert {
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--pf-yellow);
+  font-size: 14px;
+}
+.pf-alert.ok {
+  background: var(--pf-mint);
+}
+
+@media (max-width: 1024px) {
+  .pf-page {
+    padding: 32px 24px 48px;
+  }
+}
+@media (max-width: 768px) {
+  .pf-page {
+    gap: 20px;
+    padding: 20px 20px 112px;
+  }
+  .pf-title {
+    font-size: 26px;
+    line-height: 32px;
+  }
+  .pf-card {
+    padding: 20px;
+  }
+}

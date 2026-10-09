@@ -1,0 +1,139 @@
+<div class="pf-page">
+  <nav [attr.aria-label]="'nav.breadcrumb' | translate">
+    <ol class="pf-crumbs">
+      <li><a routerLink="/inicio">{{ 'profile.crumbs.home' | translate }}</a></li>
+      <li><a routerLink="/perfil">{{ 'profile.crumbs.profiles' | translate }}</a></li>
+      <li aria-current="page">{{ 'profile.crumbs.new' | translate }}</li>
+    </ol>
+  </nav>
+
+  <header>
+    <h1 class="pf-title">{{ 'profile.create.heading' | translate }}</h1>
+    <p class="pf-lead">{{ 'profile.create.lead' | translate }}</p>
+  </header>
+
+  <!-- Pasos del alta: el tercero continúa en el detalle del perfil -->
+  <ol class="steps">
+    <li class="current" aria-current="step">
+      <span class="num">1</span><span class="label">{{ 'profile.create.steps.basic' | translate }}</span>
+    </li>
+    <li>
+      <span class="num">2</span><span class="label">{{ 'profile.create.steps.diagnosis' | translate }}</span>
+    </li>
+    <li>
+      <span class="num">3</span><span class="label">{{ 'profile.create.steps.sensitivities' | translate }}</span>
+    </li>
+  </ol>
+
+  <form class="layout" (ngSubmit)="submit()">
+    <!-- Foto del perfil -->
+    <div class="photo">
+      <label class="photo-drop">
+        @if (photoUrl(); as url) {
+          <img [src]="url" alt="" />
+        } @else {
+          <span class="plus" aria-hidden="true">+</span>
+        }
+        <span class="photo-button"><span class="material-icons" aria-hidden="true">file_upload</span></span>
+        <input
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          [attr.aria-label]="'profile.create.photoAdd' | translate"
+          (change)="onPhoto($event)"
+        />
+      </label>
+      <p class="photo-hint">{{ 'profile.create.photoHint' | translate }}</p>
+      @if (photoError(); as error) {
+        <p class="pf-alert">{{ error | translate }}</p>
+      }
+    </div>
+
+    <div class="sections">
+      <section class="pf-card">
+        <h2>{{ 'profile.create.basicTitle' | translate }}</h2>
+        <p class="section-lead">{{ 'profile.create.basicLead' | translate }}</p>
+        <div class="fields">
+          <label class="pf-field">
+            {{ 'profile.create.firstName' | translate }} *
+            <input
+              name="firstName"
+              [(ngModel)]="firstName"
+              [placeholder]="'profile.create.firstNamePh' | translate"
+              required
+            />
+          </label>
+          <label class="pf-field">
+            {{ 'profile.create.lastName' | translate }} *
+            <input
+              name="lastName"
+              [(ngModel)]="lastName"
+              [placeholder]="'profile.create.lastNamePh' | translate"
+              required
+            />
+          </label>
+          <label class="pf-field">
+            {{ 'profile.create.age' | translate }} *
+            <input name="age" type="number" min="0" max="17" [(ngModel)]="age" placeholder="00" required />
+            <span class="pf-hint">{{ 'profile.create.ageHint' | translate }}</span>
+          </label>
+          <label class="pf-field">
+            {{ 'profile.create.gender' | translate }} *
+            <select name="gender" [(ngModel)]="gender" required>
+              <option value="">{{ 'profile.create.selectOption' | translate }}</option>
+              @for (option of genders; track option) {
+                <option [value]="option">{{ 'profile.genders.' + option | translate }}</option>
+              }
+            </select>
+          </label>
+          <label class="pf-field wide">
+            {{ 'profile.create.nickname' | translate }}
+            <input
+              name="nickname"
+              [(ngModel)]="nickname"
+              [placeholder]="'profile.create.nicknamePh' | translate"
+            />
+          </label>
+        </div>
+      </section>
+
+      <section class="pf-card">
+        <h2>{{ 'profile.create.diagnosisTitle' | translate }}</h2>
+        <p class="section-lead">{{ 'profile.create.diagnosisLead' | translate }}</p>
+        <div class="fields">
+          <label class="pf-field wide">
+            {{ 'profile.create.condition' | translate }} *
+            <select name="condition" [(ngModel)]="condition" required>
+              <option value="">{{ 'profile.create.selectCondition' | translate }}</option>
+              @for (option of conditions; track option) {
+                <option [value]="option">{{ 'profile.conditions.' + option | translate }}</option>
+              }
+            </select>
+          </label>
+          <label class="pf-field wide">
+            {{ 'profile.create.notes' | translate }}
+            <textarea
+              name="notes"
+              [(ngModel)]="notes"
+              [placeholder]="'profile.create.notesPh' | translate"
+            ></textarea>
+          </label>
+        </div>
+      </section>
+
+      @if (submitted() && !valid()) {
+        <p class="pf-alert" role="alert">{{ 'profile.create.missing' | translate }}</p>
+      }
+      @if (store.error(); as error) {
+        <p class="pf-alert" role="alert">{{ error | translate }}</p>
+      }
+
+      <footer class="form-footer">
+        <span class="required-note">* {{ 'profile.create.required' | translate }}</span>
+        <a class="cancel" routerLink="/perfil">{{ 'profile.create.cancel' | translate }}</a>
+        <button class="pf-btn primary" type="submit" [disabled]="store.loading()">
+          {{ 'profile.create.continue' | translate }}
+        </button>
+      </footer>
+    </div>
+  </form>
+</div>

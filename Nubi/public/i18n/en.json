@@ -338,10 +338,82 @@
       "inUse": "In use"
     },
     "detail": {
-      "title": "Profile detail"
+      "title": "Profile detail",
+      "years": "{{age}} years old",
+      "likesName": "Likes to be called {{name}}",
+      "noDiagnosis": "No diagnosis recorded",
+      "statusCalm": "Status: Calm",
+      "caregiversCount": "{{count}} caregivers",
+      "active": "Active profile",
+      "save": "Save changes",
+      "history": "View history",
+      "tabs": {
+        "general": "General details",
+        "sensitivities": "Sensitivities",
+        "diagnosis": "Diagnosis",
+        "caregivers": "Caregivers"
+      },
+      "lastNames": "Last names",
+      "need": "Communication need",
+      "photo": "Photo (jpg, png or webp, max 2 MB)",
+      "sensoryTitle": "Sensory sensitivities",
+      "senses": {
+        "auditory": "Auditory",
+        "visual": "Visual",
+        "tactile": "Tactile"
+      },
+      "level": "level {{value}}/4",
+      "prefsTitle": "Personal preferences",
+      "lowStimulation": "Low stimulation mode",
+      "prioritizeVisuals": "Prioritize visuals",
+      "confirmAudio": "Confirm audio",
+      "condition": "Condition",
+      "description": "Description",
+      "descriptionRequired": "Description (required for Other)",
+      "diagnosedBy": "Diagnosed by",
+      "date": "Date",
+      "you": "You",
+      "linkCaregiver": "Link new caregiver",
+      "saved": "Saved",
+      "missingRequired": "A required field is missing",
+      "describeOther": "Describe the \"Other\" condition",
+      "notFound": "Profile not found.",
+      "caregiversOne": "1 caregiver"
     },
     "create": {
-      "title": "Create profile"
+      "title": "Create profile",
+      "heading": "Create new profile",
+      "lead": "Fill in the information needed to personalize the care experience.",
+      "steps": {
+        "basic": "Basic details",
+        "diagnosis": "Diagnosis",
+        "sensitivities": "Sensitivities"
+      },
+      "photoAdd": "Upload profile photo",
+      "photoHint": "Upload a clear photo to identify the profile easily. Max 2 MB.",
+      "basicTitle": "Basic details",
+      "basicLead": "Personal identification information.",
+      "firstName": "First name",
+      "firstNamePh": "E.g. Alex",
+      "lastName": "Last name",
+      "lastNamePh": "E.g. García",
+      "age": "Age",
+      "ageHint": "Age in years",
+      "gender": "Gender",
+      "selectOption": "Select an option",
+      "nickname": "What do they prefer to be called?",
+      "nicknamePh": "E.g. Lex",
+      "diagnosisTitle": "Diagnosis and condition",
+      "diagnosisLead": "Basic medical context for the app.",
+      "condition": "Main condition",
+      "selectCondition": "Select a condition",
+      "notes": "Professional notes",
+      "notesPh": "Additional relevant observations...",
+      "required": "Required fields",
+      "cancel": "Cancel",
+      "continue": "Continue",
+      "missing": "Fill in the required fields. Age must be between 0 and 17.",
+      "error": "The profile could not be created. Try again."
     },
     "form": {
       "noChanges": "No changes: everything stays the same.",
@@ -354,7 +426,52 @@
       "saveError": "Could not save diagnosis."
     },
     "caregivers": {
-      "inviteError": "Could not invite caregiver."
+      "inviteError": "Could not invite caregiver.",
+      "title": "Associated caregivers",
+      "lead": "Manage the circle of trust that supports {{name}}'s wellbeing.",
+      "invite": "Invite caregiver",
+      "onlyPrimary": "Only the primary caregiver can invite and revoke.",
+      "active": "Active",
+      "activeText": "Verified caregivers",
+      "pending": "Pending",
+      "pendingText": "Invitations sent",
+      "max": "Maximum",
+      "maxText": "Plan seats",
+      "cols": {
+        "caregiver": "Caregiver",
+        "role": "Role",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "revoke": "Revoke",
+      "resend": "Resend",
+      "resent": "Invitation resent",
+      "empty": "No caregivers associated yet.",
+      "email": "Email",
+      "emailPh": "e.g. name@server.com",
+      "assignRole": "Assign role",
+      "selectRole": "Select a role",
+      "info": "The invited caregiver will be able to see {{name}}'s history, receive alerts and communicate with the rest of the team once they accept the invitation.",
+      "send": "Send invitation",
+      "close": "Close",
+      "invalidInvite": "Enter a valid email and choose a role.",
+      "revokeTitle": "Revoke caregiver",
+      "revokeMessage": "{{name}}'s access will be revoked.",
+      "myRole": "My role in this profile",
+      "myInvitations": "View my invitations",
+      "contacts": {
+        "title": "Trusted contacts",
+        "empty": "No trusted contacts yet.",
+        "add": "Add contact",
+        "name": "Name",
+        "phone": "Phone",
+        "relation": "Relationship",
+        "link": "Link",
+        "required": "Name and phone are required",
+        "defaultRelation": "Relative",
+        "up": "Raise priority",
+        "down": "Lower priority"
+      }
     },
     "contacts": {
       "linkError": "Could not link contact."
@@ -365,6 +482,45 @@
     },
     "caregiver": {
       "title": "My caregiver profile"
+    },
+    "crumbs": {
+      "home": "Home",
+      "profiles": "Profiles",
+      "new": "New profile",
+      "caregivers": "Caregivers"
+    },
+    "genders": {
+      "FEMALE": "Female",
+      "MALE": "Male",
+      "NON_BINARY": "Non-binary",
+      "PREFER_NOT_TO_SAY": "Prefer not to say"
+    },
+    "conditions": {
+      "ASD": "ASD",
+      "ADHD": "ADHD",
+      "OCD": "OCD",
+      "OTHER": "Other"
+    },
+    "levels": {
+      "LOW": "Low",
+      "MEDIUM": "Medium",
+      "HIGH": "High",
+      "VERY_HIGH": "Very high"
+    },
+    "needs": {
+      "PICTOGRAMS": "Pictograms",
+      "TEXT": "Text",
+      "VOICE": "Voice"
+    },
+    "roles": {
+      "PRIMARY": "Primary",
+      "CAREGIVER": "Caregiver",
+      "THERAPIST": "Therapist"
+    },
+    "statuses": {
+      "ACTIVE": "Active",
+      "PENDING": "Pending",
+      "REVOKED": "Revoked"
     }
   },
   "photo": {

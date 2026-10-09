@@ -1,207 +1,279 @@
-<div class="page profile-page">
-  <p-breadcrumb [model]="crumbs()"></p-breadcrumb>
+<div class="pf-page">
   <p-toast></p-toast>
-  <p-confirmdialog></p-confirmdialog>
 
-  <!-- Tarjeta de cabecera -->
-  <section class="hero">
-    <div class="hero-band"></div>
-    <div class="hero-body">
-      <p-avatar [label]="initials()" shape="circle" styleClass="hero-avatar"></p-avatar>
-      <div class="hero-text">
-        <h1>{{ store.selectedProfile()?.fullName ?? 'Perfil' }}</h1>
-        <p class="subtitle">{{ subtitle() }}</p>
-        <div class="chips">
-          <p-tag value="Estado: Calma" severity="success"></p-tag>
-          <p-tag value="{{ store.selectedProfile()?.caregivers.length ?? 0 }} cuidadores" severity="info"></p-tag>
-          <p-tag value="Perfil activo" severity="secondary"></p-tag>
+  @if (store.selectedProfile(); as profile) {
+    <nav [attr.aria-label]="'nav.breadcrumb' | translate">
+      <ol class="pf-crumbs">
+        <li><a routerLink="/inicio">{{ 'profile.crumbs.home' | translate }}</a></li>
+        <li><a routerLink="/perfil">{{ 'profile.crumbs.profiles' | translate }}</a></li>
+        <li aria-current="page">{{ profile.fullName }}</li>
+      </ol>
+    </nav>
+
+    <!-- Tarjeta de cabecera con las pestañas -->
+    <section class="hero">
+      <div class="band"></div>
+      <div class="hero-body">
+        <span class="pf-avatar hero-avatar">
+          @if (profile.photoUrl; as photo) {
+            <img [src]="photo" alt="" />
+          } @else {
+            {{ initials() }}
+          }
+        </span>
+        <div class="who">
+          <h1>{{ profile.fullName }}</h1>
+          <p class="pf-lead">
+            {{ 'profile.detail.years' | translate: { age: profile.age } }} ·
+            @if (profile.diagnosis; as diagnosis) {
+              {{ diagnosis.customDescription || ('profile.conditions.' + diagnosis.condition | translate) }}
+            } @else {
+              {{ 'profile.detail.noDiagnosis' | translate }}
+            }
+            @if (profile.nickname) {
+              · {{ 'profile.detail.likesName' | translate: { name: profile.nickname } }}
+            }
+          </p>
+          <div class="tags">
+            <span class="pf-pill dark">{{ 'profile.detail.statusCalm' | translate }}</span>
+            <span class="pf-pill">
+              {{
+                (caregivers().length === 1 ? 'profile.detail.caregiversOne' : 'profile.detail.caregiversCount')
+                  | translate: { count: caregivers().length }
+              }}
+            </span>
+            <span class="pf-pill yellow">
+              {{ (inUse() ? 'profile.list.inUse' : 'profile.detail.active') | translate }}
+            </span>
+          </div>
+        </div>
+        <div class="actions">
+          @if (!inUse()) {
+            <button class="pf-btn" type="button" (click)="activeProfiles.use(profile.id)">
+              {{ 'profile.list.use' | translate }}
+            </button>
+          }
+          <button class="pf-btn" type="button" [disabled]="store.loading()" (click)="save()">
+            {{ 'profile.detail.save' | translate }}
+          </button>
+          <a class="pf-btn primary" routerLink="/support-network">
+            {{ 'profile.detail.history' | translate }}
+          </a>
         </div>
       </div>
-      <div class="hero-actions">
-        <p-button label="Guardar cambios" variant="outlined" (onClick)="save()"></p-button>
-        <p-button routerLink="/support-network" label="Ver historial"></p-button>
+
+      <div class="tabs" role="tablist">
+        @for (item of tabs; track item) {
+          <button
+            type="button"
+            role="tab"
+            [class.on]="tab() === item"
+            [attr.aria-selected]="tab() === item"
+            (click)="tab.set(item)"
+          >
+            {{ 'profile.detail.tabs.' + item | translate }}
+          </button>
+        }
+        <a [routerLink]="['/perfil', profile.id, 'cuidadores']">
+          {{ 'profile.detail.tabs.caregivers' | translate }}
+        </a>
       </div>
-    </div>
-  </section>
+    </section>
 
-  @if (store.error()) {
-    <p-message severity="warn">{{ store.error() }}</p-message>
-  }
-  @if (store.info()) {
-    <p-message severity="success">{{ store.info() }}</p-message>
-  }
+    @if (store.error(); as error) {
+      <p class="pf-alert" role="alert">{{ error | translate }}</p>
+    }
+    @if (store.info(); as info) {
+      <p class="pf-alert ok">{{ info | translate }}</p>
+    }
 
-  <p-tabs value="sensitivities">
-    <p-tablist>
-      <p-tab value="general">Datos generales</p-tab>
-      <p-tab value="sensitivities">Sensibilidades</p-tab>
-      <p-tab value="diagnosis">Diagnóstico</p-tab>
-      <p-tab value="caregivers">Cuidadores</p-tab>
-    </p-tablist>
-    <p-tabpanels>
-      <!-- Datos generales -->
-      <p-tabpanel value="general">
-        <div class="grid-2">
-          <p-panel header="Datos generales">
-            <div class="form">
-              <label>Nombre <input pInputText [(ngModel)]="firstName" /></label>
-              <label>Apellidos <input pInputText [(ngModel)]="lastName" /></label>
-              <label>Apodo <input pInputText [(ngModel)]="nickname" /></label>
-              <label>Edad <p-inputnumber [(ngModel)]="age" [min]="0" [max]="17"></p-inputnumber></label>
-              <label>Género <p-select [options]="genderOptions" [(ngModel)]="gender" optionLabel="label" optionValue="value"></p-select></label>
-              <label>Necesidad comunicativa <p-select [options]="needOptions" [(ngModel)]="communicativeNeed" optionLabel="label" optionValue="value"></p-select></label>
-              <label>Foto (jpg/png/webp, máx. 2 MB)
-                <input type="file" accept="image/jpeg,image/png,image/webp" (change)="onPhotoFiles($event)" />
+    <div class="columns">
+      <div class="main" role="tabpanel">
+        @switch (tab()) {
+          @case ('general') {
+            <section class="pf-card">
+              <h2>{{ 'profile.detail.tabs.general' | translate }}</h2>
+              <div class="fields">
+                <label class="pf-field">
+                  {{ 'profile.create.firstName' | translate }}
+                  <input [(ngModel)]="firstName" />
+                </label>
+                <label class="pf-field">
+                  {{ 'profile.detail.lastNames' | translate }}
+                  <input [(ngModel)]="lastName" />
+                </label>
+                <label class="pf-field">
+                  {{ 'profile.create.age' | translate }}
+                  <input type="number" min="0" max="17" [(ngModel)]="age" />
+                </label>
+                <label class="pf-field">
+                  {{ 'profile.create.gender' | translate }}
+                  <select [(ngModel)]="gender">
+                    @for (option of genders; track option) {
+                      <option [value]="option">{{ 'profile.genders.' + option | translate }}</option>
+                    }
+                  </select>
+                </label>
+                <label class="pf-field">
+                  {{ 'profile.create.nickname' | translate }}
+                  <input [(ngModel)]="nickname" />
+                </label>
+                <label class="pf-field">
+                  {{ 'profile.detail.need' | translate }}
+                  <select [(ngModel)]="communicativeNeed">
+                    @for (option of needs; track option) {
+                      <option [value]="option">{{ 'profile.needs.' + option | translate }}</option>
+                    }
+                  </select>
+                </label>
+                <label class="pf-field wide">
+                  {{ 'profile.detail.photo' | translate }}
+                  <input
+                    class="file"
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    (change)="onPhotoFiles($event)"
+                  />
+                </label>
+              </div>
+            </section>
+          }
+          @case ('sensitivities') {
+            <section class="pf-card">
+              <h2>{{ 'profile.detail.sensoryTitle' | translate }}</h2>
+              @for (sense of senses; track sense.key) {
+                <div class="sense">
+                  <div class="sense-head">
+                    <strong>{{ 'profile.detail.senses.' + sense.key | translate }}</strong>
+                    <span class="pf-pill level" [class]="levelTone(sense.value())">
+                      {{ 'profile.levels.' + levelOf(sense.value()) | translate }}
+                    </span>
+                    <span class="sense-level">
+                      {{ 'profile.detail.level' | translate: { value: sense.value() } }}
+                    </span>
+                  </div>
+                  <input
+                    class="range"
+                    type="range"
+                    min="1"
+                    max="4"
+                    step="1"
+                    [ngModel]="sense.value()"
+                    (ngModelChange)="sense.value.set(+$event)"
+                    [style.--fill]="((sense.value() - 1) / 3) * 100 + '%'"
+                    [attr.aria-label]="'profile.detail.senses.' + sense.key | translate"
+                  />
+                  <div class="marks" aria-hidden="true">
+                    @for (level of levels; track level; let index = $index) {
+                      <span [class.on]="sense.value() === index + 1">
+                        {{ 'profile.levels.' + level | translate }}
+                      </span>
+                    }
+                  </div>
+                </div>
+              }
+            </section>
+
+            <section class="pf-card">
+              <h2>{{ 'profile.detail.prefsTitle' | translate }}</h2>
+              <label class="pref">
+                {{ 'profile.detail.lowStimulation' | translate }}
+                <input class="switch" type="checkbox" role="switch" [(ngModel)]="lowStimulation" />
               </label>
-              <p-button label="Guardar datos" (onClick)="saveGeneral()"></p-button>
-            </div>
-          </p-panel>
-          <aside class="side"><ng-container *ngTemplateOutlet="side"></ng-container></aside>
-        </div>
-      </p-tabpanel>
-
-      <!-- Sensibilidades -->
-      <p-tabpanel value="sensitivities">
-        <div class="grid-2">
-          <div class="col">
-            <p-panel header="Sensibilidades sensoriales">
-              @for (row of [{k: 'Auditiva', v: auditory}, {k: 'Visual', v: visual}, {k: 'Táctil', v: tactile}]; track row.k) {
-                <div class="sens-row">
-                  <span class="sens-label">{{ row.k }}</span>
-                  <p-tag [value]="levelLabel(levelOf(row.v()))"></p-tag>
-                  <span class="sens-level">nivel {{ row.v() }}/4</span>
-                  <p-slider
-                    [ngModel]="row.v()"
-                    (ngModelChange)="row.v.set($event)"
-                    [min]="1" [max]="4" [step]="1"
-                    [attr.aria-label]="'Sensibilidad ' + row.k"
-                  ></p-slider>
-                  <div class="marks"><span>Baja</span><span>Media</span><span>Alta</span><span>Muy alta</span></div>
-                </div>
-              }
-            </p-panel>
-            <p-panel header="Preferencias personales">
-              <div class="pref"><span>Modo baja estimulación</span><p-toggleswitch [(ngModel)]="lowStimulation" ariaLabel="Modo baja estimulación"></p-toggleswitch></div>
-              <p-divider></p-divider>
-              <div class="pref"><span>Priorizar visuales</span><p-toggleswitch [(ngModel)]="prioritizeVisuals" ariaLabel="Priorizar visuales"></p-toggleswitch></div>
-              <p-divider></p-divider>
-              <div class="pref"><span>Confirmar audio</span><p-toggleswitch [(ngModel)]="confirmAudio" ariaLabel="Confirmar audio"></p-toggleswitch></div>
-            </p-panel>
-          </div>
-          <aside class="side"><ng-container *ngTemplateOutlet="side"></ng-container></aside>
-        </div>
-      </p-tabpanel>
-
-      <!-- Diagnóstico -->
-      <p-tabpanel value="diagnosis">
-        <div class="grid-2">
-          <p-panel header="Diagnóstico">
-            <div class="form">
-              <label>Condición <p-select [options]="conditionOptions" [(ngModel)]="condition" optionLabel="label" optionValue="value"></p-select></label>
-              @if (isOther()) {
-                <label>Descripción (obligatoria si es Otra) <input pInputText [(ngModel)]="customDescription" /></label>
-              }
-              <label>Diagnosticado por <input pInputText [(ngModel)]="diagnosedBy" /></label>
-              <label>Fecha <p-datepicker [(ngModel)]="diagnosisDate" dateFormat="mm/yy" view="month"></p-datepicker></label>
-              <label>Notas <textarea pTextarea rows="3" [(ngModel)]="professionalNotes"></textarea></label>
-              <p-button label="Guardar diagnóstico" (onClick)="saveDiagnosis()"></p-button>
-            </div>
-          </p-panel>
-          <aside class="side"><ng-container *ngTemplateOutlet="side"></ng-container></aside>
-        </div>
-      </p-tabpanel>
-
-      <!-- Cuidadores -->
-      <p-tabpanel value="caregivers">
-        <div class="grid-2">
-          <div class="col">
-            <p-panel header="Cuidadores asociados">
-              @for (item of store.selectedProfile()?.caregivers ?? []; track item.id) {
-                <div class="caregiver-row">
-                  <p-avatar [label]="item.invitedEmail.slice(0, 2).toUpperCase()" shape="circle"></p-avatar>
-                  <div>
-                    <strong>{{ item.invitedEmail }}</strong>
-                    <p class="subtitle">{{ roleLabel(item.role) }}</p>
-                  </div>
-                  <p-tag [value]="item.status" [icon]="statusIcon(item.status)" [severity]="statusSeverity(item.status)"></p-tag>
-                  @if (store.isPrimary() && !item.isPrincipal()) {
-                    <p-button label="Revocar" severity="danger" variant="outlined" (onClick)="askRevoke(item.id)"></p-button>
-                  }
-                </div>
-                <p-divider></p-divider>
-              }
-              @if (store.isPrimary()) {
-                <p-button label="Invitar cuidador" icon="pi pi-plus" (onClick)="inviteOpen.set(true)"></p-button>
-              } @else {
-                <p-message severity="info">Solo el cuidador principal puede invitar y revocar.</p-message>
-              }
-            </p-panel>
-
-            <p-panel header="Mi rol en este perfil">
-              <p><strong>Rol:</strong> {{ store.myCaregiver() ? roleLabel(store.myCaregiver()!.role) : '—' }}</p>
-              <p><strong>Estado:</strong> {{ store.myCaregiver()?.status ?? '—' }}</p>
-              <p><strong>Invitado:</strong> {{ store.myCaregiver()?.invitedAt?.toLocaleDateString() ?? '—' }}</p>
-              <p><strong>Aceptado:</strong> {{ store.myCaregiver()?.acceptedAt?.toLocaleDateString() ?? '—' }}</p>
-              <p class="subtitle">Supuesto: todo cuidador ACTIVE puede editar datos, sensibilidades y diagnóstico (incluye THERAPIST). Solo PRIMARY invita/revoca.</p>
-              <a routerLink="/perfil/cuidador">Ver mis invitaciones</a>
-            </p-panel>
-
-            <p-panel header="Contactos de confianza">
-              @for (contact of sortedContacts(); track contact.id) {
-                <div class="caregiver-row">
-                  <span class="order">{{ contact.priorityOrder }}</span>
-                  <div>
-                    <strong>{{ contact.fullName }}</strong>
-                    <p class="subtitle">{{ contact.phone }} · {{ contact.relationship }}</p>
-                  </div>
-                  <p-button icon="pi pi-arrow-up" variant="text" ariaLabel="Subir prioridad" (onClick)="store.selectedProfile() && store.moveContact(store.selectedProfile()!, contact.id, -1)"></p-button>
-                  <p-button icon="pi pi-arrow-down" variant="text" ariaLabel="Bajar prioridad" (onClick)="store.selectedProfile() && store.moveContact(store.selectedProfile()!, contact.id, 1)"></p-button>
-                </div>
-              }
-              <p-button label="Agregar contacto" variant="outlined" (onClick)="contactOpen.set(true)"></p-button>
-            </p-panel>
-          </div>
-          <aside class="side"><ng-container *ngTemplateOutlet="side"></ng-container></aside>
-        </div>
-      </p-tabpanel>
-    </p-tabpanels>
-  </p-tabs>
-</div>
-
-<ng-template #side>
-  <p-panel header="Diagnóstico">
-    @if (store.selectedProfile()?.diagnosis; as diagnosis) {
-      <p><strong>Condición:</strong> {{ conditionLabel(diagnosis.condition) }}</p>
-      <p><strong>Diagnosticado por:</strong> {{ diagnosis.diagnosedBy ?? '—' }}</p>
-      <p><strong>Fecha:</strong> {{ diagnosis.diagnosisDate ?? '—' }}</p>
-    } @else {
-      <p-message severity="info">Sin diagnóstico registrado.</p-message>
-    }
-  </p-panel>
-  <p-panel header="Cuidadores asociados">
-    @for (item of store.selectedProfile()?.caregivers ?? []; track item.id) {
-      <div class="caregiver-row">
-        <p-avatar [label]="item.invitedEmail.slice(0, 2).toUpperCase()" shape="circle"></p-avatar>
-        <span>{{ item.invitedEmail }} — {{ roleLabel(item.role) }}</span>
+              <label class="pref">
+                {{ 'profile.detail.prioritizeVisuals' | translate }}
+                <input class="switch" type="checkbox" role="switch" [(ngModel)]="prioritizeVisuals" />
+              </label>
+              <label class="pref">
+                {{ 'profile.detail.confirmAudio' | translate }}
+                <input class="switch" type="checkbox" role="switch" [(ngModel)]="confirmAudio" />
+              </label>
+            </section>
+          }
+          @case ('diagnosis') {
+            <section class="pf-card">
+              <h2>{{ 'profile.detail.tabs.diagnosis' | translate }}</h2>
+              <div class="fields">
+                <label class="pf-field">
+                  {{ 'profile.detail.condition' | translate }}
+                  <select [(ngModel)]="condition">
+                    @for (option of conditions; track option) {
+                      <option [value]="option">{{ 'profile.conditions.' + option | translate }}</option>
+                    }
+                  </select>
+                </label>
+                <label class="pf-field">
+                  {{ (isOther() ? 'profile.detail.descriptionRequired' : 'profile.detail.description') | translate }}
+                  <input [(ngModel)]="customDescription" />
+                </label>
+                <label class="pf-field">
+                  {{ 'profile.detail.diagnosedBy' | translate }}
+                  <input [(ngModel)]="diagnosedBy" />
+                </label>
+                <label class="pf-field">
+                  {{ 'profile.detail.date' | translate }}
+                  <input type="month" [(ngModel)]="diagnosisMonth" />
+                </label>
+                <label class="pf-field wide">
+                  {{ 'profile.create.notes' | translate }}
+                  <textarea [(ngModel)]="professionalNotes"></textarea>
+                </label>
+              </div>
+            </section>
+          }
+        }
       </div>
-    }
-    <a routerLink="/perfil/cuidador">+ Vincular nuevo cuidador</a>
-  </p-panel>
-</ng-template>
 
-<p-dialog header="Invitar cuidador" [(visible)]="inviteOpen" [modal]="true">
-  <div class="form">
-    <label>Correo <input pInputText [(ngModel)]="inviteEmail" type="email" /></label>
-    <label>Rol <p-select [options]="roleOptions" [(ngModel)]="inviteRole" optionLabel="label" optionValue="value"></p-select></label>
-    <p-button label="Enviar invitación" (onClick)="sendInvite()"></p-button>
-  </div>
-</p-dialog>
+      <aside class="side">
+        <section class="pf-card">
+          <h2>{{ 'profile.detail.tabs.diagnosis' | translate }}</h2>
+          @if (profile.diagnosis; as diagnosis) {
+            <dl class="facts">
+              <dt>{{ 'profile.detail.condition' | translate }}</dt>
+              <dd class="strong">
+                {{ diagnosis.customDescription || ('profile.conditions.' + diagnosis.condition | translate) }}
+              </dd>
+              <dt>{{ 'profile.detail.diagnosedBy' | translate }}</dt>
+              <dd>{{ diagnosis.diagnosedBy ?? '—' }}</dd>
+              <dt>{{ 'profile.detail.date' | translate }}</dt>
+              <dd>{{ diagnosis.diagnosisDate ? monthLabel(diagnosis.diagnosisDate) : '—' }}</dd>
+            </dl>
+          } @else {
+            <p class="pf-lead">{{ 'profile.detail.noDiagnosis' | translate }}</p>
+          }
+        </section>
 
-<p-dialog header="Agregar contacto" [(visible)]="contactOpen" [modal]="true">
-  <div class="form">
-    <label>Nombre <input pInputText [(ngModel)]="contactName" /></label>
-    <label>Teléfono <input pInputText [(ngModel)]="contactPhone" /></label>
-    <label>Parentesco <input pInputText [(ngModel)]="contactRelation" /></label>
-    <p-button label="Vincular" (onClick)="addContact()"></p-button>
-  </div>
-</p-dialog>
+        <section class="pf-card">
+          <h2>{{ 'profile.caregivers.title' | translate }}</h2>
+          <ul class="people">
+            @for (item of caregivers(); track item.id) {
+              <li>
+                <span class="pf-avatar" [class.soft]="isMe(item)" [class.grey]="!isMe(item)">
+                  {{ caregiverInitials(item) }}
+                </span>
+                <span>
+                  <strong>{{ caregiverName(item) }}</strong>
+                  <small>
+                    @if (isMe(item)) {
+                      {{ 'profile.detail.you' | translate }} ({{ 'profile.roles.' + item.role | translate }})
+                    } @else {
+                      {{ 'profile.roles.' + item.role | translate }}
+                    }
+                  </small>
+                </span>
+              </li>
+            } @empty {
+              <li class="pf-lead">{{ 'profile.caregivers.empty' | translate }}</li>
+            }
+          </ul>
+          <a class="pf-link add" [routerLink]="['/perfil', profile.id, 'cuidadores']">
+            + {{ 'profile.detail.linkCaregiver' | translate }}
+          </a>
+        </section>
+      </aside>
+    </div>
+  } @else if (!store.loading()) {
+    <p class="pf-alert">{{ 'profile.detail.notFound' | translate }}</p>
+    <a class="pf-link" routerLink="/perfil">{{ 'profile.crumbs.profiles' | translate }}</a>
+  }
+</div>

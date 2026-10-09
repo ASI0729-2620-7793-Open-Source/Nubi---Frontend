@@ -1,85 +1,60 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgTemplateOutlet } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { AvatarModule } from 'primeng/avatar';
-import { BreadcrumbModule } from 'primeng/breadcrumb';
-import { ButtonModule } from 'primeng/button';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DatePickerModule } from 'primeng/datepicker';
-import { DialogModule } from 'primeng/dialog';
-import { DividerModule } from 'primeng/divider';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { InputTextModule } from 'primeng/inputtext';
-import { MessageModule } from 'primeng/message';
-import { PanelModule } from 'primeng/panel';
-import { SelectModule } from 'primeng/select';
-import { SliderModule } from 'primeng/slider';
-import { TabsModule } from 'primeng/tabs';
-import { TagModule } from 'primeng/tag';
-import { TextareaModule } from 'primeng/textarea';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { ProfileStore as ActiveProfileStore } from '../../../../shared/application/profile.store';
 import { ProfileStore } from '../../../application/profile.store';
 import { DeclaredDiagnosis } from '../../../domain/model/declared-diagnosis.vo';
 import {
-  CaregiverRole,
   CommunicativeNeed,
   ConditionType,
   Gender,
   InvitationStatus,
   NUMBER_TO_SENSITIVITY,
+  SENSITIVITY_TO_NUMBER,
   SensitivityLevel,
 } from '../../../domain/model/profile.enums';
-import { TrustedContact } from '../../../domain/model/trusted-contact.entity';
+import { ProfileCaregiver } from '../../../domain/model/profile-caregiver.entity';
+import { initialsOf, nameFromEmail } from '../../caregiver-display';
+
+type DetailTab = 'general' | 'sensitivities' | 'diagnosis';
 
 /**
- * Vista A: detalle del perfil neurodivergente según el wireframe.
- * Cabecera + Tabs; el Tag y "nivel N/4" se derivan del slider, nunca a mano.
+ * Vista A: detalle del perfil neurodivergente según el mock-up.
+ * Cabecera con pestañas; la etiqueta y el "nivel N/4" se derivan del control, nunca a mano.
  */
 @Component({
-  imports: [
-    FormsModule,
-    NgTemplateOutlet,
-    RouterLink,
-    AvatarModule,
-    BreadcrumbModule,
-    ButtonModule,
-    ConfirmDialogModule,
-    DatePickerModule,
-    DialogModule,
-    DividerModule,
-    InputNumberModule,
-    InputTextModule,
-    MessageModule,
-    PanelModule,
-    SelectModule,
-    SliderModule,
-    TabsModule,
-    TagModule,
-    TextareaModule,
-    ToastModule,
-    ToggleSwitchModule,
-  ],
-  providers: [ConfirmationService, MessageService],
+  imports: [FormsModule, RouterLink, TranslatePipe, ToastModule],
+  providers: [MessageService],
   selector: 'app-profile-detail',
-  styleUrl: './profile-detail.css',
+  styleUrls: ['../../profile-theme.css', './profile-detail.css'],
   templateUrl: './profile-detail.html',
 })
 export class ProfileDetail {
   protected readonly store = inject(ProfileStore);
+  protected readonly activeProfiles = inject(ActiveProfileStore);
   private readonly route = inject(ActivatedRoute);
-  private readonly confirm = inject(ConfirmationService);
   private readonly toast = inject(MessageService);
+  private readonly translate = inject(TranslateService);
 
-  // Sensibilidades: slider 1-4 (LOW=1 ... VERY_HIGH=4)
+  protected readonly tab = signal<DetailTab>('sensitivities');
+  protected readonly tabs: DetailTab[] = ['general', 'sensitivities', 'diagnosis'];
+
+  // Sensibilidades: control 1-4 (LOW=1 ... VERY_HIGH=4)
   protected readonly auditory = signal(3);
   protected readonly visual = signal(2);
   protected readonly tactile = signal(1);
   protected readonly lowStimulation = signal(false);
   protected readonly prioritizeVisuals = signal(true);
   protected readonly confirmAudio = signal(false);
+  protected readonly senses = [
+    { key: 'auditory', value: this.auditory },
+    { key: 'visual', value: this.visual },
+    { key: 'tactile', value: this.tactile },
+  ];
+  protected readonly levels = Object.values(SensitivityLevel);
 
   // Datos generales
   protected readonly firstName = signal('');
@@ -87,77 +62,37 @@ export class ProfileDetail {
   protected readonly nickname = signal('');
   protected readonly age = signal<number | null>(null);
   protected readonly gender = signal<Gender>(Gender.FEMALE);
-  protected readonly communicativeNeed = signal<CommunicativeNeed>(
-    CommunicativeNeed.PICTOGRAMS,
-  );
+  protected readonly communicativeNeed = signal<CommunicativeNeed>(CommunicativeNeed.PICTOGRAMS);
+  protected readonly genders = Object.values(Gender);
+  protected readonly needs = Object.values(CommunicativeNeed);
 
   // Diagnóstico
   protected readonly condition = signal<ConditionType>(ConditionType.ASD);
   protected readonly customDescription = signal('');
   protected readonly diagnosedBy = signal('');
-  protected readonly diagnosisDate = signal<Date | null>(null);
+  /** Mes del diagnóstico con el formato del control nativo: AAAA-MM. */
+  protected readonly diagnosisMonth = signal('');
   protected readonly professionalNotes = signal('');
+  protected readonly conditions = Object.values(ConditionType);
 
-  // Cuidadores: dialog invitar + contactos
-  protected readonly inviteOpen = signal(false);
-  protected readonly inviteEmail = signal('');
-  protected readonly inviteRole = signal<CaregiverRole>(CaregiverRole.CAREGIVER);
-  protected readonly contactOpen = signal(false);
-  protected readonly contactName = signal('');
-  protected readonly contactPhone = signal('');
-  protected readonly contactRelation = signal('');
-
-  protected readonly genderOptions = [
-    { label: 'Femenino', value: Gender.FEMALE },
-    { label: 'Masculino', value: Gender.MALE },
-    { label: 'No binario', value: Gender.NON_BINARY },
-    { label: 'Prefiero no decir', value: Gender.PREFER_NOT_TO_SAY },
-  ];
-  protected readonly needOptions = [
-    { label: 'Pictogramas', value: CommunicativeNeed.PICTOGRAMS },
-    { label: 'Texto', value: CommunicativeNeed.TEXT },
-    { label: 'Voz', value: CommunicativeNeed.VOICE },
-  ];
-  protected readonly conditionOptions = [
-    { label: 'TEA', value: ConditionType.ASD },
-    { label: 'TDAH', value: ConditionType.ADHD },
-    { label: 'TOC', value: ConditionType.OCD },
-    { label: 'Otra', value: ConditionType.OTHER },
-  ];
-  protected readonly roleOptions = [
-    { label: 'Familiar (cuidador)', value: CaregiverRole.CAREGIVER },
-    { label: 'Profesional (terapeuta)', value: CaregiverRole.THERAPIST },
-  ];
-
-  protected readonly crumbs = computed(() => [
-    { label: 'Inicio', routerLink: '/inicio' },
-    { label: 'Perfiles', routerLink: '/perfil' },
-    { label: this.store.selectedProfile()?.fullName ?? 'Detalle' },
-  ]);
-  protected readonly subtitle = computed(() => {
-    const profile = this.store.selectedProfile();
-    if (!profile) return '';
-    const condition = profile.diagnosis
-      ? `${this.conditionLabel(profile.diagnosis.condition)}${profile.diagnosis.professionalNotes ? ` ${profile.diagnosis.professionalNotes}` : ''}`
-      : 'Sin diagnóstico registrado';
-    const nick = profile.nickname?.trim() ? ` · Le gusta que le llamen ${profile.nickname}` : '';
-    return `${profile.age} años · ${condition}${nick}`;
-  });
   protected readonly initials = computed(() => {
     const profile = this.store.selectedProfile();
-    if (!profile) return '··';
-    return `${profile.firstName[0] ?? ''}${profile.lastName[0] ?? ''}`.toUpperCase();
+    return profile ? initialsOf(profile.fullName) : '··';
   });
   protected readonly isOther = computed(() => this.condition() === ConditionType.OTHER);
-  protected readonly sortedContacts = computed(
-    () =>
-      this.store.selectedProfile()?.trustedContacts.slice().sort(
-        (a, b) => a.priorityOrder - b.priorityOrder,
-      ) ?? [],
+  protected readonly inUse = computed(
+    () => this.store.selectedProfile()?.id === this.activeProfiles.selectedProfileId(),
+  );
+  /** Cuidadores con acceso vigente o invitación en curso. */
+  protected readonly caregivers = computed(() =>
+    (this.store.selectedProfile()?.caregivers ?? []).filter(
+      (item) => item.status !== InvitationStatus.REVOKED,
+    ),
   );
 
   constructor() {
     const id = Number(this.route.snapshot.paramMap.get('id') ?? 1);
+    this.store.clearMessages();
     this.store.select(Number.isFinite(id) ? id : 1);
     if (this.store.profiles().length === 0) this.store.load();
     effect(() => {
@@ -169,9 +104,9 @@ export class ProfileDetail {
       this.age.set(profile.age);
       this.gender.set(profile.gender);
       this.communicativeNeed.set(profile.communicativeNeed);
-      this.auditory.set(this.toNumber(profile.sensoryProfile.auditory));
-      this.visual.set(this.toNumber(profile.sensoryProfile.visual));
-      this.tactile.set(this.toNumber(profile.sensoryProfile.tactile));
+      this.auditory.set(SENSITIVITY_TO_NUMBER[profile.sensoryProfile.auditory]);
+      this.visual.set(SENSITIVITY_TO_NUMBER[profile.sensoryProfile.visual]);
+      this.tactile.set(SENSITIVITY_TO_NUMBER[profile.sensoryProfile.tactile]);
       this.lowStimulation.set(profile.sensoryProfile.lowStimulationEnabled);
       this.prioritizeVisuals.set(profile.sensoryProfile.prioritizeVisuals);
       this.confirmAudio.set(profile.sensoryProfile.confirmAudio);
@@ -179,9 +114,7 @@ export class ProfileDetail {
         this.condition.set(profile.diagnosis.condition);
         this.customDescription.set(profile.diagnosis.customDescription ?? '');
         this.diagnosedBy.set(profile.diagnosis.diagnosedBy ?? '');
-        this.diagnosisDate.set(
-          profile.diagnosis.diagnosisDate ? new Date(profile.diagnosis.diagnosisDate) : null,
-        );
+        this.diagnosisMonth.set(profile.diagnosis.diagnosisDate?.slice(0, 7) ?? '');
         this.professionalNotes.set(profile.diagnosis.professionalNotes ?? '');
       }
     });
@@ -191,67 +124,56 @@ export class ProfileDetail {
     return NUMBER_TO_SENSITIVITY[value] ?? SensitivityLevel.MEDIUM;
   }
 
-  protected levelLabel(level: SensitivityLevel): string {
-    switch (level) {
-      case SensitivityLevel.LOW:
-        return 'Baja';
-      case SensitivityLevel.MEDIUM:
-        return 'Media';
-      case SensitivityLevel.HIGH:
-        return 'Alta';
-      case SensitivityLevel.VERY_HIGH:
-        return 'Muy alta';
-    }
+  /** Color de la etiqueta de nivel, como en el mock-up. */
+  protected levelTone(value: number): string {
+    return value >= 3 ? 'coral' : value === 2 ? 'yellow' : '';
   }
 
-  protected conditionLabel(condition: ConditionType): string {
-    switch (condition) {
-      case ConditionType.ASD:
-        return 'TEA';
-      case ConditionType.ADHD:
-        return 'TDAH';
-      case ConditionType.OCD:
-        return 'TOC';
-      case ConditionType.OTHER:
-        return 'Otra';
-    }
+  /** Mi nombre sale de la sesión; el de los demás, de su correo. */
+  protected caregiverName(item: ProfileCaregiver): string {
+    const me = this.isMe(item) ? this.activeProfiles.caregiver()?.fullName : null;
+    return me ?? nameFromEmail(item.invitedEmail);
   }
 
-  protected roleLabel(role: CaregiverRole): string {
-    switch (role) {
-      case CaregiverRole.PRIMARY:
-        return 'Principal';
-      case CaregiverRole.CAREGIVER:
-        return 'Familiar';
-      case CaregiverRole.THERAPIST:
-        return 'Profesional';
-    }
+  protected caregiverInitials(item: ProfileCaregiver): string {
+    return initialsOf(this.caregiverName(item));
   }
 
-  protected statusIcon(status: InvitationStatus): string {
-    switch (status) {
-      case InvitationStatus.ACTIVE:
-        return 'pi pi-check';
-      case InvitationStatus.PENDING:
-        return 'pi pi-clock';
-      case InvitationStatus.REVOKED:
-        return 'pi pi-ban';
-    }
+  protected isMe(item: ProfileCaregiver): boolean {
+    return item.id === this.store.myCaregiver()?.id;
   }
 
-  protected statusSeverity(status: InvitationStatus): 'success' | 'warn' | 'danger' {
-    switch (status) {
-      case InvitationStatus.ACTIVE:
-        return 'success';
-      case InvitationStatus.PENDING:
-        return 'warn';
-      case InvitationStatus.REVOKED:
-        return 'danger';
-    }
+  /** "Marzo de 2026" a partir de la fecha guardada (AAAA-MM-DD). */
+  protected monthLabel(isoDate: string): string {
+    const text = new Intl.DateTimeFormat(this.translate.currentLang() ?? 'es', {
+      month: 'long',
+      year: 'numeric',
+      timeZone: 'UTC',
+    }).format(new Date(isoDate));
+    return text[0].toUpperCase() + text.slice(1);
   }
 
-  /** Cabecera "Guardar cambios": persiste sensibilidades + preferencias. */
+  /** Cabecera "Guardar cambios": guarda lo que muestra la pestaña abierta. */
   protected save(): void {
+    switch (this.tab()) {
+      case 'general':
+        return this.saveGeneral();
+      case 'sensitivities':
+        return this.saveSensitivities();
+      case 'diagnosis':
+        return this.saveDiagnosis();
+    }
+  }
+
+  protected onPhotoFiles(event: Event): void {
+    const profile = this.store.selectedProfile();
+    const input = event.target as HTMLInputElement | null;
+    const file = input?.files?.[0];
+    if (!profile || !file) return;
+    this.store.uploadPhoto(profile, file);
+  }
+
+  private saveSensitivities(): void {
     const profile = this.store.selectedProfile();
     if (!profile) return;
     this.store.saveSensitivities(
@@ -265,14 +187,14 @@ export class ProfileDetail {
         confirmAudio: this.confirmAudio(),
       }),
     );
-    this.toast.add({ severity: 'success', summary: 'Guardado' });
+    this.notify('success', 'profile.detail.saved');
   }
 
-  protected saveGeneral(): void {
+  private saveGeneral(): void {
     const profile = this.store.selectedProfile();
-    if (!profile || this.age() === null) return;
-    if (!this.firstName().trim() || !this.lastName().trim()) {
-      this.toast.add({ severity: 'warn', summary: 'Falta un dato obligatorio' });
+    if (!profile) return;
+    if (!this.firstName().trim() || !this.lastName().trim() || this.age() === null) {
+      this.notify('warn', 'profile.detail.missingRequired');
       return;
     }
     this.store.saveGeneral(profile, {
@@ -285,91 +207,27 @@ export class ProfileDetail {
     });
   }
 
-  protected saveDiagnosis(): void {
+  private saveDiagnosis(): void {
     const profile = this.store.selectedProfile();
     if (!profile) return;
     if (this.isOther() && !this.customDescription().trim()) {
-      this.toast.add({ severity: 'warn', summary: 'Describe la condición "Otra"' });
+      this.notify('warn', 'profile.detail.describeOther');
       return;
     }
     this.store.saveDiagnosis(
       profile,
       new DeclaredDiagnosis(
         this.condition(),
-        this.isOther() ? this.customDescription().trim() : null,
+        this.customDescription().trim() ? this.customDescription().trim() : null,
         this.diagnosedBy().trim() ? this.diagnosedBy().trim() : null,
-        this.diagnosisDate() ? this.diagnosisDate()!.toISOString().slice(0, 10) : null,
+        this.diagnosisMonth() ? `${this.diagnosisMonth()}-01` : null,
         this.professionalNotes().trim() ? this.professionalNotes().trim() : null,
       ),
     );
+    this.notify('success', 'profile.detail.saved');
   }
 
-  protected sendInvite(): void {
-    const profile = this.store.selectedProfile();
-    const email = this.inviteEmail().trim();
-    if (!profile || !email.includes('@')) {
-      this.toast.add({ severity: 'warn', summary: 'Correo no válido' });
-      return;
-    }
-    this.store.invite(profile, email, this.inviteRole());
-    this.inviteOpen.set(false);
-    this.inviteEmail.set('');
-  }
-
-  protected askRevoke(caregiverId: number): void {
-    const profile = this.store.selectedProfile();
-    if (!profile) return;
-    this.confirm.confirm({
-      message: 'Se revocará el acceso de este cuidador.',
-      header: 'Revocar cuidador',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => this.store.revoke(profile, caregiverId),
-    });
-  }
-
-  protected addContact(): void {
-    const profile = this.store.selectedProfile();
-    if (!profile || !this.contactName().trim() || !this.contactPhone().trim()) {
-      this.toast.add({ severity: 'warn', summary: 'Nombre y teléfono obligatorios' });
-      return;
-    }
-    const nextId = Math.max(0, ...profile.trustedContacts.map((item) => item.id)) + 1;
-    const order = Math.max(0, ...profile.trustedContacts.map((item) => item.priorityOrder)) + 1;
-    this.store.linkContact(
-      profile,
-      new TrustedContact(
-        nextId,
-        this.contactName().trim(),
-        this.contactPhone().trim(),
-        null,
-        this.contactRelation().trim() || 'Familiar',
-        order,
-      ),
-    );
-    this.contactOpen.set(false);
-    this.contactName.set('');
-    this.contactPhone.set('');
-    this.contactRelation.set('');
-  }
-
-  protected onPhotoFiles(event: Event): void {
-    const profile = this.store.selectedProfile();
-    const input = event.target as HTMLInputElement | null;
-    const file = input?.files?.[0];
-    if (!profile || !file) return;
-    this.store.uploadPhoto(profile, file);
-  }
-
-  private toNumber(level: SensitivityLevel): number {
-    switch (level) {
-      case SensitivityLevel.LOW:
-        return 1;
-      case SensitivityLevel.MEDIUM:
-        return 2;
-      case SensitivityLevel.HIGH:
-        return 3;
-      case SensitivityLevel.VERY_HIGH:
-        return 4;
-    }
+  private notify(severity: 'success' | 'warn', key: string): void {
+    this.toast.add({ severity, summary: this.translate.instant(key) });
   }
 }

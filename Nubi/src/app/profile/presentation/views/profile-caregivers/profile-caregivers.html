@@ -1,0 +1,246 @@
+<div class="pf-page">
+  <p-toast></p-toast>
+  <p-confirmdialog></p-confirmdialog>
+
+  @if (store.selectedProfile(); as profile) {
+    <nav [attr.aria-label]="'nav.breadcrumb' | translate">
+      <ol class="pf-crumbs">
+        <li><a routerLink="/inicio">{{ 'profile.crumbs.home' | translate }}</a></li>
+        <li><a routerLink="/perfil">{{ 'profile.crumbs.profiles' | translate }}</a></li>
+        <li><a [routerLink]="['/perfil', profile.id]">{{ profile.fullName }}</a></li>
+        <li aria-current="page">{{ 'profile.crumbs.caregivers' | translate }}</li>
+      </ol>
+    </nav>
+
+    <header class="head">
+      <div>
+        <h1 class="pf-title">{{ 'profile.caregivers.title' | translate }}</h1>
+        <p class="pf-lead">{{ 'profile.caregivers.lead' | translate: { name: profile.fullName } }}</p>
+      </div>
+      @if (store.isPrimary()) {
+        <button class="pf-btn primary" type="button" (click)="inviteOpen.set(true)">
+          <span aria-hidden="true">+</span> {{ 'profile.caregivers.invite' | translate }}
+        </button>
+      }
+    </header>
+
+    @if (store.error(); as error) {
+      <p class="pf-alert" role="alert">{{ error | translate }}</p>
+    }
+    @if (!store.isPrimary()) {
+      <p class="pf-alert ok">{{ 'profile.caregivers.onlyPrimary' | translate }}</p>
+    }
+
+    <!-- Resumen -->
+    <div class="stats">
+      <div class="stat">
+        <span class="count">{{ activeCount() }}</span>
+        <span>
+          <small>{{ 'profile.caregivers.active' | translate }}</small>
+          <strong>{{ 'profile.caregivers.activeText' | translate }}</strong>
+        </span>
+      </div>
+      <div class="stat">
+        <span class="count yellow">{{ pendingCount() }}</span>
+        <span>
+          <small>{{ 'profile.caregivers.pending' | translate }}</small>
+          <strong>{{ 'profile.caregivers.pendingText' | translate }}</strong>
+        </span>
+      </div>
+      <div class="stat">
+        <span class="count plain">{{ store.maxCaregiversPerProfile() }}</span>
+        <span>
+          <small>{{ 'profile.caregivers.max' | translate }}</small>
+          <strong>{{ 'profile.caregivers.maxText' | translate }}</strong>
+        </span>
+      </div>
+    </div>
+
+    <!-- Tabla de cuidadores -->
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>{{ 'profile.caregivers.cols.caregiver' | translate }}</th>
+            <th>{{ 'profile.caregivers.cols.role' | translate }}</th>
+            <th>{{ 'profile.caregivers.cols.status' | translate }}</th>
+            <th class="right">{{ 'profile.caregivers.cols.actions' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of caregivers(); track item.id) {
+            <tr [class.faded]="item.status !== Status.ACTIVE">
+              <td>
+                <div class="person">
+                  <span
+                    class="pf-avatar"
+                    [class.dashed]="item.status === Status.PENDING"
+                    [class.grey]="item.status === Status.REVOKED"
+                  >
+                    {{ initialsOf(item) }}
+                  </span>
+                  <span>
+                    <strong>{{ nameOf(item) }}</strong>
+                    <small>{{ item.invitedEmail }}</small>
+                  </span>
+                </div>
+              </td>
+              <td>
+                <span class="pf-pill" [class.grey]="!item.isPrincipal()">
+                  {{ 'profile.roles.' + item.role | translate }}
+                </span>
+              </td>
+              <td>
+                <span class="status" [class]="item.status.toLowerCase()">
+                  {{ 'profile.statuses.' + item.status | translate }}
+                </span>
+              </td>
+              <td class="right">
+                @if (item.status === Status.PENDING) {
+                  <button class="pf-link coral" type="button" (click)="resend()">
+                    {{ 'profile.caregivers.resend' | translate }}
+                  </button>
+                } @else if (item.status === Status.ACTIVE && store.isPrimary() && !item.isPrincipal()) {
+                  <button class="pf-link" type="button" (click)="askRevoke(item)">
+                    {{ 'profile.caregivers.revoke' | translate }}
+                  </button>
+                } @else {
+                  <span class="none" aria-hidden="true">—</span>
+                }
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="4" class="empty">{{ 'profile.caregivers.empty' | translate }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="extras">
+      <section class="pf-card">
+        <h2>{{ 'profile.caregivers.contacts.title' | translate }}</h2>
+        <ul class="contacts">
+          @for (contact of sortedContacts(); track contact.id) {
+            <li>
+              <span class="pf-avatar soft">{{ contact.priorityOrder }}</span>
+              <span class="grow">
+                <strong>{{ contact.fullName }}</strong>
+                <small>{{ contact.phone }} · {{ contact.relationship }}</small>
+              </span>
+              <button
+                class="icon"
+                type="button"
+                [attr.aria-label]="'profile.caregivers.contacts.up' | translate"
+                (click)="store.moveContact(profile, contact.id, -1)"
+              >
+                <span class="material-icons" aria-hidden="true">arrow_upward</span>
+              </button>
+              <button
+                class="icon"
+                type="button"
+                [attr.aria-label]="'profile.caregivers.contacts.down' | translate"
+                (click)="store.moveContact(profile, contact.id, 1)"
+              >
+                <span class="material-icons" aria-hidden="true">arrow_downward</span>
+              </button>
+            </li>
+          } @empty {
+            <li class="pf-lead">{{ 'profile.caregivers.contacts.empty' | translate }}</li>
+          }
+        </ul>
+        @if (contactOpen()) {
+          <form class="contact-form" (ngSubmit)="addContact()">
+            <label class="pf-field">
+              {{ 'profile.caregivers.contacts.name' | translate }}
+              <input name="contactName" [(ngModel)]="contactName" />
+            </label>
+            <label class="pf-field">
+              {{ 'profile.caregivers.contacts.phone' | translate }}
+              <input name="contactPhone" type="tel" [(ngModel)]="contactPhone" />
+            </label>
+            <label class="pf-field">
+              {{ 'profile.caregivers.contacts.relation' | translate }}
+              <input name="contactRelation" [(ngModel)]="contactRelation" />
+            </label>
+            <button class="pf-btn primary" type="submit">
+              {{ 'profile.caregivers.contacts.link' | translate }}
+            </button>
+          </form>
+        } @else {
+          <button class="pf-link" type="button" (click)="contactOpen.set(true)">
+            + {{ 'profile.caregivers.contacts.add' | translate }}
+          </button>
+        }
+      </section>
+
+      <section class="pf-card">
+        <h2>{{ 'profile.caregivers.myRole' | translate }}</h2>
+        @if (store.myCaregiver(); as mine) {
+          <p class="mine">
+            <span class="pf-pill">{{ 'profile.roles.' + mine.role | translate }}</span>
+            <span class="status" [class]="mine.status.toLowerCase()">
+              {{ 'profile.statuses.' + mine.status | translate }}
+            </span>
+          </p>
+        } @else {
+          <p class="pf-lead">—</p>
+        }
+        <a class="pf-link" routerLink="/perfil/cuidador">
+          {{ 'profile.caregivers.myInvitations' | translate }}
+        </a>
+      </section>
+    </div>
+
+    <!-- Panel lateral "Invitar cuidador" -->
+    @if (inviteOpen()) {
+      <div class="backdrop" (click)="closeInvite()"></div>
+      <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="invite-title">
+        <header>
+          <h2 id="invite-title">{{ 'profile.caregivers.invite' | translate }}</h2>
+          <button
+            class="close"
+            type="button"
+            [attr.aria-label]="'profile.caregivers.close' | translate"
+            (click)="closeInvite()"
+          >
+            ×
+          </button>
+        </header>
+        <form class="drawer-body" id="invite-form" (ngSubmit)="sendInvite()">
+          <label class="pf-field">
+            {{ 'profile.caregivers.email' | translate }}
+            <input
+              name="email"
+              type="email"
+              [(ngModel)]="inviteEmail"
+              [placeholder]="'profile.caregivers.emailPh' | translate"
+            />
+          </label>
+          <label class="pf-field">
+            {{ 'profile.caregivers.assignRole' | translate }}
+            <select name="role" [(ngModel)]="inviteRole">
+              <option value="">{{ 'profile.caregivers.selectRole' | translate }}</option>
+              @for (role of inviteRoles; track role) {
+                <option [value]="role">{{ 'profile.roles.' + role | translate }}</option>
+              }
+            </select>
+          </label>
+          <p class="note">{{ 'profile.caregivers.info' | translate: { name: profile.displayName } }}</p>
+        </form>
+        <footer>
+          <button class="pf-btn primary" type="submit" form="invite-form">
+            {{ 'profile.caregivers.send' | translate }}
+          </button>
+          <button class="pf-btn ghost" type="button" (click)="closeInvite()">
+            {{ 'profile.create.cancel' | translate }}
+          </button>
+        </footer>
+      </aside>
+    }
+  } @else if (!store.loading()) {
+    <p class="pf-alert">{{ 'profile.detail.notFound' | translate }}</p>
+    <a class="pf-link" routerLink="/perfil">{{ 'profile.crumbs.profiles' | translate }}</a>
+  }
+</div>
