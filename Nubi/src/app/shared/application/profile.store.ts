@@ -8,6 +8,9 @@ import { ProfileApi } from '../infrastructure/profile-api';
 /** En esta entrega la sesión del cuidador se simula: no hay backend de identidad. */
 const SIGNED_IN_CAREGIVER_ID = 1;
 
+/** El perfil en uso se recuerda en el navegador para mantenerlo al recargar la página. */
+const ACTIVE_PROFILE_KEY = 'nubi.activeProfileId';
+
 /**
  * Cuidador con la sesión iniciada y perfil a cargo. Es compartido porque todos los
  * Bounded Contexts necesitan saber de quién es la vista.
@@ -54,11 +57,41 @@ export class ProfileStore {
           );
           this.caregiverState.set(caregiver);
           this.profilesState.set(inCare);
-          if (this.selectedIdState() === null && inCare.length > 0) {
-            this.selectedIdState.set(inCare[0].id);
-          }
+          const preferred = this.selectedIdState() ?? this.rememberedProfileId();
+          const active = inCare.find((profile) => profile.id === preferred) ?? inCare[0];
+          this.selectedIdState.set(active?.id ?? null);
         },
         error: () => this.apiDownState.set(true),
       });
+  }
+
+  /** Comando "Usar perfil": lo vuelve el perfil activo de toda la aplicación. */
+  use(profileId: number): void {
+    this.selectedIdState.set(profileId);
+    localStorage.setItem(ACTIVE_PROFILE_KEY, String(profileId));
+    this.assign(profileId);
+  }
+
+  /** Deja un perfil a cargo del cuidador, para que lo vean todos los Bounded Contexts. */
+  assign(profileId: number): void {
+    const caregiver = this.caregiverState();
+    if (!caregiver || caregiver.profileIds.includes(profileId)) {
+      this.load();
+      return;
+    }
+    this.caregiverApi
+      .assignProfiles(caregiver.id, [...caregiver.profileIds, profileId])
+      .subscribe({
+        next: (updated) => {
+          this.caregiverState.set(updated);
+          this.load();
+        },
+        error: () => this.load(),
+      });
+  }
+
+  private rememberedProfileId(): number | null {
+    const stored = localStorage.getItem(ACTIVE_PROFILE_KEY);
+    return stored === null ? null : Number(stored);
   }
 }

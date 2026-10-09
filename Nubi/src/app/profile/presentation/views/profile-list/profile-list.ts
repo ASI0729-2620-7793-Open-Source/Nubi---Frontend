@@ -13,6 +13,7 @@ import { SelectModule } from 'primeng/select';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
+import { ProfileStore as ActiveProfileStore } from '../../../../shared/application/profile.store';
 import { ProfileStore } from '../../../application/profile.store';
 import { ConditionType } from '../../../domain/model/profile.enums';
 import { SensoryProfile } from '../../../domain/model/sensory-profile.vo';
@@ -45,6 +46,8 @@ import { DeclaredDiagnosis } from '../../../domain/model/declared-diagnosis.vo';
 })
 export class ProfileList {
   protected readonly store = inject(ProfileStore);
+  /** Perfil en uso: el que muestran Inicio y el resto de la aplicación. */
+  protected readonly activeProfiles = inject(ActiveProfileStore);
   protected readonly hasProfiles = computed(() => this.store.profiles().length > 0);
 
   protected readonly open = signal(false);

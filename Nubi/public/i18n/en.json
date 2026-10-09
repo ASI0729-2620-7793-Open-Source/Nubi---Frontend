@@ -333,7 +333,9 @@
       "subtitle": "Pick a profile to see details",
       "empty": "No profiles yet. Create the first one.",
       "open": "Open",
-      "loadError": "List could not load. Showing a sample."
+      "loadError": "List could not load. Showing a sample.",
+      "use": "Use profile",
+      "inUse": "In use"
     },
     "detail": {
       "title": "Profile detail"
@@ -418,6 +420,42 @@
     "signUp": {
       "title": "Sign up",
       "emailInUse": "That email is already in use. Sign in or use another."
+    }
+  },
+  "supportNetwork": {
+    "eyebrow": "Support network and follow-up",
+    "greeting": "Hello, {{name}}",
+    "subtitle": "Here is what you need to know about {{name}} right now.",
+    "lastCommunication": "Latest communication",
+    "needs": "{{name}} needs: \"{{message}}\"",
+    "boardSource": "Communication Board",
+    "confirmReceipt": "Confirm receipt",
+    "viewBoard": "View full board",
+    "wellbeing": "Wellbeing",
+    "currentStatus": "{{name}}'s current status",
+    "statusDescription": "This is {{name}}'s current status based on the communication from the last few minutes.",
+    "recentActivity": "Recent activity",
+    "wellbeingAnalysis": "Wellbeing analysis",
+    "chartAria": "Bar chart with wellbeing levels for the last seven days",
+    "level": "Level {{value}}",
+    "chartCaption": "Wellbeing level over the last days",
+    "days": {
+      "mon": "M",
+      "tue": "T",
+      "wed": "W",
+      "thu": "T",
+      "fri": "F",
+      "sat": "S",
+      "sun": "S"
+    },
+    "mock": {
+      "statusCalm": "Calm",
+      "thirsty": "I am thirsty",
+      "thirstyDescription": "{{name}} wants to drink water.",
+      "oneMinuteAgo": "1 minute ago",
+      "boardUse": "Board use",
+      "calmResourceUsed": "Calming resource used",
+      "breakFinished": "Break finished"
     }
   }
 }

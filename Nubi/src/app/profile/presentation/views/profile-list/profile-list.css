@@ -4,3 +4,4 @@
   background: var(--nubi-surface); border: 1px solid var(--nubi-border);
   border-radius: var(--nubi-radius-m); padding: 20px;
 }
+.card-actions { display: flex; flex-wrap: wrap; gap: 8px; }

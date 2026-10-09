@@ -14,6 +14,7 @@ import { TrustedContact } from '../domain/model/trusted-contact.entity';
 import { PhotoUploadService } from '../infrastructure/photo-upload.service';
 import { ProfileApiEndpoint } from '../infrastructure/profile-api-endpoint';
 import { SubscriptionLimitsService } from '../infrastructure/subscription-limits.service';
+import { ProfileStore as ActiveProfileStore } from '../../shared/application/profile.store';
 
 /**
  * Estado del Bounded Context Perfil y Personalización (US-01 a US-06).
@@ -24,6 +25,7 @@ export class ProfileStore {
   private readonly api = inject(ProfileApiEndpoint);
   private readonly limits = inject(SubscriptionLimitsService);
   private readonly photos = inject(PhotoUploadService);
+  private readonly activeProfiles = inject(ActiveProfileStore);
 
   private readonly profilesState = signal<NeurodivergentProfile[]>([]);
   private readonly selectedIdState = signal<number | null>(null);
@@ -84,47 +86,41 @@ export class ProfileStore {
     this.selectedIdState.set(profileId);
   }
 
-  /** US-01: valida límite del plan antes de crear (regla 3). */
+  /** US-01: crea el perfil, sin límite de cantidad, y lo deja a cargo del cuidador. */
   create(
     draft: Pick<NeurodivergentProfile, 'firstName' | 'lastName' | 'age'> &
       Partial<NeurodivergentProfile>,
   ): void {
-    this.limits.allowsAnotherProfile(this.profilesState().length).subscribe((allowed) => {
-      if (!allowed) {
-        this.limitReachedState.set('profiles');
-        this.errorState.set('profile.limits.profilesReached');
-        return;
-      }
-      const now = new Date();
-      const profile = new NeurodivergentProfile(
-        Date.now(),
-        draft.firstName,
-        draft.lastName,
-        draft.nickname ?? null,
-        draft.age,
-        draft.gender ?? Gender.PREFER_NOT_TO_SAY,
-        draft.photoUrl ?? null,
-        draft.communicativeNeed ?? CommunicativeNeed.PICTOGRAMS,
-        true,
-        draft.sensoryProfile ?? SensoryProfile.withDefaultValues(),
-        draft.diagnosis ?? null,
-        draft.caregivers ?? [],
-        draft.trustedContacts ?? [],
-        now,
-        now,
-      );
-      this.loadingState.set(true);
-      this.api
-        .createProfile(profile)
-        .pipe(finalize(() => this.loadingState.set(false)))
-        .subscribe({
-          next: (created) => {
-            this.profilesState.update((items) => [...items, created]);
-            this.selectedIdState.set(created.id);
-          },
-          error: () => this.errorState.set('profile.create.error'),
-        });
-    });
+    const now = new Date();
+    const profile = new NeurodivergentProfile(
+      Date.now(),
+      draft.firstName,
+      draft.lastName,
+      draft.nickname ?? null,
+      draft.age,
+      draft.gender ?? Gender.PREFER_NOT_TO_SAY,
+      draft.photoUrl ?? null,
+      draft.communicativeNeed ?? CommunicativeNeed.PICTOGRAMS,
+      true,
+      draft.sensoryProfile ?? SensoryProfile.withDefaultValues(),
+      draft.diagnosis ?? null,
+      draft.caregivers ?? [],
+      draft.trustedContacts ?? [],
+      now,
+      now,
+    );
+    this.loadingState.set(true);
+    this.api
+      .createProfile(profile)
+      .pipe(finalize(() => this.loadingState.set(false)))
+      .subscribe({
+        next: (created) => {
+          this.profilesState.update((items) => [...items, created]);
+          this.selectedIdState.set(created.id);
+          this.activeProfiles.assign(created.id);
+        },
+        error: () => this.errorState.set('profile.create.error'),
+      });
   }
 
   /** US-02 general: envía el objeto completo; sin cambios solo informa. */
@@ -333,6 +329,8 @@ export class ProfileStore {
     this.profilesState.update((items) =>
       items.map((item) => (item.id === updated.id ? updated : item)),
     );
+    // El resto de la aplicación muestra el nombre y la edad actualizados
+    this.activeProfiles.load();
   }
 
   private setProfiles(profiles: NeurodivergentProfile[]): void {

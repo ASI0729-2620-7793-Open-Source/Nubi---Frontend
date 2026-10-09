@@ -3,8 +3,8 @@
   <p class="subtitle">{{ 'profile.list.subtitle' | translate }}</p>
   <a routerLink="/perfil/cuidador">Ver mi perfil cuidador</a>
 
-  @if (store.error()) {
-    <p-message severity="warn">{{ store.error() }}</p-message>
+  @if (store.error(); as error) {
+    <p-message severity="warn">{{ error | translate }}</p-message>
   }
 
   @if (store.loading()) {
@@ -29,11 +29,22 @@
                 <strong>{{ profile.fullName }}</strong>
                 <p class="subtitle">{{ profile.age }} años</p>
               </div>
-              <p-tag value="Perfil activo" severity="success"></p-tag>
-              <p-button
-                [routerLink]="['/perfil', profile.id]"
-                [label]="'profile.list.open' | translate"
-              ></p-button>
+              @if (profile.id === activeProfiles.selectedProfileId()) {
+                <p-tag [value]="'profile.list.inUse' | translate" severity="success"></p-tag>
+              }
+              <div class="card-actions">
+                <p-button
+                  [routerLink]="['/perfil', profile.id]"
+                  [label]="'profile.list.open' | translate"
+                ></p-button>
+                @if (profile.id !== activeProfiles.selectedProfileId()) {
+                  <p-button
+                    variant="outlined"
+                    [label]="'profile.list.use' | translate"
+                    (onClick)="activeProfiles.use(profile.id)"
+                  ></p-button>
+                }
+              </div>
             </div>
           }
         </div>

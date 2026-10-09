@@ -31,6 +31,8 @@ export class SosModeStore {
   private readonly guideState = signal<ActionGuide | null>(null);
   private readonly profilesState = signal<SosProfile[]>([]);
   private readonly selectedProfileIdState = signal<number | null>(null);
+  /** Último perfil en uso de la app que ya se tomó como selección del Modo SOS. */
+  private followedProfileId: number | null = null;
   private readonly sessionState = signal<SosSession | null>(null);
   private readonly inProgressState = signal<SosSession | null>(null);
   private readonly loadingState = signal(false);
@@ -91,6 +93,19 @@ export class SosModeStore {
       untracked(() => {
         if (caregiver) {
           this.loadProfiles(caregiver.profileIds);
+        }
+      });
+    });
+
+    // Si cambia el perfil en uso de la app, el Modo SOS parte de ese perfil
+    effect(() => {
+      const preferred = this.profileStore.selectedProfileId();
+      const profiles = this.profilesState();
+      untracked(() => {
+        const changed = preferred !== null && preferred !== this.followedProfileId;
+        if (changed && profiles.some((profile) => profile.id === preferred)) {
+          this.followedProfileId = preferred;
+          this.selectedProfileIdState.set(preferred);
         }
       });
     });

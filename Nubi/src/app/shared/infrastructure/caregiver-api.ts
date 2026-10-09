@@ -20,17 +20,23 @@ export class CaregiverApi {
   getById(caregiverId: number): Observable<Caregiver> {
     return this.http
       .get<CaregiverResource>(`${this.endpoint}/${caregiverId}`)
-      .pipe(
-        map(
-          (resource) =>
-            new Caregiver(
-              resource.id,
-              resource.fullName,
-              resource.role,
-              resource.avatarUrl,
-              resource.profileIds,
-            ),
-        ),
-      );
+      .pipe(map((resource) => this.toEntity(resource)));
+  }
+
+  /** Guarda los perfiles que el cuidador tiene a cargo. */
+  assignProfiles(caregiverId: number, profileIds: number[]): Observable<Caregiver> {
+    return this.http
+      .patch<CaregiverResource>(`${this.endpoint}/${caregiverId}`, { profileIds })
+      .pipe(map((resource) => this.toEntity(resource)));
+  }
+
+  private toEntity(resource: CaregiverResource): Caregiver {
+    return new Caregiver(
+      resource.id,
+      resource.fullName,
+      resource.role,
+      resource.avatarUrl,
+      resource.profileIds,
+    );
   }
 }

@@ -333,7 +333,9 @@
       "subtitle": "Elige un perfil para ver su detalle",
       "empty": "Aún no hay perfiles. Crea el primero.",
       "open": "Abrir",
-      "loadError": "No se pudo cargar la lista. Se muestra un ejemplo."
+      "loadError": "No se pudo cargar la lista. Se muestra un ejemplo.",
+      "use": "Usar perfil",
+      "inUse": "En uso"
     },
     "detail": {
       "title": "Detalle del perfil"
@@ -418,6 +420,42 @@
     "signUp": {
       "title": "Crear cuenta",
       "emailInUse": "Ese correo ya está en uso. Inicia sesión o usa otro."
+    }
+  },
+  "supportNetwork": {
+    "eyebrow": "Red de apoyo y seguimiento",
+    "greeting": "Hola, {{name}}",
+    "subtitle": "Esto es lo que necesitas saber sobre {{name}} ahora mismo.",
+    "lastCommunication": "Última comunicación",
+    "needs": "{{name}} necesita: \"{{message}}\"",
+    "boardSource": "Tablero de Comunicación",
+    "confirmReceipt": "Confirmar recepción",
+    "viewBoard": "Ver tablero completo",
+    "wellbeing": "Bienestar",
+    "currentStatus": "Estado actual de {{name}}",
+    "statusDescription": "Este es el estado actual de {{name}} según la comunicación de los últimos minutos.",
+    "recentActivity": "Actividad reciente",
+    "wellbeingAnalysis": "Análisis de bienestar",
+    "chartAria": "Gráfico de barras con niveles de bienestar de los últimos siete días",
+    "level": "Nivel {{value}}",
+    "chartCaption": "Nivel de bienestar de los últimos días",
+    "days": {
+      "mon": "L",
+      "tue": "M",
+      "wed": "X",
+      "thu": "J",
+      "fri": "V",
+      "sat": "S",
+      "sun": "D"
+    },
+    "mock": {
+      "statusCalm": "Calma",
+      "thirsty": "Tengo sed",
+      "thirstyDescription": "{{name}} quiere tomar agua.",
+      "oneMinuteAgo": "Hace 1 minuto",
+      "boardUse": "Uso de tablero",
+      "calmResourceUsed": "Recurso de calma utilizado",
+      "breakFinished": "Descanso finalizado"
     }
   }
 }
