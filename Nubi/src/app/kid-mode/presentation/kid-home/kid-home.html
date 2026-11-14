@@ -1,0 +1,33 @@
+<section class="ask">
+  <h1>Hola, {{ childStore.name() }} 👋<br />¿Cómo te sientes?</h1>
+  <app-mood-picker [kid]="true" [selected]="answered()" (picked)="feel($event)" />
+  @if (message(); as m) {
+    <p class="message"><span>{{ m.emoji }}</span> {{ m.text }}</p>
+  }
+</section>
+
+<section class="tiles">
+  @for (resource of ordered(); track resource.id) {
+    <a class="tile" [routerLink]="['/sesion', resource.id]" [queryParams]="{ modo: 'nino' }" [style.background]="lookOf(resource.code).gradient">
+      @if (favoriteIds().has(resource.id)) {
+        <span class="heart">❤️</span>
+      }
+      <span class="emoji">{{ lookOf(resource.code).emoji }}</span>
+      <strong>{{ lookOf(resource.code).kidText }}</strong>
+    </a>
+  }
+</section>
+
+<section class="row-tiles">
+  <a class="tile wide talk" routerLink="/nino/hablar">
+    <span class="emoji">💬</span>
+    <strong>Quiero decir algo</strong>
+  </a>
+  <a class="tile wide day" routerLink="/nino/mi-dia">
+    <span class="emoji">{{ next()?.icon ?? '🗓️' }}</span>
+    <span>
+      <strong>{{ next() ? 'Ahora: ' + next()!.title : 'Mi día' }}</strong>
+      <span class="sub">{{ wellbeing.routineToday().done }} de {{ wellbeing.routineToday().total }} listos</span>
+    </span>
+  </a>
+</section>
