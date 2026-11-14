@@ -225,3 +225,8 @@ nav {
 .emoji-avatar {
   font-size: 1.5rem;
 }
+
+/* Logo: manos blancas sobre fondo teal, como ícono redondeado */
+.brand img {
+  border-radius: 10px;
+}

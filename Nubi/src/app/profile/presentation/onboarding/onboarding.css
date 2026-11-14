@@ -137,3 +137,8 @@
   transform: translateY(-3px);
   border-color: var(--mint-400);
 }
+
+/* Logo: manos blancas sobre fondo teal, como ícono redondeado */
+.brand img {
+  border-radius: 10px;
+}
