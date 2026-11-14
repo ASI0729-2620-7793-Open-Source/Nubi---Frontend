@@ -1,0 +1,141 @@
+.summary {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 56px 20px 1fr;
+  align-items: center;
+  gap: 12px;
+}
+.time {
+  font-weight: 800;
+  color: var(--ink-3);
+  font-size: 0.9rem;
+  text-align: right;
+}
+.dot {
+  position: relative;
+  align-self: stretch;
+}
+.dot::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  translate: -50% 0;
+  background: var(--line);
+}
+.dot::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 3px solid var(--mint-400);
+}
+.step.done .dot::after {
+  background: var(--mint-400);
+}
+
+.step-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 6px 0;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  background: var(--surface);
+  box-shadow: var(--shadow-s);
+  transition: opacity 0.3s;
+}
+.step.done .step-card {
+  background: var(--mint-50);
+}
+.step-card .grow {
+  display: flex;
+  flex-direction: column;
+}
+.emoji {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 18px;
+  background: var(--surface-2);
+  font-size: 2rem;
+  cursor: pointer;
+}
+.tick {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  color: var(--teal-500);
+  background: #fff;
+  border-radius: 50%;
+}
+.tools {
+  display: flex;
+  gap: 4px;
+}
+
+.preview {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 16px 0;
+  padding: 16px;
+  border-radius: var(--radius-l);
+  background: linear-gradient(135deg, var(--mint-100), var(--lavender-100));
+  font-size: 1.2rem;
+}
+.preview span {
+  font-size: 2.6rem;
+}
+.icons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+  gap: 6px;
+}
+.icons button {
+  height: 44px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: var(--surface-2);
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+.icons button.active {
+  border-color: var(--mint-400);
+  background: var(--mint-50);
+}
+
+@media (max-width: 600px) {
+  .step {
+    grid-template-columns: 44px 14px 1fr;
+    gap: 8px;
+  }
+  .tools .btn:not(:last-child) {
+    display: none;
+  }
+}

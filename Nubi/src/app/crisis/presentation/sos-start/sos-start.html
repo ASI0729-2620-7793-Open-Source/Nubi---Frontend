@@ -1,0 +1,50 @@
+<div class="sos">
+  <header class="sos-top">
+    <a class="round" routerLink="/inicio" aria-label="Volver"><span class="icon">arrow_back</span></a>
+    <span class="tag"><span class="icon fill">sos</span> Modo SOS</span>
+    <span class="round ghost"></span>
+  </header>
+
+  <main class="sos-body">
+    <div class="breathe-note">
+      <span class="pulse keep-motion"></span>
+      <div>
+        <h1>Respira. Vamos paso a paso con {{ childStore.name() }}.</h1>
+        <p class="muted">Dos toques y empezamos la guía de contención.</p>
+      </div>
+    </div>
+
+    <section class="block">
+      <h2>¿Qué tan intenso está?</h2>
+      <div class="options three">
+        @for (mood of moods; track mood.level) {
+          <button type="button" class="option" [class.active]="intensity() === mood.level" [style.--c]="mood.color" (click)="intensity.set(mood.level)">
+            <span class="emoji">{{ mood.emoji }}</span>
+            {{ mood.label }}
+          </button>
+        }
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>¿Qué lo desencadenó? <span class="muted small">(opcional)</span></h2>
+      <div class="options">
+        @for (item of triggers; track item.value) {
+          <button type="button" class="option small-option" [class.active]="trigger() === item.value" (click)="trigger.set(trigger() === item.value ? null : item.value)">
+            <span class="emoji">{{ item.emoji }}</span>
+            {{ item.label }}
+          </button>
+        }
+      </div>
+    </section>
+
+    @if (error()) {
+      <div class="alert"><span class="icon">error</span>{{ error() }}</div>
+    }
+
+    <button class="btn btn-danger go" type="button" [disabled]="busy()" (click)="start()">
+      <span class="icon fill">play_arrow</span>
+      {{ busy() ? 'Abriendo guía…' : 'Empezar la guía' }}
+    </button>
+  </main>
+</div>

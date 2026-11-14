@@ -1,0 +1,105 @@
+<div class="page">
+  <header class="page-head">
+    <div>
+      <p class="eyebrow">Rutina visual</p>
+      <h1>El día de {{ childStore.name() }}</h1>
+      <p class="lead">
+        Saber qué viene después le da seguridad. Ajusta los pasos a su día real; en su modo niño los verá como
+        tarjetas grandes y podrá marcarlos él mismo.
+      </p>
+    </div>
+    <div class="row wrap">
+      <button class="btn btn-ghost" type="button" (click)="sortByTime()"><span class="icon">schedule</span> Ordenar por hora</button>
+      <a class="btn btn-soft" routerLink="/nino/mi-dia"><span class="icon">visibility</span> Verlo como el niño</a>
+      <button class="btn btn-primary" type="button" (click)="openNew()"><span class="icon">add</span> Agregar paso</button>
+    </div>
+  </header>
+
+  <section class="card summary">
+    <app-progress-ring [value]="share()" [text]="done() + '/' + steps().length" [size]="84" />
+    <div>
+      <h2>{{ done() === steps().length && steps().length ? '¡Día completo! 🌟' : 'Hoy lleva ' + done() + ' de ' + steps().length + ' pasos' }}</h2>
+      <p class="muted">Las marcas se reinician solas cada día.</p>
+    </div>
+  </section>
+
+  @if (loading()) {
+    <div class="skeleton"></div>
+  } @else {
+    <ol class="timeline">
+      @for (step of steps(); track step.id; let i = $index; let last = $last) {
+        <li class="step" [class.done]="step.completedToday">
+          <span class="time">{{ shortTime(step.scheduledTime) || '—' }}</span>
+          <span class="dot"></span>
+          <div class="step-card">
+            <button class="emoji" type="button" [attr.aria-label]="'Marcar ' + step.title" (click)="toggle(step)">
+              {{ step.icon }}
+              @if (step.completedToday) {
+                <span class="tick icon fill">check_circle</span>
+              }
+            </button>
+            <div class="grow">
+              <strong>{{ step.title }}</strong>
+              <span class="muted small">{{ step.completedToday ? 'Hecho hoy' : 'Pendiente' }}</span>
+            </div>
+            <div class="tools">
+              <button class="btn btn-ghost btn-icon" type="button" title="Subir" [disabled]="i === 0" (click)="move(i, -1)">
+                <span class="icon">arrow_upward</span>
+              </button>
+              <button class="btn btn-ghost btn-icon" type="button" title="Bajar" [disabled]="last" (click)="move(i, 1)">
+                <span class="icon">arrow_downward</span>
+              </button>
+              <button class="btn btn-ghost btn-icon" type="button" title="Editar" (click)="openEdit(step)">
+                <span class="icon">edit</span>
+              </button>
+            </div>
+          </div>
+        </li>
+      } @empty {
+        <div class="empty card"><span class="icon">view_timeline</span><p>Agrega el primer paso de su día.</p></div>
+      }
+    </ol>
+  }
+</div>
+
+@if (editing(); as target) {
+  <div class="backdrop" (click)="editing.set(null)">
+    <form class="dialog" (click)="$event.stopPropagation()" (ngSubmit)="save()">
+      <h2>{{ target === 'new' ? 'Nuevo paso' : 'Editar paso' }}</h2>
+      <p class="muted small">Usa frases cortas y concretas, como las diría {{ childStore.name() }}.</p>
+
+      <div class="preview">
+        <span>{{ form.icon }}</span>
+        <strong>{{ form.title || 'Nombre del paso' }}</strong>
+      </div>
+
+      <div class="stack">
+        <label class="field">
+          <span>Nombre</span>
+          <input class="input" name="title" maxlength="60" [(ngModel)]="form.title" placeholder="Ej. Ir a terapia" />
+        </label>
+        <label class="field">
+          <span>Hora (opcional)</span>
+          <input class="input" type="time" name="time" [(ngModel)]="form.scheduledTime" />
+        </label>
+        <div class="field">
+          <span>Ícono</span>
+          <div class="icons">
+            @for (icon of icons; track icon) {
+              <button type="button" [class.active]="form.icon === icon" (click)="form.icon = icon">{{ icon }}</button>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="dialog-actions">
+        @if (target !== 'new') {
+          <button class="btn btn-ghost" type="button" (click)="remove(target)"><span class="icon">delete</span> Quitar</button>
+          <span class="spacer"></span>
+        }
+        <button class="btn btn-ghost" type="button" (click)="editing.set(null)">Cancelar</button>
+        <button class="btn btn-primary" type="submit" [disabled]="saving()">Guardar</button>
+      </div>
+    </form>
+  </div>
+}

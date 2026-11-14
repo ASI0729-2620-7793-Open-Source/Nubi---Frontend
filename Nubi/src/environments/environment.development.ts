@@ -1,17 +1,5 @@
 export const environment = {
   production: false,
-  apiBaseUrl: '/api',
-  calmingResourcesEndpoint: '/calmingResources',
-  favoriteResourcesEndpoint: '/favoriteResources',
-  communicationRequestsEndpoint: '/communicationRequests',
-  calmSessionsEndpoint: '/calmSessions',
-  profilesEndpoint: '/profiles',
-  caregiversEndpoint: '/caregivers',
-  actionGuidesEndpoint: '/actionGuides',
-  sosSessionsEndpoint: '/sosSessions',
-  accountsEndpoint: '/accounts',
-  institutionsEndpoint: '/institutions',
-  myPlanEndpoint: '/subscriptions',
-  paymentsEndpoint: '/payments',
-  ticketsEndpoint: '/tickets',
+  // En desarrollo el proxy (proxy.conf.cjs) envía /api al backend en http://localhost:8080
+  apiBaseUrl: '/api/v1',
 };

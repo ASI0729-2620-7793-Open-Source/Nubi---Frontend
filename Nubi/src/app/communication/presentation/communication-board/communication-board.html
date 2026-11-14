@@ -1,0 +1,153 @@
+<div class="page">
+  <header class="page-head">
+    <div>
+      <p class="eyebrow">Comunicación asistida</p>
+      <h1>Las palabras de {{ childStore.name() }}</h1>
+      <p class="lead">
+        Toca un pictograma para escucharlo. Los marcados con ⭐ aparecen como acceso rápido en su modo niño (máximo
+        {{ board()?.maxFavorites ?? 8 }}).
+      </p>
+    </div>
+    <div class="row wrap">
+      <button class="btn btn-ghost" type="button" (click)="dialog.set('category')"><span class="icon">create_new_folder</span> Categoría</button>
+      <button class="btn btn-primary" type="button" (click)="openPictogram()"><span class="icon">add</span> Pictograma</button>
+    </div>
+  </header>
+
+  @if (loading()) {
+    <div class="skeleton" style="min-height: 320px"></div>
+  } @else if (board(); as board) {
+    <div class="layout">
+      <section class="card board">
+        <div class="tabs">
+          <button type="button" [class.active]="categoryId() === 'FAV'" (click)="categoryId.set('FAV')">⭐ Favoritos</button>
+          @for (category of board.categories; track category.id) {
+            <button type="button" [class.active]="categoryId() === category.id" (click)="categoryId.set(category.id)">
+              {{ categoryIcon[category.type] }} {{ category.name }}
+            </button>
+          }
+        </div>
+
+        <div class="pictos">
+          @for (pictogram of shown(); track pictogram.id) {
+            <button type="button" class="picto" (click)="say(pictogram)">
+              <span class="star" [class.on]="pictogram.favorite" role="button" [attr.aria-label]="pictogram.favorite ? 'Quitar de favoritos' : 'Marcar favorito'" (click)="toggleFavorite(pictogram, $event)">
+                <span class="icon" [class.fill]="pictogram.favorite">star</span>
+              </span>
+              @if (visual(pictogram).image; as image) {
+                <img [src]="image" alt="" />
+              } @else {
+                <span class="emoji">{{ visual(pictogram).emoji }}</span>
+              }
+              <strong>{{ pictogram.label }}</strong>
+              <span class="phrase">"{{ pictogram.phrase }}"</span>
+            </button>
+          } @empty {
+            <div class="empty"><span class="icon">grid_view</span><p>No hay pictogramas aquí todavía.</p></div>
+          }
+        </div>
+      </section>
+
+      <aside class="stack">
+        <section class="card">
+          <div class="card-head">
+            <h3><span class="icon">mark_chat_unread</span> Por atender</h3>
+            @if (pending().length) {
+              <span class="chip sun">{{ pending().length }}</span>
+            }
+          </div>
+          @for (selection of pending(); track selection.id) {
+            @if (pictogram(selection.pictogramId); as p) {
+              <div class="message">
+                <span class="msg-emoji">{{ visual(p).emoji ?? '🖼️' }}</span>
+                <div class="grow">
+                  <strong>"{{ p.phrase }}"</strong>
+                  <span class="muted small">{{ relative(selection.selectedAt) }}</span>
+                </div>
+              </div>
+              <div class="msg-actions">
+                <button class="btn btn-soft btn-sm" type="button" (click)="mark(selection, 'understood')">👍 Entendí</button>
+                <button class="btn btn-ghost btn-sm" type="button" (click)="mark(selection, 'not-understood')">🤔 No entendí</button>
+              </div>
+            }
+          } @empty {
+            <div class="empty"><span class="icon">done_all</span><p>Nada pendiente.</p></div>
+          }
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <h3><span class="icon">history</span> Lo que dijo</h3>
+            @if (understoodShare() !== null) {
+              <span class="chip mint">{{ understoodShare() }}% entendido</span>
+            }
+          </div>
+          <div class="list">
+            @for (selection of history(); track selection.id) {
+              @if (pictogram(selection.pictogramId); as p) {
+                <div class="list-item compact">
+                  <span>{{ visual(p).emoji ?? '🖼️' }}</span>
+                  <span class="grow small">{{ p.label }}</span>
+                  <span class="chip" [class]="'chip ' + statuses[selection.status].chip">{{ statuses[selection.status].label }}</span>
+                </div>
+              }
+            } @empty {
+              <p class="muted small">Cuando use el tablero, verás aquí sus mensajes.</p>
+            }
+          </div>
+          <a class="btn btn-ghost btn-sm btn-block" routerLink="/nino/hablar">Abrir su tablero grande</a>
+        </section>
+      </aside>
+    </div>
+  }
+</div>
+
+@if (dialog() === 'pictogram') {
+  <div class="backdrop" (click)="dialog.set(null)">
+    <form class="dialog" (click)="$event.stopPropagation()" (ngSubmit)="createPictogram()">
+      <h2>Nuevo pictograma</h2>
+      <p class="muted small">Palabras concretas que use en casa: su comida favorita, su juguete, un lugar.</p>
+      <div class="picto-preview">
+        <span>{{ newPictogram.emoji }}</span>
+        <strong>{{ newPictogram.label || 'Palabra' }}</strong>
+      </div>
+      <div class="stack">
+        <label class="field"><span>Palabra</span><input class="input" name="label" maxlength="100" [(ngModel)]="newPictogram.label" placeholder="Galleta" /></label>
+        <label class="field"><span>Frase que se dirá</span><input class="input" name="phrase" maxlength="255" [(ngModel)]="newPictogram.phrase" placeholder="Quiero una galleta" /></label>
+        <label class="field">
+          <span>Categoría</span>
+          <select class="select" name="category" [(ngModel)]="newPictogram.categoryId">
+            @for (category of board()?.categories; track category.id) {
+              <option [ngValue]="category.id">{{ category.name }}</option>
+            }
+          </select>
+        </label>
+        <div class="field">
+          <span>Imagen</span>
+          <div class="emoji-grid">
+            @for (emoji of emojiChoices; track emoji) {
+              <button type="button" [class.active]="newPictogram.emoji === emoji" (click)="newPictogram.emoji = emoji">{{ emoji }}</button>
+            }
+          </div>
+        </div>
+      </div>
+      <div class="dialog-actions">
+        <button class="btn btn-ghost" type="button" (click)="dialog.set(null)">Cancelar</button>
+        <button class="btn btn-primary" type="submit">Crear</button>
+      </div>
+    </form>
+  </div>
+}
+
+@if (dialog() === 'category') {
+  <div class="backdrop" (click)="dialog.set(null)">
+    <form class="dialog" (click)="$event.stopPropagation()" (ngSubmit)="createCategory()">
+      <h2>Nueva categoría</h2>
+      <label class="field"><span>Nombre</span><input class="input" name="name" maxlength="100" [(ngModel)]="newCategory" placeholder="Colegio" /></label>
+      <div class="dialog-actions">
+        <button class="btn btn-ghost" type="button" (click)="dialog.set(null)">Cancelar</button>
+        <button class="btn btn-primary" type="submit">Crear</button>
+      </div>
+    </form>
+  </div>
+}

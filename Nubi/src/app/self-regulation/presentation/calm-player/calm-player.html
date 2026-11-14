@@ -1,0 +1,110 @@
+<div class="player" [class.kid]="kidMode()" [style.background]="lookOf(resource()?.code ?? '').gradient">
+  <header class="top">
+    <button class="round" type="button" aria-label="Salir" (click)="finish()">
+      <span class="icon">close</span>
+    </button>
+    <div class="title">
+      <span>{{ lookOf(resource()?.code ?? '').emoji }}</span>
+      <strong>{{ resource()?.name ?? 'Momento de calma' }}</strong>
+    </div>
+    @if (phase() === 'playing' && (session()?.timer?.running || remaining() > 0)) {
+      <span class="clock"><span class="icon">timer</span> {{ clock() }}</span>
+    } @else {
+      <span class="clock ghost"></span>
+    }
+  </header>
+
+  @if (error()) {
+    <div class="center">
+      <div class="alert"><span class="icon">error</span>{{ error() }}</div>
+      <button class="btn btn-primary" type="button" (click)="leave()">Volver</button>
+    </div>
+  } @else if (phase() === 'playing') {
+    <section class="stage-area">
+      @switch (resource()?.type) {
+        @case ('GUIDED_BREATHING') {
+          <div class="activity"><app-breathing-balloon [kid]="kidMode()" [paused]="paused()" /></div>
+        }
+        @case ('DRAWING_CANVAS') {
+          <div class="activity canvas"><app-calm-canvas /></div>
+        }
+        @default {
+          @if (resource(); as res) {
+            <app-stimulus-stage
+              class="stage"
+              [code]="res.code"
+              [intensity]="intensityShare()"
+              [lowStimulation]="!!session()?.lowStimulationActive || paused()"
+            />
+          }
+        }
+      }
+
+      @if (needsAudioTap()) {
+        <button class="audio-tap" type="button" (click)="startAudio()">
+          <span class="icon fill">volume_up</span> Tocar para escuchar
+        </button>
+      }
+      @if (paused()) {
+        <div class="paused-badge"><span class="icon fill">pause_circle</span> En pausa</div>
+      }
+      @if (session()?.shouldSuggestHelp) {
+        <div class="help">
+          <p><strong>Se acabó el tiempo.</strong> ¿Sigue inquieto?</p>
+          <div class="row wrap">
+            <button class="btn btn-soft" type="button" (click)="startTimer(5)">5 minutos más</button>
+            <a class="btn btn-danger" routerLink="/sos"><span class="icon fill">sos</span> Pedir ayuda</a>
+          </div>
+        </div>
+      }
+    </section>
+
+    <footer class="controls" [class.hidden]="!showControls()">
+      @if (isStimulus()) {
+        <label class="intensity">
+          <span class="icon">tune</span>
+          <input
+            type="range"
+            min="1"
+            [max]="resource()?.maxIntensity ?? 10"
+            [value]="session()?.intensity ?? 5"
+            (input)="setIntensity(+$any($event.target).value)"
+            aria-label="Intensidad"
+          />
+          <span class="strong">{{ session()?.intensity }}</span>
+        </label>
+      }
+      <div class="buttons">
+        <button class="round" type="button" [attr.aria-label]="paused() ? 'Continuar' : 'Pausar'" (click)="togglePause()">
+          <span class="icon fill">{{ paused() ? 'play_arrow' : 'pause' }}</span>
+        </button>
+        @if (isStimulus()) {
+          <button class="round" type="button" [class.on]="session()?.lowStimulationActive" title="Baja estimulación" (click)="toggleLowStimulation()">
+            <span class="icon">contrast</span>
+          </button>
+        }
+        @if (!kidMode()) {
+          @for (minutes of durations; track minutes) {
+            <button class="pill" type="button" (click)="startTimer(minutes)">{{ minutes }} min</button>
+          }
+        }
+        <button class="btn btn-primary" type="button" (click)="finish()">
+          <span class="icon">check</span> {{ kidMode() ? 'Ya estoy mejor' : 'Terminar' }}
+        </button>
+      </div>
+    </footer>
+  } @else if (phase() === 'ask') {
+    <div class="center ask">
+      <span class="big">🌟</span>
+      <h1>¿Cómo te sientes ahora?</h1>
+      <app-mood-picker [kid]="true" (picked)="answer($event)" />
+      <button class="btn btn-ghost" type="button" (click)="leave()">Saltar</button>
+    </div>
+  } @else {
+    <div class="center ask">
+      <span class="big">💙</span>
+      <h1>¡Muy bien!</h1>
+      <p class="lead">Lo hiciste genial.</p>
+    </div>
+  }
+</div>

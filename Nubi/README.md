@@ -1,59 +1,53 @@
-# Nubi
+# Nubi · Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.0.
+Aplicación web (Angular 22) de **Nubi**: acompaña a **un niño con autismo (TEA)** por cuenta y le ayuda
+a relajarse, mientras su familia y su red de apoyo hacen el seguimiento.
 
-## Development server
+Funciona contra el backend **Nubi.Platform.Backend** (Spring Boot, `http://localhost:8080/api/v1`).
 
-To start a local development server, run:
+## Cómo correrlo
 
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+1. Levanta el backend (`./mvnw spring-boot:run` en `Nubi.Platform.Backend`). Al arrancar crea la cuenta demo
+   `demo@nubi.app` / `nubi123` con un niño de ejemplo.
+2. En esta carpeta:
 
 ```bash
-ng generate component component-name
+npm install
+npm start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Abre `http://localhost:4200`. En desarrollo, `proxy.conf.cjs` reenvía `/api` al backend en el puerto 8080.
+Para producción, cambia `apiBaseUrl` en `src/environments/environment.ts` por la URL pública del backend.
 
-```bash
-ng generate --help
-```
+## Dos formas de usar Nubi
 
-## Building
+| Modo | Para quién | Qué tiene |
+| --- | --- | --- |
+| **Modo cuidador** (barra lateral) | Familia, terapeutas | Inicio, Rutina visual, Rincón de calma, Comunicación, Progreso, Red de apoyo, Perfil del niño, Mi plan |
+| **Modo niño** (`/nino`) | El niño | Pantalla completa y botones grandes: ¿cómo te sientes?, sus estímulos favoritos, hablar con pictogramas y "Mi día". Para salir, un adulto mantiene presionado el botón 2 s |
 
-To build the project run:
+El **Modo SOS** y el **reproductor de calma** también son de pantalla completa.
 
-```bash
-ng build
-```
+## Funcionalidades
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- **Registro e inicio de sesión reales** (IAM del backend) y bienvenida en 3 pasos para registrar al único niño.
+- **Rincón de calma**: estímulos visuales y sonoros (el backend oculta los que no van con su perfil sensorial),
+  **respiración guiada del globo** y **dibujo tranquilo** con "arena mágica"; intensidad, baja estimulación,
+  pausa y temporizador sincronizados con la sesión de calma del backend. Al terminar se pregunta cómo se siente.
+- **Rutina visual** (nuevo contexto del backend): pasos del día con ícono y hora, marcar hecho, reordenar.
+  El niño la ve como tarjetas grandes con celebración y voz.
+- **Comunicación asistida**: tablero de pictogramas con voz, favoritos, pictogramas y categorías propias;
+  los mensajes del niño le llegan al cuidador "por atender".
+- **Modo SOS**: guía de contención paso a paso ordenada según el detonante, técnicas alternativas,
+  respiración y llamada a contactos; al cerrar, el episodio se registra solo en la red de apoyo.
+- **Progreso** (nuevo): tendencia del ánimo, distribución, momentos de calma por día, racha, recursos que más
+  le ayudan, detonantes de crisis y efecto de la guía SOS, con mensajes de "lo que Nubi notó".
+- **Red de apoyo**: notas en episodios, recomendaciones, pedidos de ayuda y **reportes automáticos** del periodo
+  para compartir con su terapeuta.
+- **Perfil sensorial** con modo de **baja estimulación** que suaviza toda la app, y avatar amigable.
 
-## Running unit tests
+## Estructura
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Un directorio por Bounded Context (`iam`, `profile`, `self-regulation`, `routine`, `communication`, `crisis`,
+`support-network`, `insights`, `dashboard`, `kid-mode`) con capas `domain`, `infrastructure`, `application`
+y `presentation`. Lo común está en `shared`.

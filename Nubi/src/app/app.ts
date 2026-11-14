@@ -1,12 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ToastOutlet } from './shared/presentation/toast-outlet/toast-outlet';
 
 @Component({
-  imports: [RouterOutlet],
   selector: 'app-root',
-  styleUrl: './app.css',
-  templateUrl: './app.html',
+  imports: [RouterOutlet, ToastOutlet],
+  template: `<router-outlet /><app-toast-outlet />`,
 })
-export class App {
-  protected readonly title = signal('Nubi');
-}
+export class App {}

@@ -1,0 +1,182 @@
+<div class="page">
+  <section class="head card">
+    @if (avatarOf(child()).image; as image) {
+      <img class="big-avatar" [src]="image" alt="" />
+    } @else {
+      <span class="big-avatar">{{ avatarOf(child()).emoji ?? avatarOf(child()).text }}</span>
+    }
+    <div class="grow">
+      <p class="eyebrow">Perfil del niño</p>
+      <h1>{{ child().firstName }} {{ child().lastName }}</h1>
+      <div class="row wrap">
+        <span class="chip lavender">🧩 Autismo (TEA)</span>
+        <span class="chip">{{ child().age }} años</span>
+        <span class="chip mint">{{ activeCaregivers().length }} cuidadores</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="tabs">
+    <button type="button" [class.active]="tab() === 'datos'" (click)="tab.set('datos')"><span class="icon">badge</span> Datos</button>
+    <button type="button" [class.active]="tab() === 'sentidos'" (click)="tab.set('sentidos')"><span class="icon">hearing</span> Sensibilidades</button>
+    <button type="button" [class.active]="tab() === 'diagnostico'" (click)="tab.set('diagnostico')"><span class="icon">medical_information</span> Diagnóstico</button>
+    <button type="button" [class.active]="tab() === 'red'" (click)="tab.set('red')"><span class="icon">diversity_1</span> Su red</button>
+  </div>
+
+  @switch (tab()) {
+    @case ('datos') {
+      <div class="grid grid-2">
+        <form class="card stack" (ngSubmit)="saveData()">
+          <h2>Datos generales</h2>
+          <div class="form-grid">
+            <label class="field"><span>Nombre</span><input class="input" name="firstName" [(ngModel)]="form.firstName" /></label>
+            <label class="field"><span>Apellido</span><input class="input" name="lastName" [(ngModel)]="form.lastName" /></label>
+            <label class="field"><span>¿Cómo le dicen?</span><input class="input" name="nickname" [(ngModel)]="form.nickname" /></label>
+            <label class="field"><span>Edad</span><input class="input" type="number" min="1" max="18" name="age" [(ngModel)]="form.age" /></label>
+            <label class="field">
+              <span>Género</span>
+              <select class="select" name="gender" [(ngModel)]="form.gender">
+                @for (gender of genders; track gender.value) {
+                  <option [ngValue]="gender.value">{{ gender.label }}</option>
+                }
+              </select>
+            </label>
+            <label class="field">
+              <span>Se comunica con</span>
+              <select class="select" name="need" [(ngModel)]="form.communicativeNeed">
+                @for (need of needs; track need.value) {
+                  <option [ngValue]="need.value">{{ need.label }}</option>
+                }
+              </select>
+            </label>
+          </div>
+          <div class="row"><span class="spacer"></span><button class="btn btn-primary" type="submit" [disabled]="saving()">Guardar</button></div>
+        </form>
+
+        <section class="card stack">
+          <h2>Su avatar</h2>
+          <p class="muted small">Elige algo que le guste: lo verá en su modo niño.</p>
+          <div class="avatars">
+            @for (avatar of avatars; track avatar) {
+              <button type="button" [class.active]="child().photoUrl === 'emoji:' + avatar" (click)="setAvatar('emoji:' + avatar)">{{ avatar }}</button>
+            }
+          </div>
+          <label class="field">
+            <span>O pega el enlace de una foto</span>
+            <span class="row">
+              <input class="input" [(ngModel)]="photoUrl" placeholder="https://…" />
+              <button class="btn btn-soft" type="button" (click)="setAvatar(photoUrl)">Usar</button>
+            </span>
+          </label>
+        </section>
+      </div>
+
+      @if (isPrimary()) {
+        <section class="card danger">
+          <div>
+            <h3>Archivar perfil</h3>
+            <p class="muted small">Cada cuenta acompaña a un solo niño. Si archivas este perfil podrás registrar otro; sus datos no se borran.</p>
+          </div>
+          <button class="btn btn-ghost" type="button" (click)="archive()"><span class="icon">archive</span> Archivar</button>
+        </section>
+      }
+    }
+
+    @case ('sentidos') {
+      <section class="card stack">
+        <div>
+          <h2>Cómo siente el mundo</h2>
+          <p class="muted small">
+            Si una sensibilidad es alta, Nubi oculta los estímulos de ese tipo y pone primero ese paso en la guía SOS.
+          </p>
+        </div>
+        <app-sensory-editor [(value)]="sensory" />
+        <div class="row"><span class="spacer"></span><button class="btn btn-primary" type="button" [disabled]="saving()" (click)="saveSensory()">Guardar sensibilidades</button></div>
+      </section>
+    }
+
+    @case ('diagnostico') {
+      <form class="card stack" (ngSubmit)="saveDiagnosis()">
+        <div class="tea">
+          <span>🧩</span>
+          <div>
+            <h2>Trastorno del Espectro Autista (TEA)</h2>
+            <p class="muted small">Nubi está pensada solo para niños con autismo. Aquí registras lo que te indicó el profesional; no pedimos documentos.</p>
+          </div>
+        </div>
+        <div class="form-grid">
+          <label class="field"><span>Diagnosticado por</span><input class="input" name="by" [(ngModel)]="diagnosis.diagnosedBy" placeholder="Dra. / Dr." /></label>
+          <label class="field"><span>Fecha del diagnóstico</span><input class="input" type="date" name="date" [(ngModel)]="diagnosis.diagnosisDate" /></label>
+        </div>
+        <label class="field">
+          <span>Notas del profesional</span>
+          <textarea class="textarea" name="notes" [(ngModel)]="diagnosis.professionalNotes" placeholder="Nivel de apoyo, lo que le ayuda, lo que evitar…"></textarea>
+        </label>
+        <div class="row"><span class="spacer"></span><button class="btn btn-primary" type="submit" [disabled]="saving()">Guardar</button></div>
+      </form>
+    }
+
+    @case ('red') {
+      <div class="grid grid-2">
+        <section class="card">
+          <div class="card-head"><h2><span class="icon">group</span> Cuidadores</h2></div>
+          <div class="list">
+            @for (caregiver of child().caregivers; track caregiver.id) {
+              <div class="list-item" [class.revoked]="caregiver.status === 'REVOKED'">
+                <span class="avatar">{{ caregiver.invitedEmail.charAt(0).toUpperCase() }}</span>
+                <span class="grow">
+                  <strong>{{ caregiver.invitedEmail }}</strong><br />
+                  <span class="muted small">{{ roles[caregiver.role] }}</span>
+                </span>
+                <span class="chip" [class.mint]="caregiver.status === 'ACTIVE'" [class.sun]="caregiver.status === 'PENDING'">
+                  {{ caregiver.status === 'ACTIVE' ? 'Activo' : caregiver.status === 'PENDING' ? 'Invitado' : 'Sin acceso' }}
+                </span>
+                @if (caregiver.role !== 'PRIMARY' && caregiver.status !== 'REVOKED' && isPrimary()) {
+                  <button class="btn btn-ghost btn-icon" type="button" title="Quitar acceso" (click)="revoke(caregiver.id)"><span class="icon">person_remove</span></button>
+                }
+              </div>
+            }
+          </div>
+          @if (isPrimary()) {
+            <form class="invite" (ngSubmit)="inviteCaregiver()">
+              <input class="input" type="email" name="email" [(ngModel)]="invite.email" placeholder="correo@familia.com" />
+              <select class="select" name="role" [(ngModel)]="invite.role">
+                <option ngValue="CAREGIVER">Cuidador</option>
+                <option ngValue="THERAPIST">Terapeuta</option>
+              </select>
+              <button class="btn btn-primary" type="submit"><span class="icon">person_add</span> Invitar</button>
+            </form>
+            <p class="hint">Tu plan define cuántos cuidadores pueden sumarse.</p>
+          }
+        </section>
+
+        <section class="card">
+          <div class="card-head"><h2><span class="icon">contact_phone</span> Contactos de confianza</h2></div>
+          <p class="muted small">En una crisis se llaman en este orden.</p>
+          <div class="list">
+            @for (c of contacts(); track c.id; let first = $first; let last = $last) {
+              <div class="list-item">
+                <span class="avatar">{{ c.priorityOrder }}</span>
+                <span class="grow"><strong>{{ c.fullName }}</strong><br /><span class="muted small">{{ c.relationship || 'Contacto' }} · {{ c.phone }}</span></span>
+                <button class="btn btn-ghost btn-icon" type="button" [disabled]="first" (click)="moveContact(c, -1)"><span class="icon">arrow_upward</span></button>
+                <button class="btn btn-ghost btn-icon" type="button" [disabled]="last" (click)="moveContact(c, 1)"><span class="icon">arrow_downward</span></button>
+                <button class="btn btn-ghost btn-icon" type="button" (click)="removeContact(c)"><span class="icon">delete</span></button>
+              </div>
+            } @empty {
+              <p class="muted small">Aún no hay contactos.</p>
+            }
+          </div>
+          <form class="stack contact-form" (ngSubmit)="addContact()">
+            <div class="form-grid">
+              <input class="input" name="cname" [(ngModel)]="contact.fullName" placeholder="Nombre" />
+              <input class="input" name="cphone" [(ngModel)]="contact.phone" placeholder="Teléfono" />
+              <input class="input" name="crel" [(ngModel)]="contact.relationship" placeholder="Relación (abuela, tío…)" />
+              <input class="input" name="cmail" type="email" [(ngModel)]="contact.email" placeholder="Correo (opcional)" />
+            </div>
+            <button class="btn btn-soft" type="submit"><span class="icon">add</span> Agregar contacto</button>
+          </form>
+        </section>
+      </div>
+    }
+  }
+</div>

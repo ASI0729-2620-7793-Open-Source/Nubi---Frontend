@@ -1,0 +1,108 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.ask {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  text-align: center;
+}
+.ask h1 {
+  font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+  font-weight: 900;
+  line-height: 1.25;
+}
+.message {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  border-radius: 999px;
+  background: #fff;
+  font-size: clamp(1.1rem, 2.6vw, 1.5rem);
+  font-weight: 800;
+  box-shadow: var(--shadow-m);
+  animation: rise 0.4s var(--ease);
+}
+.message span {
+  font-size: 1.8rem;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(200px, 44%), 1fr));
+  gap: 16px;
+}
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 180px;
+  padding: 20px 12px;
+  border-radius: var(--radius-xl);
+  color: var(--ink);
+  text-align: center;
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  box-shadow: var(--shadow-m);
+  transition: transform 0.25s var(--ease);
+}
+.tile:hover {
+  transform: translateY(-4px) scale(1.01);
+}
+.tile:active {
+  transform: scale(0.97);
+}
+.tile strong {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+}
+.emoji {
+  font-size: clamp(3.4rem, 9vw, 4.6rem);
+  line-height: 1;
+}
+.heart {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-size: 1.3rem;
+}
+
+.row-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: 16px;
+}
+.tile.wide {
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 18px;
+  min-height: 120px;
+  padding: 20px 26px;
+  text-align: left;
+}
+.tile.wide > span:last-child {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+.sub {
+  font-weight: 700;
+  color: var(--ink-2);
+  font-size: 0.95rem;
+}
+.talk {
+  background: linear-gradient(135deg, #e3f1fc, #ece9fb);
+}
+.day {
+  background: linear-gradient(135deg, #fdf1d8, #dff4ee);
+}
