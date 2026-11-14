@@ -10,7 +10,7 @@ export function apiErrorMessage(error: unknown, fallback = 'Algo salió mal. Int
     return fallback;
   }
   if (error.status === 0) {
-    return 'No pudimos conectar con Nubi. Revisa que el backend esté encendido en http://localhost:8080.';
+    return 'No pudimos conectar con Nubi. Si es la primera vez en un rato, el servidor puede tardar un minuto en despertar: inténtalo otra vez.';
   }
   // Red de Apoyo y Seguimiento responde algunos errores como texto plano
   if (typeof error.error === 'string' && error.error.trim().length > 0 && !error.error.startsWith('<')) {
