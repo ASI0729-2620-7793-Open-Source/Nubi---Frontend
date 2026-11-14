@@ -12,13 +12,15 @@ import { moodInfo } from '../../../shared/domain/mood';
 import { apiErrorMessage } from '../../../shared/infrastructure/api-error';
 import { EpisodeRecord, EpisodeReport, HelpRequest, SupportRecommendation } from '../../domain/model/support';
 import { SupportApi } from '../../infrastructure/support-api';
+import { TranslatePipe } from '@ngx-translate/core';
+import { t } from '../../../shared/infrastructure/i18n-bridge';
 
 type Tab = 'episodes' | 'help' | 'reports' | 'tips';
 
 /** Seguimiento con la red de apoyo: episodios, pedidos de ayuda, reportes y recomendaciones. */
 @Component({
   selector: 'app-tracking',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, TranslatePipe],
   templateUrl: './tracking.html',
   styleUrl: './tracking.css',
 })
@@ -45,11 +47,9 @@ export class Tracking implements OnInit {
   protected editingNote: number | null = null;
   protected noteText = '';
   protected helpMessage = '';
-  protected readonly quickMessages = [
-    'Está en crisis, necesito que alguien venga.',
-    '¿Puedes llamarme? Necesito apoyo.',
-    'Está muy inquieto, ¿me ayudas a recogerlo?',
-  ];
+  protected get quickMessages(): string[] {
+    return [t('tracking.quick1'), t('tracking.quick2'), t('tracking.quick3')];
+  }
   protected reportDays = 7;
   protected reportObservations = '';
   protected shareWith: Record<number, string> = {};
@@ -102,7 +102,7 @@ export class Tracking implements OnInit {
       next: (updated) => {
         this.episodes.update((list) => list.map((e) => (e.id === updated.id ? updated : e)));
         this.editingNote = null;
-        this.toast.ok('Nota guardada.');
+        this.toast.ok(t('tracking.notaGuardada'));
       },
       error: (error) => this.toast.error(apiErrorMessage(error)),
     });
@@ -111,7 +111,7 @@ export class Tracking implements OnInit {
   openTip(episode: EpisodeRecord): void {
     this.tipFor = episode;
     this.tipForm = {
-      title: `Si vuelve a pasar por ${triggerLabel(episode.trigger).toLowerCase()}`,
+      title: t('tracking.tipTitle', { p0: triggerLabel(episode.trigger).toLowerCase() }),
       description: '',
       strategy: '',
       actionGuide: '',
@@ -123,7 +123,7 @@ export class Tracking implements OnInit {
     if (!episode) return;
     const { title, description, strategy, actionGuide } = this.tipForm;
     if (!title.trim() || !description.trim() || !strategy.trim() || !actionGuide.trim()) {
-      this.toast.error('Completa todos los campos de la recomendación.');
+      this.toast.error(t('tracking.completaTodosLosCampos'));
       return;
     }
     this.api
@@ -133,7 +133,7 @@ export class Tracking implements OnInit {
           this.tips.update((list) => [tip, ...list]);
           this.tipFor = null;
           this.tab.set('tips');
-          this.toast.ok('Recomendación guardada para toda su red de apoyo.');
+          this.toast.ok(t('tracking.recomendacionGuardadaParaT'));
         },
         error: (error) => this.toast.error(apiErrorMessage(error)),
       });
@@ -143,14 +143,14 @@ export class Tracking implements OnInit {
 
   sendHelp(message = this.helpMessage): void {
     if (!message.trim()) {
-      this.toast.error('Escribe qué necesitas.');
+      this.toast.error(t('tracking.escribeQueNecesitas'));
       return;
     }
     this.api.requestHelp(this.childId, message.trim()).subscribe({
       next: (request) => {
         this.help.update((list) => [request, ...list]);
         this.helpMessage = '';
-        this.toast.ok('Pedido enviado a su red de apoyo.');
+        this.toast.ok(t('tracking.pedidoEnviadoASu'));
       },
       error: (error) => this.toast.error(apiErrorMessage(error)),
     });
@@ -178,12 +178,13 @@ export class Tracking implements OnInit {
     const trigger = topTriggers(this.wellbeing.sosSessions().filter((s) => (toDate(s.startedAt) ?? new Date(0)) >= start))[0];
     const calmMoods = moods.filter((m) => m.level === 'CALM').length;
 
+    const episodeNoun = t(inRange.length === 1 ? 'tracking.rep.episode' : 'tracking.rep.episodes');
     const parts = [
-      `${this.childStore.name()} tuvo ${inRange.length} ${inRange.length === 1 ? 'episodio' : 'episodios'} de crisis en los últimos ${days} días.`,
-      moods.length ? `Estuvo en calma en ${calmMoods} de ${moods.length} registros de ánimo.` : 'No hubo registros de ánimo.',
-      calm.length ? `Usó ${calm.length} momentos de calma (${calmMinutes(calm)} min).` : '',
-      favorite ? `Lo que más le ayudó: ${favorite.label}.` : '',
-      trigger && trigger.key !== 'NONE' ? `Desencadenante más frecuente: ${trigger.label.toLowerCase()}.` : '',
+      t('tracking.rep.summary', { name: this.childStore.name(), count: inRange.length, noun: episodeNoun, days }),
+      moods.length ? t('tracking.rep.calmMoods', { calm: calmMoods, total: moods.length }) : t('tracking.rep.noMoods'),
+      calm.length ? t('tracking.rep.calmUse', { count: calm.length, min: calmMinutes(calm) }) : '',
+      favorite ? t('tracking.rep.favorite', { label: favorite.label }) : '',
+      trigger && trigger.key !== 'NONE' ? t('tracking.rep.trigger', { label: trigger.label.toLowerCase() }) : '',
     ];
 
     this.api
@@ -199,7 +200,7 @@ export class Tracking implements OnInit {
         next: (report) => {
           this.reports.update((list) => [report, ...list]);
           this.reportObservations = '';
-          this.toast.ok('Reporte creado.');
+          this.toast.ok(t('tracking.reporteCreado'));
         },
         error: (error) => this.toast.error(apiErrorMessage(error)),
       });
@@ -208,21 +209,21 @@ export class Tracking implements OnInit {
   share(report: EpisodeReport): void {
     const target = (this.shareWith[report.id] ?? '').trim();
     if (!target) {
-      this.toast.error('Indica con quién lo compartes (nombre o correo).');
+      this.toast.error(t('tracking.indicaConQuienLo'));
       return;
     }
     this.api.shareReport(report.id, target).subscribe({
       next: (updated) => {
         this.reports.update((list) => list.map((r) => (r.id === updated.id ? updated : r)));
-        this.toast.ok(`Reporte compartido con ${target}.`);
+        this.toast.ok(t('tracking.reporteCompartidoCon', { p0: target }));
       },
       error: (error) => this.toast.error(apiErrorMessage(error)),
     });
   }
 
   copy(report: EpisodeReport): void {
-    const text = `Reporte Nubi (${formatDate(report.periodStart)} – ${formatDate(report.periodEnd)})\n${report.summary}${report.observations ? '\nObservaciones: ' + report.observations : ''}`;
-    void navigator.clipboard?.writeText(text).then(() => this.toast.ok('Copiado. Pégalo en WhatsApp o en un correo.'));
+    const text = `${t('tracking.copyHeader', { from: formatDate(report.periodStart), to: formatDate(report.periodEnd) })}\n${report.summary}${report.observations ? `\n${t('tracking.copyNotes')} ${report.observations}` : ''}`;
+    void navigator.clipboard?.writeText(text).then(() => this.toast.ok(t('tracking.copiadoPegaloEnWhatsapp')));
   }
 
   // ---------- Recomendaciones ----------
@@ -231,7 +232,7 @@ export class Tracking implements OnInit {
     this.api.markEffective(tip.id).subscribe({
       next: (updated) => {
         this.tips.update((list) => list.map((t) => (t.id === updated.id ? updated : t)));
-        this.toast.ok('¡Qué bien! La marcamos como efectiva.');
+        this.toast.ok(t('tracking.queBienLaMarcamos'));
       },
       error: (error) => this.toast.error(apiErrorMessage(error)),
     });

@@ -1,3 +1,4 @@
+import { t, withTexts } from '../../../shared/infrastructure/i18n-bridge';
 /**
  * Perfil del niño (Bounded Context Perfil y Personalización). Desde esta versión cada cuenta
  * acompaña a un único niño, y Nubi está pensada solo para niños con autismo (TEA).
@@ -79,49 +80,41 @@ export interface Subscription {
   startedAt: string;
 }
 
-export const GENDERS: { value: Gender; label: string }[] = [
-  { value: 'FEMALE', label: 'Niña' },
-  { value: 'MALE', label: 'Niño' },
-  { value: 'NON_BINARY', label: 'No binario' },
-  { value: 'PREFER_NOT_TO_SAY', label: 'Prefiero no decirlo' },
-];
+export const GENDERS: { value: Gender; label: string }[] = (
+  ['FEMALE', 'MALE', 'NON_BINARY', 'PREFER_NOT_TO_SAY'] as Gender[]
+).map((value) => withTexts({ value }, { label: `genders.${value}` }));
 
 export const COMMUNICATION_NEEDS: { value: CommunicativeNeed; label: string; icon: string; hint: string }[] = [
-  { value: 'PICTOGRAMS', label: 'Pictogramas', icon: 'grid_view', hint: 'Se comunica mejor con imágenes' },
-  { value: 'TEXT', label: 'Texto', icon: 'text_fields', hint: 'Lee o escribe frases cortas' },
-  { value: 'VOICE', label: 'Voz', icon: 'record_voice_over', hint: 'Usa palabras habladas' },
-];
+  { value: 'PICTOGRAMS' as CommunicativeNeed, icon: 'grid_view' },
+  { value: 'TEXT' as CommunicativeNeed, icon: 'text_fields' },
+  { value: 'VOICE' as CommunicativeNeed, icon: 'record_voice_over' },
+].map((need) => withTexts(need, { label: `needs.${need.value}.label`, hint: `needs.${need.value}.hint` }));
 
-export const SENSITIVITY_LEVELS: { value: SensitivityLevel; label: string }[] = [
-  { value: 'LOW', label: 'Baja' },
-  { value: 'MEDIUM', label: 'Media' },
-  { value: 'HIGH', label: 'Alta' },
-  { value: 'VERY_HIGH', label: 'Muy alta' },
-];
+export const SENSITIVITY_LEVELS: { value: SensitivityLevel; label: string }[] = (
+  ['LOW', 'MEDIUM', 'HIGH', 'VERY_HIGH'] as SensitivityLevel[]
+).map((value) => withTexts({ value }, { label: `levels.${value}` }));
 
 export const CAREGIVER_ROLES: Record<CaregiverRole, string> = {
-  PRIMARY: 'Cuidador principal',
-  CAREGIVER: 'Cuidador',
-  THERAPIST: 'Terapeuta',
+  get PRIMARY() {
+    return t('roles.PRIMARY');
+  },
+  get CAREGIVER() {
+    return t('roles.CAREGIVER');
+  },
+  get THERAPIST() {
+    return t('roles.THERAPIST');
+  },
 };
 
-export const PLANS: Record<Subscription['plan'], { name: string; price: string; perks: string[] }> = {
-  FREEMIUM: {
-    name: 'Estándar',
-    price: 'Gratis',
-    perks: ['1 niño acompañado', 'Hasta 2 cuidadores', 'Rincón de calma y rutina visual'],
-  },
-  FAMILY_PREMIUM: {
-    name: 'Familia',
-    price: 'S/ 19.90 al mes',
-    perks: ['1 niño acompañado', 'Hasta 5 cuidadores', 'Toda la familia y terapeutas conectados'],
-  },
-  INSTITUTIONAL: {
-    name: 'Institución',
-    price: 'A medida',
-    perks: ['1 niño por cuenta', 'Hasta 50 cuidadores', 'Ideal para colegios y centros de terapia'],
-  },
-};
+/**
+ * Planes de Nubi, con los mismos nombres, precios y beneficios que la landing page. Los textos
+ * (plans.<key>.name, .price, .description, .perk1 a .perk4) están en public/i18n.
+ */
+export const PLAN_CATALOG: { plan: Subscription['plan']; key: 'standard' | 'premium' | 'institutions'; featured: boolean }[] = [
+  { plan: 'FREEMIUM', key: 'standard', featured: false },
+  { plan: 'FAMILY_PREMIUM', key: 'premium', featured: true },
+  { plan: 'INSTITUTIONAL', key: 'institutions', featured: false },
+];
 
 export function initials(profile: Pick<ChildProfile, 'firstName' | 'lastName'>): string {
   return `${profile.firstName.charAt(0)}${profile.lastName.charAt(0)}`.toUpperCase();

@@ -19,13 +19,15 @@ import {
 } from '../../domain/model/child-profile';
 import { ProfileApi } from '../../infrastructure/profile-api';
 import { SensoryEditor } from '../components/sensory-editor/sensory-editor';
+import { TranslatePipe } from '@ngx-translate/core';
+import { t } from '../../../shared/infrastructure/i18n-bridge';
 
 type Tab = 'datos' | 'sentidos' | 'diagnostico' | 'red';
 
 /** Ficha del niño: datos, perfil sensorial, diagnóstico de autismo y su red de cuidado. */
 @Component({
   selector: 'app-child-profile',
-  imports: [FormsModule, SensoryEditor],
+  imports: [FormsModule, SensoryEditor, TranslatePipe],
   templateUrl: './child-profile.html',
   styleUrl: './child-profile.css',
 })
@@ -100,7 +102,7 @@ export class ChildProfilePage implements OnInit {
   saveData(): void {
     this.saving.set(true);
     this.api.update(this.id, this.form).subscribe({
-      next: (child) => this.done(() => this.childStore.set(child), 'Datos guardados.'),
+      next: (child) => this.done(() => this.childStore.set(child), t('childProfile.saved')),
       error: (error) => this.fail(error),
     });
   }
@@ -110,7 +112,7 @@ export class ChildProfilePage implements OnInit {
     this.api.updatePhoto(this.id, value).subscribe({
       next: (child) => {
         this.childStore.set(child);
-        this.toast.ok('¡Nuevo avatar!');
+        this.toast.ok(t('childProfile.nuevoAvatar'));
       },
       error: (error) => this.fail(error),
     });
@@ -121,7 +123,7 @@ export class ChildProfilePage implements OnInit {
     this.saving.set(true);
     this.api.updateSensory(this.id, sensory).subscribe({
       next: (saved) =>
-        this.done(() => this.childStore.patch({ sensoryProfile: saved }), 'Perfil sensorial guardado. Nubi ajustó sus estímulos.'),
+        this.done(() => this.childStore.patch({ sensoryProfile: saved }), t('childProfile.sensorySaved')),
       error: (error) => this.fail(error),
     });
   }
@@ -135,7 +137,7 @@ export class ChildProfilePage implements OnInit {
         professionalNotes: this.diagnosis.professionalNotes.trim() || null,
       })
       .subscribe({
-        next: (diagnosis) => this.done(() => this.childStore.patch({ diagnosis }), 'Diagnóstico actualizado.'),
+        next: (diagnosis) => this.done(() => this.childStore.patch({ diagnosis }), t('childProfile.diagnosisUpdated')),
         error: (error) => this.fail(error),
       });
   }
@@ -145,7 +147,7 @@ export class ChildProfilePage implements OnInit {
     this.api.inviteCaregiver(this.id, this.invite.email.trim(), this.invite.role).subscribe({
       next: (caregiver) => {
         this.childStore.patch({ caregivers: [...this.child().caregivers, caregiver] });
-        this.toast.ok(`Invitación enviada a ${caregiver.invitedEmail}.`);
+        this.toast.ok(t('childProfile.invitacionEnviadaA', { p0: caregiver.invitedEmail }));
         this.invite = { email: '', role: 'CAREGIVER' };
       },
       error: (error) => this.fail(error),
@@ -153,11 +155,11 @@ export class ChildProfilePage implements OnInit {
   }
 
   revoke(caregiverId: number): void {
-    if (!confirm('¿Quitar el acceso de este cuidador?')) return;
+    if (!confirm(t('childProfile.quitarElAccesoDe'))) return;
     this.api.revokeCaregiver(this.id, caregiverId).subscribe({
       next: (updated) => {
         this.childStore.patch({ caregivers: this.child().caregivers.map((c) => (c.id === updated.id ? updated : c)) });
-        this.toast.ok('Acceso retirado.');
+        this.toast.ok(t('childProfile.accesoRetirado'));
       },
       error: (error) => this.fail(error),
     });
@@ -166,7 +168,7 @@ export class ChildProfilePage implements OnInit {
   addContact(): void {
     const { fullName, phone, email, relationship } = this.contact;
     if (!fullName.trim() || !phone.trim()) {
-      this.toast.error('El contacto necesita nombre y teléfono.');
+      this.toast.error(t('childProfile.elContactoNecesitaNombre'));
       return;
     }
     const priorityOrder = Math.max(0, ...this.child().trustedContacts.map((c) => c.priorityOrder)) + 1;
@@ -176,7 +178,7 @@ export class ChildProfilePage implements OnInit {
         next: (created) => {
           this.childStore.patch({ trustedContacts: [...this.child().trustedContacts, created] });
           this.contact = { fullName: '', phone: '', email: '', relationship: '' };
-          this.toast.ok('Contacto agregado.');
+          this.toast.ok(t('childProfile.contactoAgregado'));
         },
         error: (error) => this.fail(error),
       });
@@ -203,11 +205,11 @@ export class ChildProfilePage implements OnInit {
 
   archive(): void {
     const name = this.child().displayName;
-    if (!confirm(`¿Archivar el perfil de ${name}? Dejará de aparecer en Nubi y podrás registrar a otro niño.`)) return;
+    if (!confirm(t('childProfile.archivarElPerfilDe', { p0: name }))) return;
     this.api.archive(this.id).subscribe({
       next: () => {
         this.childStore.clear();
-        this.toast.info(`El perfil de ${name} quedó archivado.`);
+        this.toast.info(t('childProfile.elPerfilDeQuedo', { p0: name }));
         void this.router.navigate(['/bienvenida']);
       },
       error: (error) => this.fail(error),

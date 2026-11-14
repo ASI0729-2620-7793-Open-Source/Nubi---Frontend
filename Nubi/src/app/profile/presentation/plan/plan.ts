@@ -3,21 +3,23 @@ import { ToastStore } from '../../../shared/application/toast.store';
 import { formatDate } from '../../../shared/domain/dates';
 import { apiErrorMessage } from '../../../shared/infrastructure/api-error';
 import { ChildStore } from '../../application/child.store';
-import { PLANS, Subscription } from '../../domain/model/child-profile';
+import { PLAN_CATALOG, Subscription } from '../../domain/model/child-profile';
 import { ProfileApi } from '../../infrastructure/profile-api';
+import { TranslatePipe } from '@ngx-translate/core';
+import { t } from '../../../shared/infrastructure/i18n-bridge';
 
 /** Suscripción de la cuenta (US-46 a US-48). Todos los planes acompañan a un solo niño. */
 @Component({
   selector: 'app-plan',
+  imports: [TranslatePipe],
   template: `
     <div class="page">
       <header class="page-head">
         <div>
-          <p class="eyebrow">Mi plan</p>
-          <h1>Un niño, toda su red</h1>
+          <p class="eyebrow">{{ 'common.miPlan' | translate }}</p>
+          <h1>{{ 'plan.unNinoTodaSu' | translate }}</h1>
           <p class="lead">
-            Cada cuenta acompaña a un único niño con autismo. Los planes cambian cuántas personas pueden cuidarlo
-            contigo.
+            {{ 'plan.cadaCuentaAcompanaA' | translate }}
           </p>
         </div>
       </header>
@@ -25,30 +27,33 @@ import { ProfileApi } from '../../infrastructure/profile-api';
       @if (subscription(); as current) {
         <div class="alert ok">
           <span class="icon">verified</span>
-          Tienes el plan <strong>&nbsp;{{ plans[current.plan].name }}&nbsp;</strong> desde el {{ formatDate(current.startedAt) }}:
-          {{ childStore.child()?.caregivers?.length ?? 0 }} de {{ current.maxCaregiversPerProfile }} cuidadores en uso.
+          {{ 'plan.tienesElPlan' | translate }} <strong>&nbsp;{{ currentName(current.plan) | translate }}&nbsp;</strong> {{ 'plan.desdeElDeCuidadores' | translate: { p0: (formatDate(current.startedAt)), p1: (childStore.child()?.caregivers?.length ?? 0), p2: (current.maxCaregiversPerProfile) } }}
         </div>
       }
 
       <div class="grid grid-3">
-        @for (id of planIds; track id) {
-          <article class="card plan" [class.current]="subscription()?.plan === id">
-            <h2>{{ plans[id].name }}</h2>
-            <p class="price">{{ plans[id].price }}</p>
+        @for (item of catalog; track item.plan) {
+          <article class="card plan" [class.current]="subscription()?.plan === item.plan">
+            @if (item.featured) {
+              <span class="chip sun">{{ 'plans.featured' | translate }}</span>
+            }
+            <h2>{{ 'plans.' + item.key + '.name' | translate }}</h2>
+            <p class="price">{{ 'plans.' + item.key + '.price' | translate }}</p>
+            <p class="muted">{{ 'plans.' + item.key + '.description' | translate }}</p>
             <ul>
-              @for (perk of plans[id].perks; track perk) {
-                <li><span class="icon">check_circle</span> {{ perk }}</li>
+              @for (n of perkNumbers; track n) {
+                <li><span class="icon">check_circle</span> {{ 'plans.' + item.key + '.perk' + n | translate }}</li>
               }
             </ul>
-            @if (subscription()?.plan === id) {
-              <span class="chip mint">Tu plan actual</span>
+            @if (subscription()?.plan === item.plan) {
+              <span class="chip mint">{{ 'plan.tuPlanActual' | translate }}</span>
             } @else {
-              <button class="btn btn-primary" type="button" [disabled]="busy()" (click)="change(id)">Cambiar a {{ plans[id].name }}</button>
+              <button class="btn btn-primary" type="button" [disabled]="busy()" (click)="change(item.plan)">{{ 'plan.cambiarA' | translate: { p0: ('plans.' + item.key + '.name' | translate) } }}</button>
             }
           </article>
         }
       </div>
-      <p class="muted small">Es una demostración: el cambio de plan no realiza cobros.</p>
+      <p class="muted small">{{ 'plan.esUnaDemostracionEl' | translate }}</p>
     </div>
   `,
   styles: `
@@ -91,8 +96,8 @@ export class Plan implements OnInit {
   private readonly api = inject(ProfileApi);
   private readonly toast = inject(ToastStore);
   protected readonly childStore = inject(ChildStore);
-  protected readonly plans = PLANS;
-  protected readonly planIds = Object.keys(PLANS) as Subscription['plan'][];
+  protected readonly catalog = PLAN_CATALOG;
+  protected readonly perkNumbers = [1, 2, 3, 4];
   protected readonly subscription = signal<Subscription | null>(null);
   protected readonly busy = signal(false);
   protected readonly formatDate = formatDate;
@@ -104,13 +109,18 @@ export class Plan implements OnInit {
     });
   }
 
+  /** Clave del nombre traducido del plan según su código del backend. */
+  protected currentName(plan: Subscription['plan']): string {
+    return `plans.${PLAN_CATALOG.find((item) => item.plan === plan)?.key ?? 'standard'}.name`;
+  }
+
   change(plan: Subscription['plan']): void {
     this.busy.set(true);
     this.api.changePlan(plan).subscribe({
       next: (subscription) => {
         this.subscription.set(subscription);
         this.busy.set(false);
-        this.toast.ok(`Ahora tienes el plan ${PLANS[plan].name}.`);
+        this.toast.ok(t('plan.ahoraTienesElPlan', { p0: t(this.currentName(plan)) }));
       },
       error: (error) => {
         this.busy.set(false);

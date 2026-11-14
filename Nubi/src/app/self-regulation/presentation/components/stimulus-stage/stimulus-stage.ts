@@ -1,4 +1,5 @@
 import { Component, computed, input } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 
 type Scene = 'bubbles' | 'waves' | 'stars' | 'rain' | 'ocean' | 'piano';
@@ -41,6 +42,7 @@ function particles(
  */
 @Component({
   selector: 'app-stimulus-stage',
+  imports: [TranslatePipe],
 
   templateUrl: './stimulus-stage.html',
   styleUrls: ['./stimulus-stage.css', './stimulus-scenes.css'],

@@ -3,6 +3,9 @@ import { speak } from '../../../communication/domain/model/board';
 import { ChildStore } from '../../../profile/application/child.store';
 import { RoutineStep, nextStep, shortTime } from '../../../routine/domain/model/routine-step';
 import { RoutineApi } from '../../../routine/infrastructure/routine-api';
+import { TranslatePipe } from '@ngx-translate/core';
+import { st, t } from '../../../shared/infrastructure/i18n-bridge';
+import { ServerTextPipe } from '../../../shared/presentation/server-text.pipe';
 
 /**
  * "Mi día": la rutina en tarjetas grandes. El paso actual se destaca; al tocarlo se marca como
@@ -10,9 +13,10 @@ import { RoutineApi } from '../../../routine/infrastructure/routine-api';
  */
 @Component({
   selector: 'app-kid-day',
+  imports: [TranslatePipe, ServerTextPipe],
   template: `
-    <h1>{{ allDone() ? '¡Terminaste tu día! 🌟' : 'Mi día' }}</h1>
-    <div class="stars" aria-label="Pasos hechos">
+    <h1>{{ allDone() ? ('kidDay.terminasteTuDia' | translate) : ('common.miDia' | translate) }}</h1>
+    <div class="stars" [attr.aria-label]="'kidDay.pasosHechos' | translate">
       @for (step of steps(); track step.id) {
         <span [class.on]="step.completedToday">⭐</span>
       }
@@ -20,10 +24,10 @@ import { RoutineApi } from '../../../routine/infrastructure/routine-api';
 
     @if (current(); as step) {
       <button type="button" class="now" (click)="toggle(step)">
-        <span class="label">Ahora</span>
+        <span class="label">{{ 'kidDay.ahora' | translate }}</span>
         <span class="emoji">{{ step.icon }}</span>
-        <strong>{{ step.title }}</strong>
-        <span class="hint">Toca cuando termines ✔️</span>
+        <strong>{{ step.title | serverText }}</strong>
+        <span class="hint">{{ 'kidDay.tocaCuandoTermines' | translate }}</span>
       </button>
     }
 
@@ -32,7 +36,7 @@ import { RoutineApi } from '../../../routine/infrastructure/routine-api';
         <li>
           <button type="button" class="card-step" [class.done]="step.completedToday" [class.current]="current()?.id === step.id" (click)="toggle(step)">
             <span class="emoji">{{ step.icon }}</span>
-            <span class="title">{{ step.title }}</span>
+            <span class="title">{{ step.title | serverText }}</span>
             <span class="time">{{ shortTime(step.scheduledTime) }}</span>
             @if (step.completedToday) {
               <span class="check">✔️</span>
@@ -223,7 +227,7 @@ export class KidDay implements OnInit {
           this.celebrate.set(true);
           setTimeout(() => this.celebrate.set(false), 1200);
           const next = this.current();
-          speak(next ? `¡Muy bien! Ahora: ${next.title}` : '¡Terminaste tu día! ¡Muy bien!');
+          speak(next ? t('kidDay.wellDoneNext', { p0: st(next.title) }) : t('kidDay.allDoneSpeech'));
         }
       },
       error: () => {},

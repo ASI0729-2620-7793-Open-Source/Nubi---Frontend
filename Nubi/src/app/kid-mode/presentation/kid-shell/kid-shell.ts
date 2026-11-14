@@ -2,6 +2,7 @@ import { Component, OnDestroy, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ChildStore } from '../../../profile/application/child.store';
 import { avatarOf } from '../../../profile/domain/model/child-profile';
+import { TranslatePipe } from '@ngx-translate/core';
 
 /**
  * Modo niño: pantalla completa, sin menús de configuración y con muy pocas opciones a la vez.
@@ -11,16 +12,16 @@ import { avatarOf } from '../../../profile/domain/model/child-profile';
  */
 @Component({
   selector: 'app-kid-shell',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, TranslatePipe],
   template: `
     <div class="kid">
       <aside class="rail">
-        <a class="me" routerLink="/nino" [attr.aria-label]="'Inicio de ' + childStore.name()">
+        <a class="me" routerLink="/nino" [attr.aria-label]="('kidShell.inicioDe' | translate) + childStore.name()">
           <span class="avatar">{{ avatar().emoji ?? avatar().text }}</span>
           <strong>{{ childStore.name() }}</strong>
         </a>
 
-        <nav aria-label="Modo niño">
+        <nav [attr.aria-label]="'common.modoNino' | translate">
           @for (link of links; track link.path) {
             <a
               [routerLink]="link.path"
@@ -29,7 +30,7 @@ import { avatarOf } from '../../../profile/domain/model/child-profile';
               [style.--tone]="link.tone"
             >
               <span class="emoji">{{ link.emoji }}</span>
-              <span class="label">{{ link.label }}</span>
+              <span class="label">{{ link.label | translate }}</span>
             </a>
           }
         </nav>
@@ -42,10 +43,10 @@ import { avatarOf } from '../../../profile/domain/model/child-profile';
           (pointerup)="cancelHold()"
           (pointerleave)="cancelHold()"
           (keydown.enter)="exit()"
-          aria-label="Salir del modo niño (un adulto mantiene presionado)"
+          [attr.aria-label]="'kidShell.salirDelModoNino' | translate"
         >
           <span class="icon">lock</span>
-          <span class="label">{{ holding() ? 'Sigue…' : 'Adultos' }}</span>
+          <span class="label">{{ holding() ? ('kidShell.sigue' | translate) : ('kidShell.adultos' | translate) }}</span>
         </button>
       </aside>
 
@@ -253,9 +254,9 @@ export class KidShell implements OnDestroy {
   private readonly router = inject(Router);
 
   protected readonly links = [
-    { path: '/nino', label: 'Inicio', emoji: '🏠', tone: 'var(--mint-100)', exact: true },
-    { path: '/nino/hablar', label: 'Hablar', emoji: '💬', tone: 'var(--sky-100)', exact: false },
-    { path: '/nino/mi-dia', label: 'Mi día', emoji: '🗓️', tone: 'var(--sun-100)', exact: false },
+    { path: '/nino', label: 'kidNav.home', emoji: '🏠', tone: 'var(--mint-100)', exact: true },
+    { path: '/nino/hablar', label: 'kidNav.talk', emoji: '💬', tone: 'var(--sky-100)', exact: false },
+    { path: '/nino/mi-dia', label: 'kidNav.day', emoji: '🗓️', tone: 'var(--sun-100)', exact: false },
   ];
 
   protected readonly avatar = computed(() => {

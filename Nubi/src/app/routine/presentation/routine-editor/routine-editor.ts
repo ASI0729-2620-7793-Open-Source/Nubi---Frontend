@@ -7,6 +7,9 @@ import { apiErrorMessage } from '../../../shared/infrastructure/api-error';
 import { ProgressRing } from '../../../shared/presentation/charts/progress-ring';
 import { ROUTINE_ICONS, RoutineStep, RoutineStepForm, shortTime } from '../../domain/model/routine-step';
 import { RoutineApi } from '../../infrastructure/routine-api';
+import { TranslatePipe } from '@ngx-translate/core';
+import { t } from '../../../shared/infrastructure/i18n-bridge';
+import { ServerTextPipe } from '../../../shared/presentation/server-text.pipe';
 
 /**
  * Rutina visual del niño. Anticipar lo que viene reduce la ansiedad: cada paso tiene un ícono
@@ -14,7 +17,7 @@ import { RoutineApi } from '../../infrastructure/routine-api';
  */
 @Component({
   selector: 'app-routine-editor',
-  imports: [FormsModule, RouterLink, ProgressRing],
+  imports: [FormsModule, RouterLink, ProgressRing, TranslatePipe, ServerTextPipe],
   templateUrl: './routine-editor.html',
   styleUrl: './routine-editor.css',
 })
@@ -72,7 +75,7 @@ export class RoutineEditor implements OnInit {
     const target = this.editing();
     if (!target) return;
     if (!this.form.title.trim()) {
-      this.toast.error('Ponle un nombre corto al paso.');
+      this.toast.error(t('routineEditor.ponleUnNombreCorto'));
       return;
     }
     const body: RoutineStepForm = { ...this.form, scheduledTime: this.form.scheduledTime || null };
@@ -82,10 +85,10 @@ export class RoutineEditor implements OnInit {
       next: (saved) => {
         if (target === 'new') {
           this.steps.update((list) => [...list, saved]);
-          this.toast.ok(`${saved.icon} "${saved.title}" se sumó a su día.`);
+          this.toast.ok(t('routineEditor.seSumoASu', { p0: saved.icon, p1: saved.title }));
         } else {
           this.replace(saved);
-          this.toast.ok('Paso actualizado.');
+          this.toast.ok(t('routineEditor.pasoActualizado'));
         }
         this.saving.set(false);
         this.editing.set(null);
@@ -98,12 +101,12 @@ export class RoutineEditor implements OnInit {
   }
 
   remove(step: RoutineStep): void {
-    if (!confirm(`¿Quitar "${step.title}" de la rutina?`)) return;
+    if (!confirm(t('routineEditor.quitarDeLaRutina', { p0: step.title }))) return;
     this.api.remove(this.childId, step.id).subscribe({
       next: () => {
         this.steps.update((list) => list.filter((item) => item.id !== step.id));
         this.editing.set(null);
-        this.toast.ok('Paso quitado.');
+        this.toast.ok(t('routineEditor.pasoQuitado'));
       },
       error: (error) => this.toast.error(apiErrorMessage(error)),
     });
@@ -127,7 +130,7 @@ export class RoutineEditor implements OnInit {
     this.api.reorder(this.childId, sorted.map((step) => step.id)).subscribe({
       next: (ordered) => {
         this.steps.set(ordered);
-        this.toast.ok('Ordenamos los pasos por hora.');
+        this.toast.ok(t('routineEditor.ordenamosLosPasosPor'));
       },
       error: (error) => this.toast.error(apiErrorMessage(error)),
     });

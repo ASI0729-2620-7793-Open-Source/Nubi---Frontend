@@ -13,6 +13,9 @@ import { DeviceAudioPlayer } from '../../infrastructure/device-audio-player';
 import { BreathingBalloon } from '../components/breathing-balloon/breathing-balloon';
 import { CalmCanvas } from '../components/calm-canvas/calm-canvas';
 import { StimulusStage } from '../components/stimulus-stage/stimulus-stage';
+import { TranslatePipe } from '@ngx-translate/core';
+import { t } from '../../../shared/infrastructure/i18n-bridge';
+import { ServerTextPipe } from '../../../shared/presentation/server-text.pipe';
 
 /**
  * Momento de calma a pantalla completa. Abre una sesión en el backend, la mantiene al día
@@ -20,7 +23,7 @@ import { StimulusStage } from '../components/stimulus-stage/stimulus-stage';
  */
 @Component({
   selector: 'app-calm-player',
-  imports: [RouterLink, StimulusStage, BreathingBalloon, CalmCanvas, MoodPicker],
+  imports: [RouterLink, StimulusStage, BreathingBalloon, CalmCanvas, MoodPicker, TranslatePipe, ServerTextPipe],
   templateUrl: './calm-player.html',
   styleUrl: './calm-player.css',
 })
@@ -182,7 +185,7 @@ export class CalmPlayer implements OnInit, OnDestroy {
       next: (mood) => {
         this.wellbeing.addMood(mood);
         this.phase.set('done');
-        if (!this.kidMode()) this.toast.ok(`Anotamos que terminó ${moodInfo(level).label.toLowerCase()}.`);
+        if (!this.kidMode()) this.toast.ok(t('calmPlayer.anotamosQueTermino', { p0: moodInfo(level).label.toLowerCase() }));
         setTimeout(() => this.leave(), 1600);
       },
       error: () => this.leave(),

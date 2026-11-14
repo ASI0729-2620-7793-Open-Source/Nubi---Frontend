@@ -1,6 +1,9 @@
+import { t } from '../infrastructure/i18n-bridge';
+
 /**
  * Escala de intensidad emocional compartida por varios Bounded Contexts del backend
  * (Comunicación Asistida, Gestión de Crisis): CALM, RESTLESS, ALTERED, CRISIS.
+ * Las etiquetas son propiedades calculadas: cambian solas al cambiar el idioma.
  */
 export type MoodLevel = 'CALM' | 'RESTLESS' | 'ALTERED' | 'CRISIS';
 
@@ -14,13 +17,29 @@ export interface MoodInfo {
   score: number;
 }
 
+function mood(level: MoodLevel, emoji: string, color: string, soft: string, score: number): MoodInfo {
+  return {
+    level,
+    get label() {
+      return t(`moods.${level}.label`);
+    },
+    get kidLabel() {
+      return t(`moods.${level}.kid`);
+    },
+    emoji,
+    color,
+    soft,
+    score,
+  };
+}
+
 export const MOODS: readonly MoodInfo[] = [
-  { level: 'CALM', label: 'En calma', kidLabel: 'Tranquilo', emoji: '😌', color: 'var(--mood-calm)', soft: 'var(--mint-100)', score: 0 },
-  { level: 'RESTLESS', label: 'Inquieto', kidLabel: 'Inquieto', emoji: '😕', color: 'var(--mood-restless)', soft: 'var(--sun-100)', score: 1 },
-  { level: 'ALTERED', label: 'Alterado', kidLabel: 'Enojado', emoji: '😣', color: 'var(--mood-altered)', soft: 'var(--peach-100)', score: 2 },
-  { level: 'CRISIS', label: 'En crisis', kidLabel: 'Muy mal', emoji: '😭', color: 'var(--mood-crisis)', soft: 'var(--coral-100)', score: 3 },
+  mood('CALM', '😌', 'var(--mood-calm)', 'var(--mint-100)', 0),
+  mood('RESTLESS', '😕', 'var(--mood-restless)', 'var(--sun-100)', 1),
+  mood('ALTERED', '😣', 'var(--mood-altered)', 'var(--peach-100)', 2),
+  mood('CRISIS', '😭', 'var(--mood-crisis)', 'var(--coral-100)', 3),
 ];
 
 export function moodInfo(level: string | null | undefined): MoodInfo {
-  return MOODS.find((mood) => mood.level === level) ?? MOODS[0];
+  return MOODS.find((item) => item.level === level) ?? MOODS[0];
 }

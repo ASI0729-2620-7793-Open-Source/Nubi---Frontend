@@ -1,20 +1,22 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ChildStore } from '../../../profile/application/child.store';
+import { TranslatePipe } from '@ngx-translate/core';
 
 /** Se muestra cuando el backend no responde, en lugar de mandar al cuidador a registrar otro niño. */
 @Component({
   selector: 'app-offline',
+  imports: [TranslatePipe],
   template: `
     <div class="wrap">
       <div class="card box">
         <span class="cloud">☁️</span>
-        <h1>No pudimos conectar con Nubi</h1>
+        <h1>{{ 'offline.noPudimosConectarCon' | translate }}</h1>
         <p class="lead">
-          Revisa tu conexión. Si Nubi no se usó en un rato, el servidor tarda alrededor de un minuto en despertar: espera un momento y reintenta.
+          {{ 'offline.revisaTuConexionSi' | translate }}
         </p>
         <button class="btn btn-primary" type="button" [disabled]="trying()" (click)="retry()">
-          <span class="icon">refresh</span> {{ trying() ? 'Intentando…' : 'Reintentar' }}
+          <span class="icon">refresh</span> {{ trying() ? ('offline.intentando' | translate) : ('offline.reintentar' | translate) }}
         </button>
       </div>
     </div>

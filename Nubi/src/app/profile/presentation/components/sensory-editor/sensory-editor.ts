@@ -1,5 +1,7 @@
 import { Component, model } from '@angular/core';
 import { SENSITIVITY_LEVELS, SensitivityLevel, SensoryProfile } from '../../../domain/model/child-profile';
+import { TranslatePipe } from '@ngx-translate/core';
+import { withTexts } from '../../../../shared/infrastructure/i18n-bridge';
 
 /**
  * Editor del perfil sensorial: cuánto le molesta el ruido, la luz y el contacto. El backend
@@ -7,6 +9,7 @@ import { SENSITIVITY_LEVELS, SensitivityLevel, SensoryProfile } from '../../../d
  */
 @Component({
   selector: 'app-sensory-editor',
+  imports: [TranslatePipe],
   template: `
     <div class="senses">
       @for (sense of senses; track sense.key) {
@@ -39,22 +42,22 @@ import { SENSITIVITY_LEVELS, SensitivityLevel, SensoryProfile } from '../../../d
     <div class="toggles">
       <label class="switch">
         <span>
-          <strong>Baja estimulación</strong><br />
-          <span class="hint">Colores más suaves y sin animaciones decorativas en toda la app.</span>
+          <strong>{{ 'common.bajaEstimulacion' | translate }}</strong><br />
+          <span class="hint">{{ 'sensoryEditor.coloresMasSuavesY' | translate }}</span>
         </span>
         <input type="checkbox" [checked]="value().lowStimulationEnabled" (change)="toggle('lowStimulationEnabled')" />
       </label>
       <label class="switch">
         <span>
-          <strong>Priorizar lo visual</strong><br />
-          <span class="hint">Más imágenes y menos texto en el modo niño.</span>
+          <strong>{{ 'sensoryEditor.priorizarLoVisual' | translate }}</strong><br />
+          <span class="hint">{{ 'sensoryEditor.masImagenesYMenos' | translate }}</span>
         </span>
         <input type="checkbox" [checked]="value().prioritizeVisuals" (change)="toggle('prioritizeVisuals')" />
       </label>
       <label class="switch">
         <span>
-          <strong>Confirmar antes de reproducir audio</strong><br />
-          <span class="hint">Útil si los sonidos inesperados lo asustan.</span>
+          <strong>{{ 'sensoryEditor.confirmarAntesDeReproducir' | translate }}</strong><br />
+          <span class="hint">{{ 'sensoryEditor.utilSiLosSonidos' | translate }}</span>
         </span>
         <input type="checkbox" [checked]="value().confirmAudio" (change)="toggle('confirmAudio')" />
       </label>
@@ -123,9 +126,9 @@ export class SensoryEditor {
   readonly value = model.required<SensoryProfile>();
   protected readonly levels = SENSITIVITY_LEVELS;
   protected readonly senses: { key: 'auditory' | 'visual' | 'tactile'; label: string; hint: string; emoji: string }[] = [
-    { key: 'auditory', label: 'Sonidos', hint: 'Ruidos fuertes, voces, música', emoji: '👂' },
-    { key: 'visual', label: 'Luces e imágenes', hint: 'Luz intensa, pantallas, colores', emoji: '👀' },
-    { key: 'tactile', label: 'Contacto y texturas', hint: 'Abrazos, ropa, comidas', emoji: '✋' },
+    withTexts({ key: 'auditory' as const, emoji: '👂' }, { label: 'senses.auditory.label', hint: 'senses.auditory.hint' }),
+    withTexts({ key: 'visual' as const, emoji: '👀' }, { label: 'senses.visual.label', hint: 'senses.visual.hint' }),
+    withTexts({ key: 'tactile' as const, emoji: '✋' }, { label: 'senses.tactile.label', hint: 'senses.tactile.hint' }),
   ];
 
   set(key: 'auditory' | 'visual' | 'tactile', level: SensitivityLevel): void {
