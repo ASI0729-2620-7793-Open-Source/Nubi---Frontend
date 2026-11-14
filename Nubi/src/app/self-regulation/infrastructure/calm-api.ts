@@ -48,11 +48,11 @@ export class CalmApi {
   }
 
   pause(sessionId: number): Observable<CalmSession> {
-    return this.http.post<CalmSession>(`${API_BASE}/calm-sessions/${sessionId}/pause`, {});
+    return this.http.patch<CalmSession>(`${API_BASE}/calm-sessions/${sessionId}`, { status: 'PAUSED' });
   }
 
   resume(sessionId: number): Observable<CalmSession> {
-    return this.http.post<CalmSession>(`${API_BASE}/calm-sessions/${sessionId}/resume`, {});
+    return this.http.patch<CalmSession>(`${API_BASE}/calm-sessions/${sessionId}`, { status: 'ACTIVE' });
   }
 
   startTimer(sessionId: number, durationMinutes: number): Observable<CalmSession> {
@@ -60,11 +60,11 @@ export class CalmApi {
   }
 
   pauseTimer(sessionId: number): Observable<CalmSession> {
-    return this.http.post<CalmSession>(`${API_BASE}/calm-sessions/${sessionId}/timer/pause`, {});
+    return this.http.patch<CalmSession>(`${API_BASE}/calm-sessions/${sessionId}/timer`, { running: false });
   }
 
   resumeTimer(sessionId: number): Observable<CalmSession> {
-    return this.http.post<CalmSession>(`${API_BASE}/calm-sessions/${sessionId}/timer/resume`, {});
+    return this.http.patch<CalmSession>(`${API_BASE}/calm-sessions/${sessionId}/timer`, { running: true });
   }
 
   tick(sessionId: number, elapsedSeconds: number): Observable<CalmSession> {
@@ -72,6 +72,6 @@ export class CalmApi {
   }
 
   finish(sessionId: number): Observable<CalmSession> {
-    return this.http.post<CalmSession>(`${API_BASE}/calm-sessions/${sessionId}/finish`, {});
+    return this.http.patch<CalmSession>(`${API_BASE}/calm-sessions/${sessionId}`, { status: 'FINISHED' });
   }
 }

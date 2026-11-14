@@ -34,11 +34,11 @@ export class SupportApi {
   }
 
   confirmHelp(id: number): Observable<HelpRequest> {
-    return this.http.put<HelpRequest>(`${API_BASE}/help-requests/${id}/confirmation`, {});
+    return this.http.patch<HelpRequest>(`${API_BASE}/help-requests/${id}`, { status: 'CONFIRMED' });
   }
 
   cancelHelp(id: number): Observable<HelpRequest> {
-    return this.http.put<HelpRequest>(`${API_BASE}/help-requests/${id}/cancellation`, {});
+    return this.http.patch<HelpRequest>(`${API_BASE}/help-requests/${id}`, { status: 'CANCELLED' });
   }
 
   reports(profileId: number): Observable<EpisodeReport[]> {
@@ -50,7 +50,7 @@ export class SupportApi {
   }
 
   shareReport(id: number, sharedWith: string): Observable<EpisodeReport> {
-    return this.http.put<EpisodeReport>(`${API_BASE}/episode-reports/${id}/share`, { sharedWith });
+    return this.http.post<EpisodeReport>(`${API_BASE}/episode-reports/${id}/shares`, { sharedWith });
   }
 
   recommendations(profileId: number): Observable<SupportRecommendation[]> {
@@ -62,6 +62,6 @@ export class SupportApi {
   }
 
   markEffective(id: number): Observable<SupportRecommendation> {
-    return this.http.put<SupportRecommendation>(`${API_BASE}/support-network/recommendations/${id}/effective`, {});
+    return this.http.patch<SupportRecommendation>(`${API_BASE}/support-network/recommendations/${id}`, { effective: true });
   }
 }
