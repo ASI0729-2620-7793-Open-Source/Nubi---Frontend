@@ -26,7 +26,7 @@
   border-radius: 999px;
   background: var(--coral-600);
   color: #fff;
-  font-weight: 900;
+  font-weight: 800;
 }
 .round {
   display: grid;
@@ -158,7 +158,7 @@
 }
 .step-number {
   color: var(--coral-600);
-  font-weight: 900;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-size: 0.8rem;

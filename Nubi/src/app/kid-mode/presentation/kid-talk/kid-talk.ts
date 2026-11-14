@@ -51,7 +51,7 @@ import { ChildStore } from '../../../profile/application/child.store';
     h1 {
       text-align: center;
       font-size: clamp(1.8rem, 4.5vw, 2.6rem);
-      font-weight: 900;
+      font-weight: 800;
     }
     .bubble {
       display: flex;
@@ -64,7 +64,7 @@ import { ChildStore } from '../../../profile/application/child.store';
       background: #fff;
       box-shadow: var(--shadow-l);
       font-size: clamp(1.3rem, 3.5vw, 2rem);
-      font-weight: 900;
+      font-weight: 800;
       cursor: pointer;
       animation: rise 0.3s var(--ease);
     }

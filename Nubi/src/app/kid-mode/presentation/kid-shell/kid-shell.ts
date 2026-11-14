@@ -98,7 +98,7 @@ import { avatarOf } from '../../../profile/domain/model/child-profile';
     }
     .me strong {
       font-size: 1rem;
-      font-weight: 900;
+      font-weight: 800;
     }
     .avatar {
       display: grid;
@@ -108,7 +108,7 @@ import { avatarOf } from '../../../profile/domain/model/child-profile';
       border-radius: 50%;
       background: linear-gradient(135deg, var(--mint-100), var(--lavender-100));
       font-size: 2.4rem;
-      font-weight: 900;
+      font-weight: 800;
       color: var(--teal-700);
       box-shadow: 0 0 0 4px #fff, 0 6px 16px rgba(15, 76, 85, 0.15);
     }
