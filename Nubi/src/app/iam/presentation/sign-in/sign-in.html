@@ -1,0 +1,62 @@
+<div class="auth">
+  <section class="hero">
+    <span class="bubble b1"></span><span class="bubble b2"></span><span class="bubble b3"></span>
+    <div class="brand"><img src="logo-nubi-symbol.png" alt="" /> Nubi</div>
+    <div>
+      <h1>Un lugar tranquilo para tu hijo con autismo.</h1>
+      <p>Rincón de calma, rutina visual y pictogramas para el niño; seguimiento y Modo SOS para ti.</p>
+    </div>
+    <div class="features">
+      <div class="feature"><span>🫧</span><span>Estímulos suaves según su perfil sensorial</span></div>
+      <div class="feature"><span>🗓️</span><span>Rutina visual para anticipar su día</span></div>
+      <div class="feature"><span>🆘</span><span>Guía paso a paso cuando llega una crisis</span></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <form class="form" (ngSubmit)="submit()">
+      <div>
+        <p class="eyebrow">Bienvenido de nuevo</p>
+        <h2>Ingresa a Nubi</h2>
+      </div>
+
+      <button type="button" class="demo" (click)="useDemo()" [disabled]="busy()">
+        <span class="icon-bubble">✨</span>
+        <span>
+          <strong>Probar con la cuenta demo</strong><br />
+          <span class="muted">demo@nubi.app · nubi123</span>
+        </span>
+      </button>
+
+      <label class="field">
+        <span>Correo</span>
+        <input class="input" type="email" name="email" autocomplete="email" [(ngModel)]="email" required />
+      </label>
+      <label class="field">
+        <span>Contraseña</span>
+        <span class="password">
+          <input
+            class="input"
+            [type]="showPassword() ? 'text' : 'password'"
+            name="password"
+            autocomplete="current-password"
+            [(ngModel)]="password"
+            required
+          />
+          <button type="button" [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'" (click)="showPassword.set(!showPassword())">
+            <span class="icon">{{ showPassword() ? 'visibility_off' : 'visibility' }}</span>
+          </button>
+        </span>
+      </label>
+
+      @if (error()) {
+        <div class="alert"><span class="icon">error</span>{{ error() }}</div>
+      }
+
+      <button class="btn btn-primary btn-block" type="submit" [disabled]="busy()">
+        {{ busy() ? 'Ingresando…' : 'Ingresar' }}
+      </button>
+      <p class="switch-link">¿Primera vez? <a routerLink="/registro">Crea tu cuenta</a></p>
+    </form>
+  </section>
+</div>
