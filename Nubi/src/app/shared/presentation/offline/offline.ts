@@ -11,7 +11,7 @@ import { ChildStore } from '../../../profile/application/child.store';
         <span class="cloud">☁️</span>
         <h1>No pudimos conectar con Nubi</h1>
         <p class="lead">
-          Revisa tu conexión o que el backend esté encendido en <code>http://localhost:8080</code>. Tus datos están a salvo.
+          Revisa tu conexión. Si Nubi no se usó en un rato, el servidor tarda alrededor de un minuto en despertar: espera un momento y reintenta.
         </p>
         <button class="btn btn-primary" type="button" [disabled]="trying()" (click)="retry()">
           <span class="icon">refresh</span> {{ trying() ? 'Intentando…' : 'Reintentar' }}

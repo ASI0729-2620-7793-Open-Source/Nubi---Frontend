@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  // URL pública del backend Spring Boot. Cámbiala por la del despliegue del backend.
-  apiBaseUrl: 'http://localhost:8080/api/v1',
+  // Backend Spring Boot desplegado en Render (plan gratuito: tarda ~1 min en despertar)
+  apiBaseUrl: 'https://nubi-platform-backend.onrender.com/api/v1',
 };
