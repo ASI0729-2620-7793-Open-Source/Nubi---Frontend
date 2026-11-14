@@ -8,6 +8,9 @@ import { CalmingResource, lookOf } from '../../../self-regulation/domain/model/c
 import { CalmApi } from '../../../self-regulation/infrastructure/calm-api';
 import { MoodLevel } from '../../../shared/domain/mood';
 import { MoodPicker } from '../../../shared/presentation/mood-picker/mood-picker';
+import { TranslatePipe } from '@ngx-translate/core';
+import { t } from '../../../shared/infrastructure/i18n-bridge';
+import { ServerTextPipe } from '../../../shared/presentation/server-text.pipe';
 
 /**
  * Inicio del modo niño: "¿Cómo te sientes?" y, según la respuesta, lo que más le ayuda a
@@ -15,7 +18,7 @@ import { MoodPicker } from '../../../shared/presentation/mood-picker/mood-picker
  */
 @Component({
   selector: 'app-kid-home',
-  imports: [RouterLink, MoodPicker],
+  imports: [RouterLink, MoodPicker, TranslatePipe, ServerTextPipe],
   templateUrl: './kid-home.html',
   styleUrl: './kid-home.css',
 })
@@ -42,13 +45,13 @@ export class KidHome implements OnInit {
   protected readonly message = computed(() => {
     switch (this.answered()) {
       case 'CALM':
-        return { emoji: '🌟', text: '¡Qué bien! ¿Jugamos a algo tranquilo?' };
+        return { emoji: '🌟', text: t('kidHome.msgCalm') };
       case 'RESTLESS':
-        return { emoji: '🫧', text: 'Vamos a descansar un ratito.' };
+        return { emoji: '🫧', text: t('kidHome.msgRestless') };
       case 'ALTERED':
-        return { emoji: '🎈', text: 'Respiremos juntos, despacito.' };
+        return { emoji: '🎈', text: t('kidHome.msgAltered') };
       case 'CRISIS':
-        return { emoji: '💙', text: 'Estoy contigo. Llama a un adulto y respiremos.' };
+        return { emoji: '💙', text: t('kidHome.msgCrisis') };
       default:
         return null;
     }

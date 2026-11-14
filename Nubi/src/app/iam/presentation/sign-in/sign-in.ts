@@ -4,10 +4,13 @@ import { Router, RouterLink } from '@angular/router';
 import { ChildStore } from '../../../profile/application/child.store';
 import { apiErrorMessage } from '../../../shared/infrastructure/api-error';
 import { SessionStore } from '../../application/session.store';
+import { TranslatePipe } from '@ngx-translate/core';
+import { t } from '../../../shared/infrastructure/i18n-bridge';
+import { LanguageSwitch } from '../../../shared/presentation/language-switch/language-switch';
 
 @Component({
   selector: 'app-sign-in',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, TranslatePipe, LanguageSwitch],
   templateUrl: './sign-in.html',
   styleUrl: '../auth.css',
 })
@@ -30,7 +33,7 @@ export class SignIn {
 
   submit(): void {
     if (!this.email || !this.password) {
-      this.error.set('Escribe tu correo y tu contraseña.');
+      this.error.set(t('signIn.escribeTuCorreoY'));
       return;
     }
     this.busy.set(true);

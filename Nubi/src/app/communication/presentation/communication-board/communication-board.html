@@ -1,16 +1,15 @@
 <div class="page">
   <header class="page-head">
     <div>
-      <p class="eyebrow">Comunicación asistida</p>
-      <h1>Las palabras de {{ childStore.name() }}</h1>
+      <p class="eyebrow">{{ 'communicationBoard.comunicacionAsistida' | translate }}</p>
+      <h1>{{ 'communicationBoard.lasPalabrasDe' | translate: { p0: (childStore.name()) } }}</h1>
       <p class="lead">
-        Toca un pictograma para escucharlo. Los marcados con ⭐ aparecen como acceso rápido en su modo niño (máximo
-        {{ board()?.maxFavorites ?? 8 }}).
+        {{ 'communicationBoard.tocaUnPictogramaPara' | translate: { p0: (board()?.maxFavorites ?? 8) } }}
       </p>
     </div>
     <div class="row wrap">
-      <button class="btn btn-ghost" type="button" (click)="dialog.set('category')"><span class="icon">create_new_folder</span> Categoría</button>
-      <button class="btn btn-primary" type="button" (click)="openPictogram()"><span class="icon">add</span> Pictograma</button>
+      <button class="btn btn-ghost" type="button" (click)="dialog.set('category')"><span class="icon">create_new_folder</span> {{ 'communicationBoard.categoria' | translate }}</button>
+      <button class="btn btn-primary" type="button" (click)="openPictogram()"><span class="icon">add</span> {{ 'communicationBoard.pictograma' | translate }}</button>
     </div>
   </header>
 
@@ -20,10 +19,10 @@
     <div class="layout">
       <section class="card board">
         <div class="tabs">
-          <button type="button" [class.active]="categoryId() === 'FAV'" (click)="categoryId.set('FAV')">⭐ Favoritos</button>
+          <button type="button" [class.active]="categoryId() === 'FAV'" (click)="categoryId.set('FAV')">{{ 'communicationBoard.favoritos' | translate }}</button>
           @for (category of board.categories; track category.id) {
             <button type="button" [class.active]="categoryId() === category.id" (click)="categoryId.set(category.id)">
-              {{ categoryIcon[category.type] }} {{ category.name }}
+              {{ categoryIcon[category.type] }} {{ category.name | serverText }}
             </button>
           }
         </div>
@@ -31,7 +30,7 @@
         <div class="pictos">
           @for (pictogram of shown(); track pictogram.id) {
             <button type="button" class="picto" (click)="say(pictogram)">
-              <span class="star" [class.on]="pictogram.favorite" role="button" [attr.aria-label]="pictogram.favorite ? 'Quitar de favoritos' : 'Marcar favorito'" (click)="toggleFavorite(pictogram, $event)">
+              <span class="star" [class.on]="pictogram.favorite" role="button" [attr.aria-label]="pictogram.favorite ? ('common.quitarDeFavoritos' | translate) : ('communicationBoard.marcarFavorito' | translate)" (click)="toggleFavorite(pictogram, $event)">
                 <span class="icon" [class.fill]="pictogram.favorite">star</span>
               </span>
               @if (visual(pictogram).image; as image) {
@@ -39,11 +38,11 @@
               } @else {
                 <span class="emoji">{{ visual(pictogram).emoji }}</span>
               }
-              <strong>{{ pictogram.label }}</strong>
-              <span class="phrase">"{{ pictogram.phrase }}"</span>
+              <strong>{{ pictogram.label | serverText }}</strong>
+              <span class="phrase">"{{ pictogram.phrase | serverText }}"</span>
             </button>
           } @empty {
-            <div class="empty"><span class="icon">grid_view</span><p>No hay pictogramas aquí todavía.</p></div>
+            <div class="empty"><span class="icon">grid_view</span><p>{{ 'communicationBoard.noHayPictogramasAqui' | translate }}</p></div>
           }
         </div>
       </section>
@@ -51,7 +50,7 @@
       <aside class="stack">
         <section class="card">
           <div class="card-head">
-            <h3><span class="icon">mark_chat_unread</span> Por atender</h3>
+            <h3><span class="icon">mark_chat_unread</span> {{ 'communicationBoard.porAtender' | translate }}</h3>
             @if (pending().length) {
               <span class="chip sun">{{ pending().length }}</span>
             }
@@ -61,25 +60,25 @@
               <div class="message">
                 <span class="msg-emoji">{{ visual(p).emoji ?? '🖼️' }}</span>
                 <div class="grow">
-                  <strong>"{{ p.phrase }}"</strong>
+                  <strong>"{{ p.phrase | serverText }}"</strong>
                   <span class="muted small">{{ relative(selection.selectedAt) }}</span>
                 </div>
               </div>
               <div class="msg-actions">
-                <button class="btn btn-soft btn-sm" type="button" (click)="mark(selection, 'understood')">👍 Entendí</button>
-                <button class="btn btn-ghost btn-sm" type="button" (click)="mark(selection, 'not-understood')">🤔 No entendí</button>
+                <button class="btn btn-soft btn-sm" type="button" (click)="mark(selection, 'understood')">{{ 'communicationBoard.entendi' | translate }}</button>
+                <button class="btn btn-ghost btn-sm" type="button" (click)="mark(selection, 'not-understood')">{{ 'communicationBoard.noEntendi' | translate }}</button>
               </div>
             }
           } @empty {
-            <div class="empty"><span class="icon">done_all</span><p>Nada pendiente.</p></div>
+            <div class="empty"><span class="icon">done_all</span><p>{{ 'communicationBoard.nadaPendiente' | translate }}</p></div>
           }
         </section>
 
         <section class="card">
           <div class="card-head">
-            <h3><span class="icon">history</span> Lo que dijo</h3>
+            <h3><span class="icon">history</span> {{ 'communicationBoard.loQueDijo' | translate }}</h3>
             @if (understoodShare() !== null) {
-              <span class="chip mint">{{ understoodShare() }}% entendido</span>
+              <span class="chip mint">{{ 'communicationBoard.entendido' | translate: { p0: (understoodShare()) } }}</span>
             }
           </div>
           <div class="list">
@@ -87,15 +86,15 @@
               @if (pictogram(selection.pictogramId); as p) {
                 <div class="list-item compact">
                   <span>{{ visual(p).emoji ?? '🖼️' }}</span>
-                  <span class="grow small">{{ p.label }}</span>
+                  <span class="grow small">{{ p.label | serverText }}</span>
                   <span class="chip" [class]="'chip ' + statuses[selection.status].chip">{{ statuses[selection.status].label }}</span>
                 </div>
               }
             } @empty {
-              <p class="muted small">Cuando use el tablero, verás aquí sus mensajes.</p>
+              <p class="muted small">{{ 'communicationBoard.cuandoUseElTablero' | translate }}</p>
             }
           </div>
-          <a class="btn btn-ghost btn-sm btn-block" routerLink="/nino/hablar">Abrir su tablero grande</a>
+          <a class="btn btn-ghost btn-sm btn-block" routerLink="/nino/hablar">{{ 'communicationBoard.abrirSuTableroGrande' | translate }}</a>
         </section>
       </aside>
     </div>
@@ -105,25 +104,25 @@
 @if (dialog() === 'pictogram') {
   <div class="backdrop" (click)="dialog.set(null)">
     <form class="dialog" (click)="$event.stopPropagation()" (ngSubmit)="createPictogram()">
-      <h2>Nuevo pictograma</h2>
-      <p class="muted small">Palabras concretas que use en casa: su comida favorita, su juguete, un lugar.</p>
+      <h2>{{ 'communicationBoard.nuevoPictograma' | translate }}</h2>
+      <p class="muted small">{{ 'communicationBoard.palabrasConcretasQueUse' | translate }}</p>
       <div class="picto-preview">
         <span>{{ newPictogram.emoji }}</span>
-        <strong>{{ newPictogram.label || 'Palabra' }}</strong>
+        <strong>{{ newPictogram.label || ('communicationBoard.palabra' | translate) }}</strong>
       </div>
       <div class="stack">
-        <label class="field"><span>Palabra</span><input class="input" name="label" maxlength="100" [(ngModel)]="newPictogram.label" placeholder="Galleta" /></label>
-        <label class="field"><span>Frase que se dirá</span><input class="input" name="phrase" maxlength="255" [(ngModel)]="newPictogram.phrase" placeholder="Quiero una galleta" /></label>
+        <label class="field"><span>{{ 'communicationBoard.palabra' | translate }}</span><input class="input" name="label" maxlength="100" [(ngModel)]="newPictogram.label" [placeholder]="'communicationBoard.galleta' | translate" /></label>
+        <label class="field"><span>{{ 'communicationBoard.fraseQueSeDira' | translate }}</span><input class="input" name="phrase" maxlength="255" [(ngModel)]="newPictogram.phrase" [placeholder]="'communicationBoard.quieroUnaGalleta' | translate" /></label>
         <label class="field">
-          <span>Categoría</span>
+          <span>{{ 'communicationBoard.categoria' | translate }}</span>
           <select class="select" name="category" [(ngModel)]="newPictogram.categoryId">
             @for (category of board()?.categories; track category.id) {
-              <option [ngValue]="category.id">{{ category.name }}</option>
+              <option [ngValue]="category.id">{{ category.name | serverText }}</option>
             }
           </select>
         </label>
         <div class="field">
-          <span>Imagen</span>
+          <span>{{ 'communicationBoard.imagen' | translate }}</span>
           <div class="emoji-grid">
             @for (emoji of emojiChoices; track emoji) {
               <button type="button" [class.active]="newPictogram.emoji === emoji" (click)="newPictogram.emoji = emoji">{{ emoji }}</button>
@@ -132,8 +131,8 @@
         </div>
       </div>
       <div class="dialog-actions">
-        <button class="btn btn-ghost" type="button" (click)="dialog.set(null)">Cancelar</button>
-        <button class="btn btn-primary" type="submit">Crear</button>
+        <button class="btn btn-ghost" type="button" (click)="dialog.set(null)">{{ 'common.cancelar' | translate }}</button>
+        <button class="btn btn-primary" type="submit">{{ 'communicationBoard.crear' | translate }}</button>
       </div>
     </form>
   </div>
@@ -142,11 +141,11 @@
 @if (dialog() === 'category') {
   <div class="backdrop" (click)="dialog.set(null)">
     <form class="dialog" (click)="$event.stopPropagation()" (ngSubmit)="createCategory()">
-      <h2>Nueva categoría</h2>
-      <label class="field"><span>Nombre</span><input class="input" name="name" maxlength="100" [(ngModel)]="newCategory" placeholder="Colegio" /></label>
+      <h2>{{ 'communicationBoard.nuevaCategoria' | translate }}</h2>
+      <label class="field"><span>{{ 'common.nombre' | translate }}</span><input class="input" name="name" maxlength="100" [(ngModel)]="newCategory" [placeholder]="'communicationBoard.colegio' | translate" /></label>
       <div class="dialog-actions">
-        <button class="btn btn-ghost" type="button" (click)="dialog.set(null)">Cancelar</button>
-        <button class="btn btn-primary" type="submit">Crear</button>
+        <button class="btn btn-ghost" type="button" (click)="dialog.set(null)">{{ 'common.cancelar' | translate }}</button>
+        <button class="btn btn-primary" type="submit">{{ 'communicationBoard.crear' | translate }}</button>
       </div>
     </form>
   </div>

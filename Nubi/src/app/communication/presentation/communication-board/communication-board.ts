@@ -16,6 +16,9 @@ import {
   speak,
 } from '../../domain/model/board';
 import { BoardApi } from '../../infrastructure/board-api';
+import { TranslatePipe } from '@ngx-translate/core';
+import { t } from '../../../shared/infrastructure/i18n-bridge';
+import { ServerTextPipe } from '../../../shared/presentation/server-text.pipe';
 
 /**
  * Tablero de pictogramas del niño. El cuidador lo prueba, marca favoritos (acceso rápido en el
@@ -23,7 +26,7 @@ import { BoardApi } from '../../infrastructure/board-api';
  */
 @Component({
   selector: 'app-communication-board',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, TranslatePipe, ServerTextPipe],
   templateUrl: './communication-board.html',
   styleUrl: './communication-board.css',
 })
@@ -134,7 +137,7 @@ export class CommunicationBoardPage implements OnInit {
   createPictogram(): void {
     const { label, phrase, emoji, categoryId } = this.newPictogram;
     if (!label.trim()) {
-      this.toast.error('Escribe una palabra para el pictograma.');
+      this.toast.error(t('communicationBoard.escribeUnaPalabraPara'));
       return;
     }
     this.api
@@ -144,7 +147,7 @@ export class CommunicationBoardPage implements OnInit {
           this.board.update((board) => (board ? { ...board, pictograms: [...board.pictograms, pictogram] } : board));
           this.categoryId.set(pictogram.categoryId);
           this.dialog.set(null);
-          this.toast.ok(`${emoji} "${pictogram.label}" ya está en su tablero.`);
+          this.toast.ok(t('communicationBoard.yaEstaEnSu', { p0: emoji, p1: pictogram.label }));
         },
         error: (error) => this.toast.error(apiErrorMessage(error)),
       });
@@ -158,7 +161,7 @@ export class CommunicationBoardPage implements OnInit {
         this.categoryId.set(category.id);
         this.newCategory = '';
         this.dialog.set(null);
-        this.toast.ok('Categoría creada.');
+        this.toast.ok(t('communicationBoard.categoriaCreada'));
       },
       error: (error) => this.toast.error(apiErrorMessage(error)),
     });

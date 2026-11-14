@@ -1,4 +1,5 @@
 import { MoodLevel } from '../../../shared/domain/mood';
+import { currentLocale, st, withTexts } from '../../../shared/infrastructure/i18n-bridge';
 
 /** Bounded Context Comunicación Asistida: tablero de pictogramas y registro de ánimo. */
 export type CategoryType = 'BASIC_NEEDS' | 'EMOTIONS' | 'ACTIVITIES' | 'CUSTOM';
@@ -47,10 +48,10 @@ export interface MoodCheckIn {
 }
 
 export const SELECTION_STATUS: Record<SelectionStatus, { label: string; chip: string }> = {
-  PENDING_DELIVERY: { label: 'Por atender', chip: 'sun' },
-  DELIVERED: { label: 'Visto', chip: 'sky' },
-  UNDERSTOOD: { label: 'Entendido', chip: 'mint' },
-  NOT_UNDERSTOOD: { label: 'No se entendió', chip: 'coral' },
+  PENDING_DELIVERY: withTexts({ chip: 'sun' }, { label: 'selection.PENDING_DELIVERY' }),
+  DELIVERED: withTexts({ chip: 'sky' }, { label: 'selection.DELIVERED' }),
+  UNDERSTOOD: withTexts({ chip: 'mint' }, { label: 'selection.UNDERSTOOD' }),
+  NOT_UNDERSTOOD: withTexts({ chip: 'coral' }, { label: 'selection.NOT_UNDERSTOOD' }),
 };
 
 export const CATEGORY_ICON: Record<CategoryType, string> = {
@@ -93,8 +94,8 @@ export function pictogramVisual(pictogram: Pick<Pictogram, 'imageUrl' | 'label'>
 export function speak(text: string): void {
   if (typeof speechSynthesis === 'undefined') return;
   speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'es-ES';
+  const utterance = new SpeechSynthesisUtterance(st(text));
+  utterance.lang = currentLocale() === 'en-US' ? 'en-US' : 'es-ES';
   utterance.rate = 0.9;
   utterance.pitch = 1.05;
   speechSynthesis.speak(utterance);

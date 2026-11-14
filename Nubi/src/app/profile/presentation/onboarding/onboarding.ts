@@ -14,6 +14,9 @@ import {
 } from '../../domain/model/child-profile';
 import { ProfileApi } from '../../infrastructure/profile-api';
 import { SensoryEditor } from '../components/sensory-editor/sensory-editor';
+import { TranslatePipe } from '@ngx-translate/core';
+import { t } from '../../../shared/infrastructure/i18n-bridge';
+import { LanguageSwitch } from '../../../shared/presentation/language-switch/language-switch';
 
 /**
  * Registro del único niño de la cuenta, en tres pasos cortos:
@@ -21,7 +24,7 @@ import { SensoryEditor } from '../components/sensory-editor/sensory-editor';
  */
 @Component({
   selector: 'app-onboarding',
-  imports: [FormsModule, SensoryEditor],
+  imports: [FormsModule, SensoryEditor, TranslatePipe, LanguageSwitch],
   templateUrl: './onboarding.html',
   styleUrl: './onboarding.css',
 })
@@ -58,11 +61,11 @@ export class Onboarding {
 
   next(): void {
     if (!this.form.firstName.trim() || !this.form.lastName.trim()) {
-      this.error.set('Escribe el nombre y el apellido de tu hijo.');
+      this.error.set(t('onboarding.escribeElNombreY'));
       return;
     }
     if (!this.form.age || this.form.age < 1 || this.form.age > 18) {
-      this.error.set('La edad debe estar entre 1 y 18 años.');
+      this.error.set(t('onboarding.laEdadDebeEstar'));
       return;
     }
     this.error.set(null);
@@ -97,7 +100,7 @@ export class Onboarding {
   }
 
   go(path: string): void {
-    this.toast.ok(`¡Listo! Nubi ya conoce a ${this.childStore.name()}.`);
+    this.toast.ok(t('onboarding.listoNubiYaConoce', { p0: this.childStore.name() }));
     void this.router.navigate([path]);
   }
 

@@ -708,3 +708,14 @@ textarea {
     border-radius: var(--radius-m);
   }
 }
+
+/* Selector de idioma en barra lateral y pantallas de acceso */
+.lang-slot {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.auth-lang {
+  display: flex;
+  margin-top: -8px;
+}

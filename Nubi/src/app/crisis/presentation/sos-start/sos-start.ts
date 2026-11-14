@@ -6,6 +6,7 @@ import { MOODS, MoodLevel } from '../../../shared/domain/mood';
 import { apiErrorMessage } from '../../../shared/infrastructure/api-error';
 import { SensoryTrigger, TRIGGERS } from '../../domain/model/sos';
 import { SosApi } from '../../infrastructure/sos-api';
+import { TranslatePipe } from '@ngx-translate/core';
 
 /**
  * Activación del Modo SOS. Pocas decisiones y botones grandes: en una crisis el cuidador
@@ -13,7 +14,7 @@ import { SosApi } from '../../infrastructure/sos-api';
  */
 @Component({
   selector: 'app-sos-start',
-  imports: [RouterLink],
+  imports: [RouterLink, TranslatePipe],
   templateUrl: './sos-start.html',
   styleUrl: './sos.css',
 })

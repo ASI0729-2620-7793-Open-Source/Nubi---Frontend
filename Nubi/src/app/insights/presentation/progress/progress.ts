@@ -20,6 +20,8 @@ import {
   topResources,
   topTriggers,
 } from '../../domain/insights';
+import { TranslatePipe } from '@ngx-translate/core';
+import { I18nStore } from '../../../shared/application/i18n.store';
 
 /**
  * Progreso del niño (funcionalidad nueva): tendencia del ánimo, momentos de calma, qué recursos
@@ -27,12 +29,13 @@ import {
  */
 @Component({
   selector: 'app-progress',
-  imports: [RouterLink, DayBars, MoodTrend],
+  imports: [RouterLink, DayBars, MoodTrend, TranslatePipe],
   templateUrl: './progress.html',
   styleUrl: './progress.css',
 })
 export class Progress implements OnInit {
   protected readonly wellbeing = inject(WellbeingStore);
+  private readonly lang = inject(I18nStore).lang;
   protected readonly childStore = inject(ChildStore);
   protected readonly range = signal<7 | 14 | 30>(14);
   protected readonly moods = MOODS;
@@ -43,12 +46,12 @@ export class Progress implements OnInit {
   protected readonly rangeCalm = computed(() => calmSessionsSince(this.wellbeing.calmSessions(), this.range()));
   protected readonly rangeSos = computed(() => sosSince(this.wellbeing.sosSessions(), this.range()));
 
-  protected readonly trend = computed(() => moodTrend(this.wellbeing.moods(), this.range()));
-  protected readonly distribution = computed(() => moodDistribution(this.rangeMoods()));
-  protected readonly calmDays = computed(() => calmPerDay(this.wellbeing.calmSessions(), Math.min(this.range(), 14)));
+  protected readonly trend = computed(() => (this.lang(), moodTrend(this.wellbeing.moods(), this.range())));
+  protected readonly distribution = computed(() => (this.lang(), moodDistribution(this.rangeMoods())));
+  protected readonly calmDays = computed(() => (this.lang(), calmPerDay(this.wellbeing.calmSessions(), Math.min(this.range(), 14))));
   protected readonly minutes = computed(() => calmMinutes(this.rangeCalm()));
-  protected readonly resources = computed(() => topResources(this.rangeCalm(), this.wellbeing.resources()).slice(0, 5));
-  protected readonly triggers = computed(() => topTriggers(this.rangeSos()).slice(0, 5));
+  protected readonly resources = computed(() => (this.lang(), topResources(this.rangeCalm(), this.wellbeing.resources()).slice(0, 5)));
+  protected readonly triggers = computed(() => (this.lang(), topTriggers(this.rangeSos()).slice(0, 5)));
   protected readonly improvement = computed(() => sosImprovement(this.rangeSos()));
   protected readonly improvementText = computed(() => {
     const value = this.improvement();
@@ -60,15 +63,13 @@ export class Progress implements OnInit {
     const total = this.rangeMoods().length;
     return total ? Math.round((this.rangeMoods().filter((m) => m.level === 'CALM').length / total) * 100) : null;
   });
-  protected readonly insights = computed(() =>
-    insightMessages({
+  protected readonly insights = computed(() => (this.lang(), insightMessages({
       childName: this.childStore.name(),
       moods: this.rangeMoods(),
       calm: this.rangeCalm(),
       sos: this.rangeSos(),
       resources: this.wellbeing.resources(),
-    }),
-  );
+    })));
   protected readonly recentSos = computed(() =>
     [...this.rangeSos()].sort((a, b) => b.startedAt.localeCompare(a.startedAt)).slice(0, 6),
   );

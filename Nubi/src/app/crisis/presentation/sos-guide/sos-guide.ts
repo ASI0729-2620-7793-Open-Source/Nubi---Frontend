@@ -18,11 +18,14 @@ import {
   triggerLabel,
 } from '../../domain/model/sos';
 import { SosApi } from '../../infrastructure/sos-api';
+import { TranslatePipe } from '@ngx-translate/core';
+import { t } from '../../../shared/infrastructure/i18n-bridge';
+import { ServerTextPipe } from '../../../shared/presentation/server-text.pipe';
 
 /** Guía de contención paso a paso, ordenada por el backend según el detonante. */
 @Component({
   selector: 'app-sos-guide',
-  imports: [RouterLink],
+  imports: [RouterLink, TranslatePipe, ServerTextPipe],
   templateUrl: './sos-guide.html',
   styleUrl: '../sos-start/sos.css',
 })
@@ -66,10 +69,10 @@ export class SosGuide implements OnInit {
   /** "8 min" o, si la sesión quedó abierta mucho tiempo, "12 h 36 min". */
   durationText(minutes: number): string {
     const total = Math.max(1, minutes || 0);
-    if (total < 60) return `${total} min`;
+    if (total < 60) return t('time.minutes', { n: total });
     const hours = Math.floor(total / 60);
     const rest = total % 60;
-    return rest ? `${hours} h ${rest} min` : `${hours} h`;
+    return rest ? t('time.hoursMinutes', { h: hours, m: rest }) : t('time.hours', { h: hours });
   }
 
   ngOnInit(): void {
@@ -98,7 +101,7 @@ export class SosGuide implements OnInit {
   }
 
   skip(step: ContainmentStep): void {
-    if (step.mandatory && !confirm('Este paso es importante para su seguridad. ¿Seguro que quieres omitirlo?')) return;
+    if (step.mandatory && !confirm(t('sosGuide.estePasoEsImportante'))) return;
     this.run(this.api.skip(this.session()!.id, step.id));
   }
 

@@ -1,6 +1,7 @@
 import { Component, computed, input } from '@angular/core';
 import { DayPoint } from '../../../insights/domain/insights';
 import { MOODS } from '../../domain/mood';
+import { TranslatePipe } from '@ngx-translate/core';
 
 /**
  * Línea del ánimo diario: arriba la calma y abajo la crisis. Los días sin registro quedan
@@ -8,8 +9,9 @@ import { MOODS } from '../../domain/mood';
  */
 @Component({
   selector: 'app-mood-trend',
+  imports: [TranslatePipe],
   template: `
-    <svg viewBox="0 0 320 150" preserveAspectRatio="none" class="chart" role="img" aria-label="Tendencia del ánimo">
+    <svg viewBox="0 0 320 150" preserveAspectRatio="none" class="chart" role="img" [attr.aria-label]="'moodTrend.tendenciaDelAnimo' | translate">
       @for (row of rows; track row.level) {
         <line x1="34" x2="316" [attr.y1]="y(row.score)" [attr.y2]="y(row.score)" stroke="var(--line)" stroke-dasharray="3 4" />
         <text x="2" [attr.y]="y(row.score) + 5" font-size="14">{{ row.emoji }}</text>
