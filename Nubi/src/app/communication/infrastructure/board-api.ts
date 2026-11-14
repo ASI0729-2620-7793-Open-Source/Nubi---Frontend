@@ -55,7 +55,8 @@ export class BoardApi {
     selectionId: number,
     step: 'delivered' | 'understood' | 'not-understood',
   ): Observable<PictogramSelection> {
-    return this.http.patch<PictogramSelection>(`${this.base(profileId)}/selections/${selectionId}/${step}`, {});
+    const status = { delivered: 'DELIVERED', understood: 'UNDERSTOOD', 'not-understood': 'NOT_UNDERSTOOD' }[step];
+    return this.http.patch<PictogramSelection>(`${this.base(profileId)}/selections/${selectionId}`, { status });
   }
 
   registerMood(profileId: number, level: MoodLevel): Observable<MoodCheckIn> {
