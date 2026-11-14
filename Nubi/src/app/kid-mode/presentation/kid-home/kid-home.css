@@ -12,7 +12,7 @@
 }
 .ask h1 {
   font-size: clamp(1.8rem, 4.5vw, 2.8rem);
-  font-weight: 900;
+  font-weight: 800;
   line-height: 1.25;
 }
 .message {

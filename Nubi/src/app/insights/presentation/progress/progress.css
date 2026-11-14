@@ -5,7 +5,7 @@
 }
 .kpi strong {
   font-size: 2rem;
-  font-weight: 900;
+  font-weight: 800;
   color: var(--teal-700);
 }
 
@@ -56,7 +56,7 @@
   border-radius: 10px;
   background: var(--lavender-100);
   color: #5b4fb0;
-  font-weight: 900;
+  font-weight: 800;
 }
 .bar.coral > span {
   background: linear-gradient(90deg, var(--peach-500), var(--coral-600));

@@ -56,7 +56,7 @@ import { RoutineApi } from '../../../routine/infrastructure/routine-api';
     h1 {
       text-align: center;
       font-size: clamp(1.8rem, 4.5vw, 2.6rem);
-      font-weight: 900;
+      font-weight: 800;
     }
     .stars {
       display: flex;
@@ -93,7 +93,7 @@ import { RoutineApi } from '../../../routine/infrastructure/routine-api';
       border-radius: 999px;
       background: var(--mint-100);
       color: var(--teal-700);
-      font-weight: 900;
+      font-weight: 800;
     }
     .now .emoji {
       font-size: clamp(5rem, 14vw, 7rem);
