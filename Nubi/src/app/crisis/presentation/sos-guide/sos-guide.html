@@ -25,7 +25,7 @@
             <p class="desc">
               Pasó de {{ moodInfo(s.initialIntensity).emoji }} {{ moodInfo(s.initialIntensity).label.toLowerCase() }} a
               {{ moodInfo(s.finalIntensity).emoji }} {{ moodInfo(s.finalIntensity).label.toLowerCase() }}
-              en {{ s.durationMinutes || 1 }} min · {{ s.completedSteps.length }} de {{ s.totalSteps }} pasos.
+              en {{ durationText(s.durationMinutes) }} · {{ s.completedSteps.length }} de {{ s.totalSteps }} pasos.
             </p>
             <div class="alert ok">
               <span class="icon">task_alt</span>
@@ -62,7 +62,9 @@
           <div class="step-actions">
             <button class="btn btn-primary main" type="button" [disabled]="busy()" (click)="finish()">Terminar el Modo SOS</button>
             @if (current()) {
-              <button class="btn btn-ghost" type="button" (click)="finishing.set(false)">Volver a la guía</button>
+              <div class="secondary">
+                <button class="btn btn-ghost" type="button" (click)="finishing.set(false)">Volver a la guía</button>
+              </div>
             }
           </div>
         </section>
@@ -81,12 +83,12 @@
             <button class="btn btn-primary main" type="button" [disabled]="busy()" (click)="complete(step)">
               <span class="icon">check</span> Hecho
             </button>
-            @if (step.alternativeTechniques.length && !alternative()) {
-              <button class="btn btn-soft" type="button" (click)="askAlternative(step)">No puedo hacerlo</button>
-            } @else {
-              <span></span>
-            }
-            <button class="btn btn-ghost" type="button" [disabled]="busy()" (click)="skip(step)">Omitir</button>
+            <div class="secondary">
+              @if (step.alternativeTechniques.length && !alternative()) {
+                <button class="btn btn-soft" type="button" (click)="askAlternative(step)">No puedo hacerlo</button>
+              }
+              <button class="btn btn-ghost" type="button" [disabled]="busy()" (click)="skip(step)">Omitir</button>
+            </div>
           </div>
         </section>
       }

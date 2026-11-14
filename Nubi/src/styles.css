@@ -54,14 +54,17 @@
 }
 
 /* Modo de baja estimulación: menos color y sin animaciones decorativas.
-   La respiración guiada (.keep-motion) sigue moviéndose porque es la actividad. */
-html.low-stim body {
+   La respiración guiada (.keep-motion) sigue moviéndose porque es la actividad.
+   - El filtro va en <html>: en <body> rompería position: fixed (diálogos, avisos, modo SOS).
+   - Las animaciones se quitan (no se pausan): pausadas, las de entrada se quedaban en
+     opacity 0 y ocultaban contenido, como la tarjeta del paso en la guía SOS. */
+html.low-stim {
   filter: saturate(0.6);
 }
 html.low-stim *:not(.keep-motion, .keep-motion *),
 html.low-stim *:not(.keep-motion, .keep-motion *)::before,
 html.low-stim *:not(.keep-motion, .keep-motion *)::after {
-  animation-play-state: paused !important;
+  animation: none !important;
   transition-duration: 0.001s !important;
 }
 
