@@ -1,0 +1,129 @@
+import { Routes } from '@angular/router';
+import { authGuard, childGuard, guestGuard, noChildGuard } from './iam/application/guards';
+import { CaregiverShell } from './shared/presentation/caregiver-shell/caregiver-shell';
+
+/**
+ * Nubi tiene dos formas de usarse:
+ *  - Modo cuidador (con barra lateral): seguimiento, perfil, rutina, progreso...
+ *  - Modo niño (/nino): pantalla completa, botones grandes y nada de configuración.
+ * El reproductor de calma y el Modo SOS también son de pantalla completa.
+ */
+export const routes: Routes = [
+  {
+    path: 'ingresar',
+    canActivate: [guestGuard],
+    title: 'Ingresar · Nubi',
+    loadComponent: () => import('./iam/presentation/sign-in/sign-in').then((m) => m.SignIn),
+  },
+  {
+    path: 'registro',
+    canActivate: [guestGuard],
+    title: 'Crear cuenta · Nubi',
+    loadComponent: () => import('./iam/presentation/sign-up/sign-up').then((m) => m.SignUp),
+  },
+  {
+    path: 'bienvenida',
+    canActivate: [authGuard, noChildGuard],
+    title: 'Bienvenida · Nubi',
+    loadComponent: () => import('./profile/presentation/onboarding/onboarding').then((m) => m.Onboarding),
+  },
+  {
+    path: '',
+    component: CaregiverShell,
+    canActivate: [authGuard, childGuard],
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: 'inicio' },
+      {
+        path: 'inicio',
+        title: 'Inicio · Nubi',
+        loadComponent: () => import('./dashboard/presentation/home/home').then((m) => m.Home),
+      },
+      {
+        path: 'rutina',
+        title: 'Rutina visual · Nubi',
+        loadComponent: () => import('./routine/presentation/routine-editor/routine-editor').then((m) => m.RoutineEditor),
+      },
+      {
+        path: 'calma',
+        title: 'Rincón de calma · Nubi',
+        loadComponent: () => import('./self-regulation/presentation/calm-library/calm-library').then((m) => m.CalmLibrary),
+      },
+      {
+        path: 'comunicacion',
+        title: 'Comunicación · Nubi',
+        loadComponent: () =>
+          import('./communication/presentation/communication-board/communication-board').then((m) => m.CommunicationBoardPage),
+      },
+      {
+        path: 'progreso',
+        title: 'Progreso · Nubi',
+        loadComponent: () => import('./insights/presentation/progress/progress').then((m) => m.Progress),
+      },
+      {
+        path: 'seguimiento',
+        title: 'Red de apoyo · Nubi',
+        loadComponent: () => import('./support-network/presentation/tracking/tracking').then((m) => m.Tracking),
+      },
+      {
+        path: 'perfil',
+        title: 'Perfil del niño · Nubi',
+        loadComponent: () => import('./profile/presentation/child-profile/child-profile').then((m) => m.ChildProfilePage),
+      },
+      {
+        path: 'plan',
+        title: 'Mi plan · Nubi',
+        loadComponent: () => import('./profile/presentation/plan/plan').then((m) => m.Plan),
+      },
+    ],
+  },
+  {
+    path: 'sesion/:resourceId',
+    canActivate: [authGuard, childGuard],
+    title: 'Momento de calma · Nubi',
+    loadComponent: () => import('./self-regulation/presentation/calm-player/calm-player').then((m) => m.CalmPlayer),
+  },
+  {
+    path: 'sos',
+    canActivate: [authGuard, childGuard],
+    children: [
+      {
+        path: '',
+        title: 'Modo SOS · Nubi',
+        loadComponent: () => import('./crisis/presentation/sos-start/sos-start').then((m) => m.SosStart),
+      },
+      {
+        path: ':sessionId',
+        title: 'Guía SOS · Nubi',
+        loadComponent: () => import('./crisis/presentation/sos-guide/sos-guide').then((m) => m.SosGuide),
+      },
+    ],
+  },
+  {
+    path: 'nino',
+    canActivate: [authGuard, childGuard],
+    loadComponent: () => import('./kid-mode/presentation/kid-shell/kid-shell').then((m) => m.KidShell),
+    children: [
+      {
+        path: '',
+        title: 'Mi rincón · Nubi',
+        loadComponent: () => import('./kid-mode/presentation/kid-home/kid-home').then((m) => m.KidHome),
+      },
+      {
+        path: 'hablar',
+        title: 'Hablar · Nubi',
+        loadComponent: () => import('./kid-mode/presentation/kid-talk/kid-talk').then((m) => m.KidTalk),
+      },
+      {
+        path: 'mi-dia',
+        title: 'Mi día · Nubi',
+        loadComponent: () => import('./kid-mode/presentation/kid-day/kid-day').then((m) => m.KidDay),
+      },
+    ],
+  },
+  {
+    path: 'sin-conexion',
+    title: 'Sin conexión · Nubi',
+    loadComponent: () => import('./shared/presentation/offline/offline').then((m) => m.Offline),
+  },
+  { path: '**', redirectTo: 'inicio' },
+];
