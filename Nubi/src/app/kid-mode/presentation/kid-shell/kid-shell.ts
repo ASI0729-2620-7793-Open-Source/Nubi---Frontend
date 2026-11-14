@@ -5,24 +5,35 @@ import { avatarOf } from '../../../profile/domain/model/child-profile';
 
 /**
  * Modo niño: pantalla completa, sin menús de configuración y con muy pocas opciones a la vez.
- * Para salir, un adulto mantiene presionado el botón durante 2 segundos (así el niño no sale
- * por accidente).
+ * La navegación es una barra redondeada a la izquierda con botones grandes (abajo en el
+ * celular). Para salir, un adulto mantiene presionado el candado durante 2 segundos, así el
+ * niño no sale por accidente.
  */
 @Component({
   selector: 'app-kid-shell',
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
   template: `
     <div class="kid">
-      <header class="bar">
-        <a class="me" routerLink="/nino">
+      <aside class="rail">
+        <a class="me" routerLink="/nino" [attr.aria-label]="'Inicio de ' + childStore.name()">
           <span class="avatar">{{ avatar().emoji ?? avatar().text }}</span>
           <strong>{{ childStore.name() }}</strong>
         </a>
-        <nav>
-          <a routerLink="/nino" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active" aria-label="Inicio">🏠</a>
-          <a routerLink="/nino/hablar" routerLinkActive="active" aria-label="Hablar">💬</a>
-          <a routerLink="/nino/mi-dia" routerLinkActive="active" aria-label="Mi día">🗓️</a>
+
+        <nav aria-label="Modo niño">
+          @for (link of links; track link.path) {
+            <a
+              [routerLink]="link.path"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: link.exact }"
+              [style.--tone]="link.tone"
+            >
+              <span class="emoji">{{ link.emoji }}</span>
+              <span class="label">{{ link.label }}</span>
+            </a>
+          }
         </nav>
+
         <button
           class="exit"
           type="button"
@@ -31,12 +42,13 @@ import { avatarOf } from '../../../profile/domain/model/child-profile';
           (pointerup)="cancelHold()"
           (pointerleave)="cancelHold()"
           (keydown.enter)="exit()"
-          aria-label="Salir del modo niño (mantener presionado)"
+          aria-label="Salir del modo niño (un adulto mantiene presionado)"
         >
           <span class="icon">lock</span>
           <span class="label">{{ holding() ? 'Sigue…' : 'Adultos' }}</span>
         </button>
-      </header>
+      </aside>
+
       <main>
         <router-outlet />
       </main>
@@ -51,72 +63,111 @@ import { avatarOf } from '../../../profile/domain/model/child-profile';
         radial-gradient(circle at 100% 100%, #efecfc, transparent 50%),
         #f7faf9;
     }
+
     .kid {
+      display: grid;
+      grid-template-columns: 128px 1fr;
+      gap: clamp(16px, 2.5vw, 32px);
+      min-height: 100vh;
+      padding: 18px clamp(14px, 2.5vw, 32px) 18px 18px;
+    }
+
+    /* ---------- Barra lateral ---------- */
+
+    .rail {
+      position: sticky;
+      top: 18px;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 14px clamp(12px, 3vw, 28px) 28px;
-    }
-    .bar {
-      display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 18px;
+      height: calc(100vh - 36px);
+      padding: 18px 12px;
+      border-radius: 40px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 12px 36px rgba(15, 76, 85, 0.1);
     }
+
     .me {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 10px;
+      gap: 6px;
       color: var(--ink);
-      font-size: 1.2rem;
+      text-align: center;
+    }
+    .me strong {
+      font-size: 1rem;
+      font-weight: 900;
     }
     .avatar {
       display: grid;
       place-items: center;
-      width: 52px;
-      height: 52px;
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
-      background: #fff;
-      font-size: 1.8rem;
+      background: linear-gradient(135deg, var(--mint-100), var(--lavender-100));
+      font-size: 2.4rem;
       font-weight: 900;
       color: var(--teal-700);
-      box-shadow: var(--shadow-s);
+      box-shadow: 0 0 0 4px #fff, 0 6px 16px rgba(15, 76, 85, 0.15);
     }
+
     nav {
       display: flex;
-      gap: 8px;
-      margin: 0 auto;
-      padding: 6px;
-      border-radius: 999px;
-      background: #fff;
-      box-shadow: var(--shadow-s);
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      margin: auto 0;
     }
     nav a {
-      display: grid;
-      place-items: center;
-      width: 56px;
-      height: 48px;
-      border-radius: 999px;
-      font-size: 1.6rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 14px 6px;
+      border: 3px solid transparent;
+      border-radius: 28px;
+      color: var(--ink-2);
+      font-weight: 800;
+      transition:
+        background 0.25s var(--ease),
+        transform 0.25s var(--ease);
+    }
+    nav a:hover {
+      background: var(--surface-2);
+      transform: scale(1.03);
     }
     nav a.active {
-      background: var(--mint-100);
+      background: var(--tone);
+      border-color: #fff;
+      color: var(--ink);
+      box-shadow: 0 6px 16px rgba(15, 76, 85, 0.12);
     }
+    nav .emoji {
+      font-size: 2.6rem;
+      line-height: 1.1;
+    }
+    nav .label {
+      font-size: 0.95rem;
+    }
+
     .exit {
       position: relative;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 6px;
-      padding: 10px 14px;
+      gap: 2px;
+      width: 100%;
+      padding: 10px 6px;
       border: 0;
-      border-radius: 999px;
+      border-radius: 22px;
       overflow: hidden;
-      background: #fff;
+      background: var(--surface-2);
       color: var(--ink-3);
       font-weight: 800;
+      font-size: 0.8rem;
       cursor: pointer;
-      box-shadow: var(--shadow-s);
       user-select: none;
       touch-action: none;
     }
@@ -126,19 +177,73 @@ import { avatarOf } from '../../../profile/domain/model/child-profile';
       inset: 0;
       width: calc(var(--hold) * 100%);
       background: var(--mint-100);
-      z-index: 0;
     }
     .exit > * {
       position: relative;
     }
+
     main {
-      flex: 1;
-      padding-top: 22px;
+      min-width: 0;
+      padding: 10px 0 24px;
     }
-    @media (max-width: 560px) {
+
+    /* ---------- Celular: barra flotante abajo ---------- */
+
+    @media (max-width: 720px) {
+      .kid {
+        grid-template-columns: 1fr;
+        padding: 14px 14px 112px;
+      }
+      .rail {
+        position: fixed;
+        top: auto;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        z-index: 30;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 6px;
+        height: auto;
+        padding: 8px;
+        border-radius: 32px;
+      }
       .me strong,
       .exit .label {
         display: none;
+      }
+      .avatar {
+        width: 48px;
+        height: 48px;
+        font-size: 1.6rem;
+        box-shadow: none;
+      }
+      nav {
+        flex: 1;
+        flex-direction: row;
+        justify-content: center;
+        gap: 4px;
+        margin: 0;
+        width: auto;
+      }
+      nav a {
+        flex: 1;
+        max-width: 84px;
+        padding: 6px 4px;
+        border-radius: 24px;
+      }
+      nav .emoji {
+        font-size: 1.9rem;
+      }
+      nav .label {
+        font-size: 0.75rem;
+      }
+      .exit {
+        flex-shrink: 0;
+        width: 48px;
+        height: 48px;
+        justify-content: center;
+        border-radius: 50%;
       }
     }
   `,
@@ -146,6 +251,13 @@ import { avatarOf } from '../../../profile/domain/model/child-profile';
 export class KidShell implements OnDestroy {
   protected readonly childStore = inject(ChildStore);
   private readonly router = inject(Router);
+
+  protected readonly links = [
+    { path: '/nino', label: 'Inicio', emoji: '🏠', tone: 'var(--mint-100)', exact: true },
+    { path: '/nino/hablar', label: 'Hablar', emoji: '💬', tone: 'var(--sky-100)', exact: false },
+    { path: '/nino/mi-dia', label: 'Mi día', emoji: '🗓️', tone: 'var(--sun-100)', exact: false },
+  ];
+
   protected readonly avatar = computed(() => {
     const child = this.childStore.child();
     return child ? avatarOf(child) : { text: '' };
