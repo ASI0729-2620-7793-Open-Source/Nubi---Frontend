@@ -86,7 +86,7 @@ interface Pattern {
     }
     .phase {
       font-size: clamp(1.4rem, 3.5vw, 2.2rem);
-      font-weight: 900;
+      font-weight: 800;
       color: var(--teal-700);
     }
     .count {

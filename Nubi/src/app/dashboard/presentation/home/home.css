@@ -39,7 +39,7 @@
   background: linear-gradient(135deg, var(--mint-400), var(--lavender-500));
   color: #fff;
   font-size: 2rem;
-  font-weight: 900;
+  font-weight: 800;
   object-fit: cover;
   box-shadow: 0 0 0 6px #fff;
 }
@@ -57,7 +57,7 @@
 }
 .num {
   font-size: 1.8rem;
-  font-weight: 900;
+  font-weight: 800;
 }
 .num small {
   font-size: 0.9rem;
@@ -75,7 +75,7 @@
   align-items: center;
   gap: 8px;
   font-size: 1.3rem;
-  font-weight: 900;
+  font-weight: 800;
 }
 
 .step {

@@ -19,7 +19,7 @@ import { Component, computed, input } from '@angular/core';
         transform="rotate(-90 50 50)"
         style="transition: stroke-dashoffset 0.8s ease"
       />
-      <text x="50" y="50" text-anchor="middle" dominant-baseline="central" font-size="22" font-weight="900" fill="var(--ink)">
+      <text x="50" y="50" text-anchor="middle" dominant-baseline="central" font-size="22" font-weight="800" fill="var(--ink)">
         {{ text() }}
       </text>
     </svg>

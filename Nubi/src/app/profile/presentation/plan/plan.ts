@@ -64,7 +64,7 @@ import { ProfileApi } from '../../infrastructure/profile-api';
     }
     .price {
       font-size: 1.5rem;
-      font-weight: 900;
+      font-weight: 800;
       color: var(--teal-700);
     }
     ul {

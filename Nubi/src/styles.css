@@ -48,7 +48,8 @@
   --shadow-m: 0 6px 24px rgba(15, 76, 85, 0.08);
   --shadow-l: 0 18px 50px rgba(15, 76, 85, 0.14);
 
-  --font: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Única familia tipográfica de la marca (template Solus); la jerarquía se arma con tamaño y peso */
+  --font: 'Bricolage Grotesque', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -545,7 +546,7 @@ textarea {
   border-radius: 50%;
   background: var(--mint-100);
   color: var(--teal-700);
-  font-weight: 900;
+  font-weight: 800;
   object-fit: cover;
 }
 
