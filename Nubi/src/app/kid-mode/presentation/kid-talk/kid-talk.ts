@@ -46,7 +46,12 @@ import { ChildStore } from '../../../profile/application/child.store';
     :host {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      align-items: center;
+      gap: 24px;
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+      text-align: center;
     }
     h1 {
       text-align: center;
@@ -84,9 +89,10 @@ import { ChildStore } from '../../../profile/application/child.store';
     .cats button {
       display: flex;
       align-items: center;
-      gap: 8px;
-      min-height: 56px;
-      padding: 0 20px;
+      justify-content: center;
+      gap: 10px;
+      min-height: 64px;
+      padding: 0 24px;
       border: 3px solid transparent;
       border-radius: 999px;
       background: #fff;
@@ -102,16 +108,22 @@ import { ChildStore } from '../../../profile/application/child.store';
       border-color: var(--mint-400);
       background: var(--mint-50);
     }
+    /* Filas centradas: la última fila también queda al medio */
     .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(170px, 44%), 1fr));
-      gap: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+      width: 100%;
     }
     .picto {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      gap: 10px;
+      width: clamp(150px, 22vw, 200px);
+      min-height: clamp(170px, 20vw, 210px);
       padding: 22px 10px;
       border: 3px solid transparent;
       border-radius: var(--radius-xl);
@@ -132,9 +144,14 @@ import { ChildStore } from '../../../profile/application/child.store';
       line-height: 1.1;
     }
     .picto img {
-      width: 90px;
-      height: 90px;
+      width: 96px;
+      height: 96px;
       object-fit: contain;
+    }
+    @media (max-width: 520px) {
+      .picto {
+        width: calc(50% - 9px);
+      }
     }
   `,
 })

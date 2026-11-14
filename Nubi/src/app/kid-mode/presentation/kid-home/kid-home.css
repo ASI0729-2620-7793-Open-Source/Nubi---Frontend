@@ -1,72 +1,90 @@
+/* Modo niño: todo centrado, botones grandes y emojis al medio de cada tarjeta. */
 :host {
   display: flex;
   flex-direction: column;
-  gap: 26px;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .ask {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  text-align: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
 }
 .ask h1 {
-  font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+  font-size: clamp(1.9rem, 4.5vw, 2.9rem);
   font-weight: 800;
   line-height: 1.25;
+}
+.ask app-mood-picker {
+  width: 100%;
 }
 .message {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin: 0 auto;
-  padding: 14px 24px;
+  gap: 12px;
+  padding: 16px 28px;
   border-radius: 999px;
   background: #fff;
-  font-size: clamp(1.1rem, 2.6vw, 1.5rem);
+  font-size: clamp(1.15rem, 2.6vw, 1.5rem);
   font-weight: 800;
   box-shadow: var(--shadow-m);
   animation: rise 0.4s var(--ease);
 }
 .message span {
-  font-size: 1.8rem;
+  font-size: 2rem;
 }
 
-.tiles {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(200px, 44%), 1fr));
-  gap: 16px;
+/* Las tarjetas se reparten centradas: la última fila también queda al medio */
+.tiles,
+.row-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  width: 100%;
 }
+
 .tile {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  min-height: 180px;
-  padding: 20px 12px;
+  gap: 14px;
+  width: clamp(150px, 28vw, 240px);
+  min-height: clamp(180px, 22vw, 230px);
+  padding: 22px 14px;
   border-radius: var(--radius-xl);
   color: var(--ink);
   text-align: center;
-  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  font-size: clamp(1.05rem, 2.2vw, 1.3rem);
   box-shadow: var(--shadow-m);
   transition: transform 0.25s var(--ease);
 }
 .tile:hover {
-  transform: translateY(-4px) scale(1.01);
+  transform: translateY(-4px) scale(1.02);
 }
 .tile:active {
   transform: scale(0.97);
 }
 .tile strong {
-  padding: 6px 14px;
+  padding: 8px 16px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.88);
+  line-height: 1.25;
 }
 .emoji {
-  font-size: clamp(3.4rem, 9vw, 4.6rem);
+  display: grid;
+  place-items: center;
+  font-size: clamp(3.6rem, 9vw, 5rem);
   line-height: 1;
 }
 .heart {
@@ -76,33 +94,34 @@
   font-size: 1.3rem;
 }
 
-.row-tiles {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-  gap: 16px;
-}
+/* Botones grandes de "Quiero decir algo" y "Mi día": emoji arriba y texto debajo, centrados */
 .tile.wide {
-  flex-direction: row;
-  justify-content: flex-start;
-  gap: 18px;
-  min-height: 120px;
-  padding: 20px 26px;
-  text-align: left;
+  width: clamp(260px, 40vw, 390px);
+  min-height: clamp(170px, 20vw, 210px);
 }
 .tile.wide > span:last-child {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
+  align-items: center;
+  gap: 8px;
 }
 .sub {
   font-weight: 700;
   color: var(--ink-2);
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 .talk {
   background: linear-gradient(135deg, #e3f1fc, #ece9fb);
 }
 .day {
   background: linear-gradient(135deg, #fdf1d8, #dff4ee);
+}
+
+@media (max-width: 520px) {
+  .tile {
+    width: calc(50% - 9px);
+  }
+  .tile.wide {
+    width: 100%;
+  }
 }
