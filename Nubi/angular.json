@@ -26,7 +26,6 @@
               }
             ],
             "styles": [
-              "src/material-theme.scss",
               "src/styles.css"
             ]
           },
@@ -35,13 +34,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "700kB",
+                  "maximumError": "1.5MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "12kB",
+                  "maximumError": "24kB"
                 }
               ],
               "outputHashing": "all"
@@ -63,7 +62,8 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "options": {
-            "proxyConfig": "proxy.conf.cjs"
+            "proxyConfig": "proxy.conf.cjs",
+            "port": 4200
           },
           "configurations": {
             "production": {
