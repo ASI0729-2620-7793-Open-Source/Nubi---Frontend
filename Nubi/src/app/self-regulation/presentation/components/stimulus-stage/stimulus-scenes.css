@@ -1,0 +1,200 @@
+/* Fondo, partículas y movimiento de cada estímulo. Lo común está en stimulus-stage.css. */
+
+/* ---------- Burbujas flotantes ---------- */
+
+:host(.scene-bubbles) {
+  background: linear-gradient(135deg, #f8d77f 0%, #f9e2b8 48%, #f9ece4 100%);
+}
+
+:host(.scene-bubbles) .particle {
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 32% 30%,
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0.28) 55%,
+    rgba(255, 255, 255, 0.12)
+  );
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+  animation-name: bubble-rise;
+}
+
+@keyframes bubble-rise {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  50% {
+    transform: translate3d(16px, -62cqh, 0);
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate3d(-6px, -128cqh, 0);
+    opacity: 0;
+  }
+}
+
+/* ---------- Olas de color ---------- */
+
+:host(.scene-waves) {
+  background: linear-gradient(160deg, #7fe0e6 0%, #b8f0ef 45%, #e7fbfa 100%);
+}
+
+:host(.scene-waves) .wave-1 {
+  bottom: 0;
+  height: 58%;
+  fill: rgba(76, 203, 187, 0.55);
+  animation-duration: calc(30s - var(--intensity) * 16s);
+}
+
+:host(.scene-waves) .wave-2 {
+  bottom: 22%;
+  height: 52%;
+  fill: rgba(0, 166, 190, 0.32);
+  animation-duration: calc(22s - var(--intensity) * 12s);
+  animation-direction: reverse;
+}
+
+:host(.scene-waves) .wave-3 {
+  bottom: 44%;
+  height: 48%;
+  fill: rgba(255, 255, 255, 0.5);
+  animation-duration: calc(38s - var(--intensity) * 20s);
+}
+
+/* ---------- Cielo estrellado ---------- */
+
+:host(.scene-stars) {
+  background: radial-gradient(ellipse at 30% 20%, #2b3a78 0%, #141d45 45%, #090f27 100%);
+}
+
+:host(.scene-stars) .particle {
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  animation-name: twinkle;
+  animation-timing-function: ease-in-out;
+  animation-direction: alternate;
+}
+
+@keyframes twinkle {
+  from {
+    opacity: 0.15;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- Lluvia suave ---------- */
+
+:host(.scene-rain) {
+  background: linear-gradient(180deg, #b9b3d9 0%, #c9d8e8 45%, #a9d3b5 100%);
+}
+
+:host(.scene-rain) .particle {
+  width: 1.5px;
+  height: var(--size);
+  border-radius: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.85));
+  animation-name: rain-fall;
+}
+
+@keyframes rain-fall {
+  from {
+    transform: translate3d(0, 0, 0) rotate(10deg);
+  }
+  to {
+    transform: translate3d(-26px, 118cqh, 0) rotate(10deg);
+  }
+}
+
+/* ---------- Sonido del mar ---------- */
+
+:host(.scene-ocean) {
+  background: linear-gradient(180deg, #d7e8f1 0%, #a9cbdd 50%, #6c9fbb 100%);
+}
+
+/* El oleaje sube y baja al mismo ritmo que el sonido: una ola cada 9 segundos */
+:host(.scene-ocean) .waves {
+  animation: swell 9s ease-in-out infinite;
+}
+
+:host(.scene-ocean) .wave-1 {
+  bottom: -6%;
+  height: 46%;
+  fill: rgba(39, 94, 128, 0.7);
+  animation-duration: calc(34s - var(--intensity) * 14s);
+}
+
+:host(.scene-ocean) .wave-2 {
+  bottom: 6%;
+  height: 40%;
+  fill: rgba(72, 135, 170, 0.55);
+  animation-duration: calc(26s - var(--intensity) * 10s);
+  animation-direction: reverse;
+}
+
+:host(.scene-ocean) .wave-3 {
+  bottom: 16%;
+  height: 34%;
+  fill: rgba(255, 255, 255, 0.35);
+  animation-duration: calc(40s - var(--intensity) * 16s);
+}
+
+@keyframes swell {
+  0%,
+  100% {
+    transform: translateY(6%);
+  }
+  50% {
+    transform: translateY(-4%);
+  }
+}
+
+/* ---------- Piano relajante ---------- */
+
+:host(.scene-piano) {
+  background: linear-gradient(135deg, #ead7bd 0%, #f3e6d3 50%, #f8f0e6 100%);
+}
+
+/* Sobre el fondo crema, el círculo blanco no se distingue: se usa el tono cálido de las notas */
+:host(.scene-piano) .breath {
+  border-color: rgba(122, 88, 56, 0.35);
+  background: rgba(255, 255, 255, 0.35);
+  color: rgba(122, 88, 56, 0.8);
+  text-shadow: none;
+}
+
+:host(.scene-piano) .particle {
+  width: auto;
+  height: auto;
+  color: rgba(122, 88, 56, 0.55);
+  font-size: var(--size);
+  line-height: 1;
+  animation-name: note-rise;
+}
+
+@keyframes note-rise {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  50% {
+    transform: translate3d(-12px, -60cqh, 0);
+  }
+  85% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate3d(8px, -120cqh, 0);
+    opacity: 0;
+  }
+}

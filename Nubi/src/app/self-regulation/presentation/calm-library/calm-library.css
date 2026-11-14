@@ -1,0 +1,60 @@
+.filters {
+  align-self: flex-start;
+}
+
+.tall {
+  min-height: 200px;
+}
+
+.resource {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 210px;
+  padding: 20px;
+  border-radius: var(--radius-l);
+  color: var(--ink);
+  overflow: hidden;
+  box-shadow: var(--shadow-m);
+  transition: transform 0.25s var(--ease);
+}
+.resource:hover {
+  transform: translateY(-4px);
+}
+.emoji {
+  font-size: 3.4rem;
+  line-height: 1;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.1));
+}
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: var(--radius-m);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+}
+.fav {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  color: #e0605b;
+  cursor: pointer;
+}
+.play {
+  position: absolute;
+  top: 12px;
+  right: 60px;
+  font-size: 44px;
+  color: rgba(255, 255, 255, 0.95);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}

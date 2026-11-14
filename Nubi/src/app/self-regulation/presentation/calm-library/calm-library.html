@@ -1,0 +1,85 @@
+<div class="page">
+  <header class="page-head">
+    <div>
+      <p class="eyebrow">Rincón de calma</p>
+      <h1>Lo que ayuda a {{ childStore.name() }} a relajarse</h1>
+      <p class="lead">
+        Estímulos suaves, respiración guiada y dibujo tranquilo. Marca sus favoritos: aparecerán primero en su modo
+        niño.
+      </p>
+    </div>
+    <a class="btn btn-primary" routerLink="/nino"><span>🫧</span> Abrir su rincón</a>
+  </header>
+
+  <div class="segmented filters">
+    @for (option of filters; track option.id) {
+      <button type="button" [class.active]="filter() === option.id" (click)="filter.set(option.id)">{{ option.label }}</button>
+    }
+  </div>
+
+  @if (loading()) {
+    <div class="grid grid-3"><div class="skeleton tall"></div><div class="skeleton tall"></div><div class="skeleton tall"></div></div>
+  } @else {
+    <div class="grid grid-3">
+      @for (resource of shown(); track resource.id) {
+        <a class="resource" [routerLink]="['/sesion', resource.id]" [style.background]="lookOf(resource.code).gradient">
+          <button
+            class="fav"
+            type="button"
+            [attr.aria-label]="favoriteIds().has(resource.id) ? 'Quitar de favoritos' : 'Marcar como favorito'"
+            (click)="toggleFavorite(resource, $event)"
+          >
+            <span class="icon" [class.fill]="favoriteIds().has(resource.id)">favorite</span>
+          </button>
+          <span class="emoji">{{ lookOf(resource.code).emoji }}</span>
+          <span class="info">
+            <strong>{{ resource.name }}</strong>
+            <span class="row">
+              <span class="chip"><span class="icon">{{ types[resource.type].icon }}</span>{{ types[resource.type].label }}</span>
+              @if (usage().get(resource.id); as count) {
+                <span class="chip">{{ count }} {{ count === 1 ? 'vez' : 'veces' }}</span>
+              }
+            </span>
+          </span>
+          <span class="play icon fill">play_circle</span>
+        </a>
+      } @empty {
+        <div class="empty card"><span class="icon">favorite</span><p>Todavía no hay recursos en este filtro.</p></div>
+      }
+    </div>
+
+    @if (hidden().length) {
+      <div class="alert info">
+        <span class="icon">shield</span>
+        <span>
+          Ocultamos {{ hidden().length }} {{ hidden().length === 1 ? 'recurso' : 'recursos' }}
+          ({{ hiddenNames() }}) porque su perfil sensorial indica sensibilidad alta.
+          Puedes cambiarlo en <a routerLink="/perfil">su perfil</a>.
+        </span>
+      </div>
+    }
+
+    <section class="card">
+      <div class="card-head"><h2><span class="icon">history</span> Últimos momentos de calma</h2></div>
+      <div class="list">
+        @for (session of recent(); track session.id) {
+          <div class="list-item">
+            <span class="icon-bubble">{{ lookOf(resourceCode(session.resourceId)).emoji }}</span>
+            <span class="grow">
+              <strong>{{ resourceName(session.resourceId) }}</strong>
+              <span class="muted small"> · {{ relative(session.startedAt) }}</span>
+            </span>
+            @if (session.startedBySos) {
+              <span class="chip coral">Desde SOS</span>
+            }
+            <span class="chip" [class.mint]="session.status === 'FINISHED'">
+              {{ session.status === 'FINISHED' ? 'Terminada' : session.status === 'PAUSED' ? 'En pausa' : 'Abierta' }}
+            </span>
+          </div>
+        } @empty {
+          <div class="empty"><span class="icon">spa</span><p>Aún no hay sesiones. ¡Prueben la primera!</p></div>
+        }
+      </div>
+    </section>
+  }
+</div>
