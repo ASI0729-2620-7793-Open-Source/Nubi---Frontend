@@ -50,8 +50,13 @@ import { RoutineApi } from '../../../routine/infrastructure/routine-api';
     :host {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      align-items: center;
+      gap: 24px;
       position: relative;
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+      text-align: center;
     }
     h1 {
       text-align: center;
@@ -78,10 +83,11 @@ import { RoutineApi } from '../../../routine/infrastructure/routine-api';
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      gap: 10px;
       margin: 0 auto;
-      width: min(440px, 100%);
-      padding: 26px;
+      width: min(480px, 100%);
+      padding: 30px;
       border: 4px solid var(--mint-400);
       border-radius: var(--radius-xl);
       background: #fff;
@@ -106,23 +112,27 @@ import { RoutineApi } from '../../../routine/infrastructure/routine-api';
       color: var(--ink-3);
       font-weight: 700;
     }
+    /* Todos los pasos a la vista, en filas centradas (sin desplazamiento lateral) */
     .strip {
       display: flex;
-      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+      width: 100%;
       margin: 0;
-      padding: 6px 4px 14px;
-      overflow-x: auto;
+      padding: 0;
       list-style: none;
-      scroll-snap-type: x mandatory;
     }
     .card-step {
       position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
-      width: 130px;
-      padding: 16px 8px;
+      justify-content: center;
+      gap: 8px;
+      width: clamp(130px, 17vw, 160px);
+      min-height: 150px;
+      padding: 18px 10px;
       border: 3px solid transparent;
       border-radius: var(--radius-l);
       background: #fff;
@@ -138,7 +148,19 @@ import { RoutineApi } from '../../../routine/infrastructure/routine-api';
       background: var(--mint-50);
     }
     .card-step .emoji {
-      font-size: 2.6rem;
+      font-size: 3rem;
+      line-height: 1.1;
+    }
+    .card-step .title {
+      font-size: 1.05rem;
+    }
+    @media (max-width: 520px) {
+      .strip > li {
+        width: calc(50% - 7px);
+      }
+      .card-step {
+        width: 100%;
+      }
     }
     .title {
       font-weight: 800;
