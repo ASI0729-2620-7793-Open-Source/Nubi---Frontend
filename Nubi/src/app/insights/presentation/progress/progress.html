@@ -1,0 +1,144 @@
+<div class="page">
+  <header class="page-head">
+    <div>
+      <p class="eyebrow">Progreso</p>
+      <h1>Cómo le va a {{ childStore.name() }}</h1>
+      <p class="lead">Patrones a partir de sus registros de ánimo, momentos de calma y crisis acompañadas.</p>
+    </div>
+    <div class="segmented">
+      <button type="button" [class.active]="range() === 7" (click)="range.set(7)">7 días</button>
+      <button type="button" [class.active]="range() === 14" (click)="range.set(14)">14 días</button>
+      <button type="button" [class.active]="range() === 30" (click)="range.set(30)">30 días</button>
+    </div>
+  </header>
+
+  <section class="kpis grid grid-4">
+    <div class="card kpi">
+      <span class="muted small">Registros en calma</span>
+      <strong>{{ calmShare() === null ? '—' : calmShare() + '%' }}</strong>
+      <span class="small muted">de {{ rangeMoods().length }} registros de ánimo</span>
+    </div>
+    <div class="card kpi">
+      <span class="muted small">Tiempo de calma</span>
+      <strong>{{ minutes() }} min</strong>
+      <span class="small muted">en {{ rangeCalm().length }} sesiones</span>
+    </div>
+    <div class="card kpi">
+      <span class="muted small">Crisis acompañadas</span>
+      <strong>{{ rangeSos().length }}</strong>
+      <span class="small muted">{{ avgSos() === null ? 'sin datos de duración' : 'duran ' + avgSos() + ' min en promedio' }}</span>
+    </div>
+    <div class="card kpi">
+      <span class="muted small">Efecto de la guía SOS</span>
+      <strong>{{ improvementText() }}</strong>
+      <span class="small muted">niveles de intensidad al terminar</span>
+    </div>
+  </section>
+
+  <div class="grid grid-2">
+    <section class="card">
+      <div class="card-head"><h2><span class="icon">mood</span> Ánimo día a día</h2></div>
+      <app-mood-trend [points]="trend()" />
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2><span class="icon">donut_large</span> Cómo se sintió</h2></div>
+      <div class="donut-wrap">
+        <svg viewBox="0 0 100 100" class="donut" role="img" aria-label="Distribución del ánimo">
+          <circle cx="50" cy="50" r="40" fill="none" stroke="var(--line)" stroke-width="14" />
+          @for (arc of donut(); track $index) {
+            <circle cx="50" cy="50" r="40" fill="none" [attr.stroke]="arc.color" stroke-width="14"
+              [attr.stroke-dasharray]="arc.dash" [attr.stroke-dashoffset]="arc.offset" transform="rotate(-90 50 50)" />
+          }
+          <text x="50" y="47" text-anchor="middle" font-size="16" font-weight="900" fill="var(--ink)">{{ rangeMoods().length }}</text>
+          <text x="50" y="62" text-anchor="middle" font-size="8" fill="var(--ink-3)">registros</text>
+        </svg>
+        <div class="legend">
+          @for (slice of distribution(); track slice.level) {
+            <div class="legend-row">
+              <span class="swatch" [style.background]="moodInfo(slice.level).color"></span>
+              <span class="grow">{{ moodInfo(slice.level).emoji }} {{ moodInfo(slice.level).label }}</span>
+              <strong>{{ slice.count }}</strong>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="grid grid-2">
+    <section class="card">
+      <div class="card-head">
+        <h2><span class="icon">spa</span> Momentos de calma</h2>
+        @if (fromSos()) {
+          <span class="chip coral">{{ fromSos() }} desde SOS</span>
+        }
+      </div>
+      <app-day-bars [points]="calmDays()" unit="sesiones" [height]="170" />
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2><span class="icon">favorite</span> Lo que más le ayuda</h2></div>
+      @for (item of resources(); track item.key; let i = $index) {
+        <div class="rank">
+          <span class="pos">{{ i + 1 }}</span>
+          <span class="grow">
+            <strong>{{ item.label }}</strong>
+            <span class="bar"><span [style.width.%]="item.share * 100"></span></span>
+          </span>
+          <span class="muted small">{{ item.count }}×</span>
+        </div>
+      } @empty {
+        <div class="empty"><span class="icon">spa</span><p>Usen el <a routerLink="/calma">rincón de calma</a> para ver qué le funciona.</p></div>
+      }
+    </section>
+  </div>
+
+  <div class="grid grid-2">
+    <section class="card">
+      <div class="card-head"><h2><span class="icon">bolt</span> Qué desencadena sus crisis</h2></div>
+      @for (item of triggers(); track item.key) {
+        <div class="rank">
+          <span class="grow">
+            <strong>{{ item.label }}</strong>
+            <span class="bar coral"><span [style.width.%]="item.share * 100"></span></span>
+          </span>
+          <span class="muted small">{{ item.count }}</span>
+        </div>
+      } @empty {
+        <div class="empty"><span class="icon">sentiment_satisfied</span><p>Sin crisis en este periodo. 💙</p></div>
+      }
+      @if (recentSos().length) {
+        <h3 class="sub">Últimas crisis</h3>
+        <div class="list">
+          @for (sos of recentSos(); track sos.id) {
+            <div class="list-item">
+              <span class="muted small date">{{ formatDate(sos.startedAt) }}</span>
+              <span class="grow row">
+                {{ moodInfo(sos.initialIntensity).emoji }}
+                <span class="icon muted">arrow_forward</span>
+                {{ sos.finalIntensity ? moodInfo(sos.finalIntensity).emoji : '…' }}
+              </span>
+              <span class="chip">{{ sos.completedSteps.length }}/{{ sos.totalSteps }} pasos</span>
+            </div>
+          }
+        </div>
+      }
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2><span class="icon">lightbulb</span> Lo que Nubi notó</h2></div>
+      <div class="stack">
+        @for (insight of insights(); track insight.text) {
+          <div class="insight">
+            <span [class]="'icon-bubble ' + insight.tone"><span class="icon">{{ insight.icon }}</span></span>
+            <p>{{ insight.text }}</p>
+          </div>
+        }
+      </div>
+      <a class="btn btn-soft btn-block share" routerLink="/seguimiento">
+        <span class="icon">ios_share</span> Crear un reporte para su terapeuta
+      </a>
+    </section>
+  </div>
+</div>

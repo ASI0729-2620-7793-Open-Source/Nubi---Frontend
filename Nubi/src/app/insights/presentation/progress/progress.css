@@ -1,0 +1,79 @@
+.kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.kpi strong {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--teal-700);
+}
+
+.donut-wrap {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.donut {
+  width: 170px;
+  height: 170px;
+}
+.legend {
+  flex: 1;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 5px;
+}
+
+.rank {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+}
+.rank .grow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pos {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: var(--lavender-100);
+  color: #5b4fb0;
+  font-weight: 900;
+}
+.bar.coral > span {
+  background: linear-gradient(90deg, var(--peach-500), var(--coral-600));
+}
+
+.sub {
+  margin: 18px 0 4px;
+}
+.date {
+  width: 56px;
+}
+
+.insight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.share {
+  margin-top: 18px;
+}
