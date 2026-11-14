@@ -52,7 +52,7 @@ export class ProfileApi {
   }
 
   acceptInvitation(id: number, caregiverId: number): Observable<Caregiver> {
-    return this.http.post<Caregiver>(`${this.url}/${id}/caregivers/${caregiverId}/accept`, {});
+    return this.http.patch<Caregiver>(`${this.url}/${id}/caregivers/${caregiverId}`, { status: 'ACCEPTED' });
   }
 
   revokeCaregiver(id: number, caregiverId: number): Observable<Caregiver> {

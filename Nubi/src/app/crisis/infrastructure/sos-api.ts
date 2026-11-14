@@ -39,19 +39,19 @@ export class SosApi {
   }
 
   complete(id: number, stepId: number): Observable<SosSession> {
-    return this.http.post<SosSession>(`${this.url}/${id}/steps/${stepId}/complete`, {});
+    return this.http.patch<SosSession>(`${this.url}/${id}/steps/${stepId}`, { status: 'COMPLETED' });
   }
 
   skip(id: number, stepId: number): Observable<SosSession> {
-    return this.http.post<SosSession>(`${this.url}/${id}/steps/${stepId}/skip`, { confirmed: true });
+    return this.http.patch<SosSession>(`${this.url}/${id}/steps/${stepId}`, { status: 'SKIPPED', confirmed: true });
   }
 
   alternative(id: number, stepId: number): Observable<AlternativeTechnique> {
-    return this.http.post<AlternativeTechnique>(`${this.url}/${id}/steps/${stepId}/alternative`, {});
+    return this.http.post<AlternativeTechnique>(`${this.url}/${id}/steps/${stepId}/alternatives`, {});
   }
 
   finish(id: number, observedState: ObservedState | null, finalIntensity: MoodLevel | null): Observable<SosSession> {
-    return this.http.post<SosSession>(`${this.url}/${id}/finish`, { observedState, finalIntensity });
+    return this.http.patch<SosSession>(`${this.url}/${id}`, { status: 'FINISHED', observedState, finalIntensity });
   }
 
   recommendations(profileId: number): Observable<CrisisRecommendation[]> {
@@ -59,7 +59,7 @@ export class SosApi {
   }
 
   generateRecommendations(profileId: number): Observable<CrisisRecommendation[]> {
-    return this.http.post<CrisisRecommendation[]>(`${API_BASE}/profiles/${profileId}/recommendations/generate`, {});
+    return this.http.post<CrisisRecommendation[]>(`${API_BASE}/profiles/${profileId}/recommendations`, {});
   }
 
   rate(recommendationId: number, accountId: number, usefulnessRating: number, favorite: boolean): Observable<CrisisRecommendation> {
