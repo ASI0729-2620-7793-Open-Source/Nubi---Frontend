@@ -190,6 +190,11 @@ export class CalmPlayer implements OnInit, OnDestroy {
   }
 
   leave(): void {
+    // Si se abrió desde el Modo SOS, se vuelve a la guía para seguir con los pasos
+    if (this.sos() === '1' && history.length > 1) {
+      history.back();
+      return;
+    }
     void this.router.navigate([this.kidMode() ? '/nino' : '/calma']);
   }
 

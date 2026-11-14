@@ -63,6 +63,15 @@ export class SosGuide implements OnInit {
     [...(this.childStore.child()?.trustedContacts ?? [])].sort((a, b) => a.priorityOrder - b.priorityOrder).slice(0, 2),
   );
 
+  /** "8 min" o, si la sesión quedó abierta mucho tiempo, "12 h 36 min". */
+  durationText(minutes: number): string {
+    const total = Math.max(1, minutes || 0);
+    if (total < 60) return `${total} min`;
+    const hours = Math.floor(total / 60);
+    const rest = total % 60;
+    return rest ? `${hours} h ${rest} min` : `${hours} h`;
+  }
+
   ngOnInit(): void {
     const id = Number(this.sessionId());
     forkJoin({ session: this.api.session(id), guide: this.api.guide(id) }).subscribe({

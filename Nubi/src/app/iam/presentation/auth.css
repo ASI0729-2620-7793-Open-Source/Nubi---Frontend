@@ -12,8 +12,24 @@
   gap: 32px;
   padding: 48px clamp(24px, 5vw, 72px);
   overflow: hidden;
-  background: linear-gradient(160deg, #0f4c55 0%, #2a8f8a 55%, #4ccbbb 100%);
+  /* Foto de una cuidadora acompañando a un niño; la capa teal mantiene el texto legible */
+  background:
+    linear-gradient(180deg, rgba(11, 59, 66, 0.55) 0%, rgba(11, 59, 66, 0.08) 30%, rgba(11, 59, 66, 0.55) 55%, rgba(11, 59, 66, 0.94) 100%),
+    url('/images/login-family.webp') center 30% / cover no-repeat,
+    #0f4c55;
   color: #fff;
+}
+.hero h1,
+.hero p {
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+}
+/* El logo queda arriba y el texto abajo, para no tapar las caras de la foto */
+.hero {
+  justify-content: flex-end;
+  gap: 24px;
+}
+.hero .brand {
+  margin-bottom: auto;
 }
 .hero .brand {
   display: flex;
@@ -58,7 +74,9 @@
   font-size: 1.5rem;
 }
 
+/* Con la foto de fondo las burbujas decorativas sobran */
 .bubble {
+  display: none;
   position: absolute;
   border-radius: 50%;
   background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.06));
@@ -144,6 +162,7 @@
     grid-template-columns: 1fr;
   }
   .hero {
+    min-height: 340px;
     padding: 28px 22px;
   }
   .features,
