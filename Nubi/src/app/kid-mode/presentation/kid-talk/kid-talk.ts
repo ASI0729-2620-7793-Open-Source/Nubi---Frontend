@@ -2,6 +2,8 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CATEGORY_ICON, CommunicationBoard, Pictogram, pictogramVisual, speak } from '../../../communication/domain/model/board';
 import { BoardApi } from '../../../communication/infrastructure/board-api';
 import { ChildStore } from '../../../profile/application/child.store';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ServerTextPipe } from '../../../shared/presentation/server-text.pipe';
 
 /**
  * Tablero grande para que el niño diga lo que necesita. Cada toque se lee en voz alta y
@@ -9,22 +11,23 @@ import { ChildStore } from '../../../profile/application/child.store';
  */
 @Component({
   selector: 'app-kid-talk',
+  imports: [TranslatePipe, ServerTextPipe],
   template: `
     @if (said(); as p) {
       <div class="bubble" (click)="repeat(p)">
         <span class="big">{{ visual(p).emoji ?? '🖼️' }}</span>
-        <span>"{{ p.phrase }}"</span>
+        <span>"{{ p.phrase | serverText }}"</span>
         <span class="icon fill">volume_up</span>
       </div>
     } @else {
-      <h1>¿Qué quieres decir?</h1>
+      <h1>{{ 'kidTalk.queQuieresDecir' | translate }}</h1>
     }
 
     <div class="cats">
       <button type="button" [class.active]="category() === 'FAV'" (click)="category.set('FAV')">⭐</button>
       @for (cat of board()?.categories ?? []; track cat.id) {
         <button type="button" [class.active]="category() === cat.id" (click)="category.set(cat.id)">
-          {{ categoryIcon[cat.type] }} <span>{{ cat.name }}</span>
+          {{ categoryIcon[cat.type] }} <span>{{ cat.name | serverText }}</span>
         </button>
       }
     </div>
@@ -37,7 +40,7 @@ import { ChildStore } from '../../../profile/application/child.store';
           } @else {
             <span class="emoji">{{ visual(pictogram).emoji }}</span>
           }
-          <strong>{{ pictogram.label }}</strong>
+          <strong>{{ pictogram.label | serverText }}</strong>
         </button>
       }
     </div>

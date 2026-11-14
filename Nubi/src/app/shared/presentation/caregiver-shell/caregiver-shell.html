@@ -2,7 +2,7 @@
   <aside class="sidebar" [class.open]="menuOpen()">
     <a class="brand" routerLink="/inicio" (click)="menuOpen.set(false)">
       <img src="logo-nubi.png" alt="" />
-      <span>Nubi</span>
+      <span>{{ 'common.nubi' | translate }}</span>
     </a>
 
     @if (childStore.child(); as child) {
@@ -14,16 +14,16 @@
         }
         <span class="grow">
           <strong>{{ child.displayName }}</strong>
-          <span class="small muted">{{ child.age }} años · Autismo (TEA)</span>
+          <span class="small muted">{{ 'caregiverShell.anosAutismoTea' | translate: { p0: (child.age) } }}</span>
         </span>
       </a>
     }
 
-    <nav aria-label="Navegación principal">
+    <nav [attr.aria-label]="'caregiverShell.navegacionPrincipal' | translate">
       @for (link of links; track link.path) {
         <a class="nav-link" [routerLink]="link.path" routerLinkActive="active" (click)="menuOpen.set(false)">
           <span class="icon">{{ link.icon }}</span>
-          {{ link.label }}
+          {{ link.label | translate }}
         </a>
       }
     </nav>
@@ -32,21 +32,22 @@
       <a class="kid-mode" routerLink="/nino">
         <span class="kid-emoji">🫧</span>
         <span>
-          <strong>Modo niño</strong>
-          <span class="small">Pantalla tranquila para {{ childStore.name() }}</span>
+          <strong>{{ 'common.modoNino' | translate }}</strong>
+          <span class="small">{{ 'caregiverShell.pantallaTranquilaPara' | translate: { p0: (childStore.name()) } }}</span>
         </span>
       </a>
+      <app-language-switch class="lang-slot" />
       <a class="btn btn-danger btn-block" routerLink="/sos">
         <span class="icon fill">sos</span>
-        Modo SOS
+        {{ 'common.modoSos' | translate }}
       </a>
       <div class="account">
         <span class="avatar small-avatar">{{ session.firstName().charAt(0) }}</span>
         <span class="grow">
           <strong>{{ session.user()?.fullName }}</strong>
-          <a class="small" routerLink="/plan" (click)="menuOpen.set(false)">Mi plan</a>
+          <a class="small" routerLink="/plan" (click)="menuOpen.set(false)">{{ 'common.miPlan' | translate }}</a>
         </span>
-        <button class="btn btn-ghost btn-icon" type="button" title="Cerrar sesión" (click)="signOut()">
+        <button class="btn btn-ghost btn-icon" type="button" [title]="'caregiverShell.cerrarSesion' | translate" (click)="signOut()">
           <span class="icon">logout</span>
         </button>
       </div>
@@ -54,36 +55,36 @@
   </aside>
 
   @if (menuOpen()) {
-    <button class="scrim" type="button" aria-label="Cerrar menú" (click)="menuOpen.set(false)"></button>
+    <button class="scrim" type="button" [attr.aria-label]="'caregiverShell.cerrarMenu' | translate" (click)="menuOpen.set(false)"></button>
   }
 
   <div class="main">
     <header class="topbar">
-      <button class="btn btn-ghost btn-icon" type="button" aria-label="Abrir menú" (click)="menuOpen.set(true)">
+      <button class="btn btn-ghost btn-icon" type="button" [attr.aria-label]="'caregiverShell.abrirMenu' | translate" (click)="menuOpen.set(true)">
         <span class="icon">menu</span>
       </button>
       <a class="brand" routerLink="/inicio">
         <img src="logo-nubi.png" alt="" />
-        <span>Nubi</span>
+        <span>{{ 'common.nubi' | translate }}</span>
       </a>
       <span class="spacer"></span>
-      <a class="btn btn-soft btn-sm" routerLink="/nino">🫧 Modo niño</a>
+      <a class="btn btn-soft btn-sm" routerLink="/nino">{{ 'caregiverShell.modoNino' | translate }}</a>
     </header>
 
     <main>
       <router-outlet />
     </main>
 
-    <nav class="bottom-nav" aria-label="Navegación rápida">
+    <nav class="bottom-nav" [attr.aria-label]="'caregiverShell.navegacionRapida' | translate">
       @for (link of mobileLinks; track link.path) {
         <a [routerLink]="link.path" routerLinkActive="active">
           <span class="icon">{{ link.icon }}</span>
-          <span>{{ link.label }}</span>
+          <span>{{ link.label | translate }}</span>
         </a>
       }
-      <a class="sos" routerLink="/sos" aria-label="Modo SOS">
+      <a class="sos" routerLink="/sos" [attr.aria-label]="'common.modoSos' | translate">
         <span class="icon fill">emergency</span>
-        <span>SOS</span>
+        <span>{{ 'caregiverShell.sos' | translate }}</span>
       </a>
     </nav>
   </div>

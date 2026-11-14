@@ -1,9 +1,9 @@
 <div class="sos">
   <header class="sos-top">
-    <a class="round" routerLink="/inicio" aria-label="Salir"><span class="icon">close</span></a>
+    <a class="round" routerLink="/inicio" [attr.aria-label]="'common.salir' | translate"><span class="icon">close</span></a>
     <span class="tag"><span class="icon fill">sos</span> {{ childStore.name() }}</span>
     @if (!finished()) {
-      <button class="btn btn-ghost btn-sm" type="button" (click)="finishing.set(true)">Ya se calmó</button>
+      <button class="btn btn-ghost btn-sm" type="button" (click)="finishing.set(true)">{{ 'sosGuide.yaSeCalmo' | translate }}</button>
     } @else {
       <span class="round ghost"></span>
     }
@@ -21,29 +21,27 @@
         @if (session(); as s) {
           <section class="step-card summary">
             <span class="big">💙</span>
-            <h1>Lo lograron</h1>
+            <h1>{{ 'sosGuide.loLograron' | translate }}</h1>
             <p class="desc">
-              Pasó de {{ moodInfo(s.initialIntensity).emoji }} {{ moodInfo(s.initialIntensity).label.toLowerCase() }} a
-              {{ moodInfo(s.finalIntensity).emoji }} {{ moodInfo(s.finalIntensity).label.toLowerCase() }}
-              en {{ durationText(s.durationMinutes) }} · {{ s.completedSteps.length }} de {{ s.totalSteps }} pasos.
+              {{ 'sosGuide.pasoDeAEn' | translate: { p0: (moodInfo(s.initialIntensity).emoji), p1: (moodInfo(s.initialIntensity).label.toLowerCase()), p2: (moodInfo(s.finalIntensity).emoji), p3: (moodInfo(s.finalIntensity).label.toLowerCase()), p4: (durationText(s.durationMinutes)), p5: (s.completedSteps.length), p6: (s.totalSteps) } }}
             </p>
             <div class="alert ok">
               <span class="icon">task_alt</span>
-              El episodio quedó registrado en su red de apoyo con el detonante "{{ triggerLabel(s.trigger) }}".
+              {{ 'sosGuide.elEpisodioQuedoRegistrado' | translate: { p0: (triggerLabel(s.trigger)) } }}
             </div>
             <div class="row wrap">
-              <a class="btn btn-primary" routerLink="/seguimiento"><span class="icon">edit_note</span> Agregar una nota</a>
+              <a class="btn btn-primary" routerLink="/seguimiento"><span class="icon">edit_note</span> {{ 'sosGuide.agregarUnaNota' | translate }}</a>
               @if (breathing(); as b) {
-                <a class="btn btn-soft" [routerLink]="['/sesion', b.id]" [queryParams]="{ modo: 'nino', sos: 1 }">🎈 Respirar juntos</a>
+                <a class="btn btn-soft" [routerLink]="['/sesion', b.id]" [queryParams]="{ modo: 'nino', sos: 1 }">{{ 'sosGuide.respirarJuntos' | translate }}</a>
               }
-              <a class="btn btn-ghost" routerLink="/inicio">Volver al inicio</a>
+              <a class="btn btn-ghost" routerLink="/inicio">{{ 'sosGuide.volverAlInicio' | translate }}</a>
             </div>
           </section>
         }
       } @else if (finishing()) {
         <section class="step-card">
-          <p class="step-number">Cierre</p>
-          <h1>¿Cómo lo ves ahora?</h1>
+          <p class="step-number">{{ 'sosGuide.cierre' | translate }}</p>
+          <h1>{{ 'sosGuide.comoLoVesAhora' | translate }}</h1>
           <div class="options">
             @for (state of states; track state.value) {
               <button type="button" class="option" [class.active]="observed() === state.value" (click)="observed.set(state.value)">
@@ -51,7 +49,7 @@
               </button>
             }
           </div>
-          <h2>Intensidad final <span class="muted small">(opcional)</span></h2>
+          <h2>{{ 'sosGuide.intensidadFinal' | translate }} <span class="muted small">{{ 'common.opcional' | translate }}</span></h2>
           <div class="options">
             @for (mood of moods; track mood.level) {
               <button type="button" class="option small-option" [class.active]="finalIntensity() === mood.level" [style.--c]="mood.color" (click)="finalIntensity.set(finalIntensity() === mood.level ? null : mood.level)">
@@ -60,34 +58,34 @@
             }
           </div>
           <div class="step-actions">
-            <button class="btn btn-primary main" type="button" [disabled]="busy()" (click)="finish()">Terminar el Modo SOS</button>
+            <button class="btn btn-primary main" type="button" [disabled]="busy()" (click)="finish()">{{ 'sosGuide.terminarElModoSos' | translate }}</button>
             @if (current()) {
               <div class="secondary">
-                <button class="btn btn-ghost" type="button" (click)="finishing.set(false)">Volver a la guía</button>
+                <button class="btn btn-ghost" type="button" (click)="finishing.set(false)">{{ 'sosGuide.volverALaGuia' | translate }}</button>
               </div>
             }
           </div>
         </section>
       } @else if (current(); as step) {
         <section class="step-card">
-          <p class="step-number">Paso {{ position() }} de {{ guide.steps.length }} @if (step.mandatory) { · importante }</p>
-          <h1>{{ step.title }}</h1>
-          <p class="desc">{{ step.description }}</p>
+          <p class="step-number">{{ 'sosGuide.pasoDe' | translate: { p0: (position()), p1: (guide.steps.length) } }} @if (step.mandatory) { {{ 'sosGuide.importante' | translate }} }</p>
+          <h1>{{ step.title | serverText }}</h1>
+          <p class="desc">{{ step.description | serverText }}</p>
           @if (alternative(); as alt) {
             <div class="alt">
-              <strong>💡 Prueba esto: {{ alt.title }}</strong>
-              <p class="small">{{ alt.description }}</p>
+              <strong>{{ 'sosGuide.pruebaEsto' | translate: { p0: (alt.title | serverText) } }}</strong>
+              <p class="small">{{ alt.description | serverText }}</p>
             </div>
           }
           <div class="step-actions">
             <button class="btn btn-primary main" type="button" [disabled]="busy()" (click)="complete(step)">
-              <span class="icon">check</span> Hecho
+              <span class="icon">check</span> {{ 'sosGuide.hecho' | translate }}
             </button>
             <div class="secondary">
               @if (step.alternativeTechniques.length && !alternative()) {
-                <button class="btn btn-soft" type="button" (click)="askAlternative(step)">No puedo hacerlo</button>
+                <button class="btn btn-soft" type="button" (click)="askAlternative(step)">{{ 'sosGuide.noPuedoHacerlo' | translate }}</button>
               }
-              <button class="btn btn-ghost" type="button" [disabled]="busy()" (click)="skip(step)">Omitir</button>
+              <button class="btn btn-ghost" type="button" [disabled]="busy()" (click)="skip(step)">{{ 'sosGuide.omitir' | translate }}</button>
             </div>
           </div>
         </section>
@@ -97,11 +95,11 @@
         <section class="tools">
           @if (breathing(); as b) {
             <a class="tool" [routerLink]="['/sesion', b.id]" [queryParams]="{ modo: 'nino', sos: 1 }">
-              <span>🎈</span> Respiración del globo
+              <span>🎈</span> {{ 'sosGuide.respiracionDelGlobo' | translate }}
             </a>
           }
           @for (contact of contacts(); track contact.id) {
-            <a class="tool" [href]="'tel:' + contact.phone"><span>📞</span> Llamar a {{ contact.fullName }}</a>
+            <a class="tool" [href]="'tel:' + contact.phone"><span>📞</span> {{ 'sosGuide.llamarA' | translate: { p0: (contact.fullName) } }}</a>
           }
         </section>
       }

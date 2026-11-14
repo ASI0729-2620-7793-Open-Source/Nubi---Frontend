@@ -1,22 +1,22 @@
 <div class="page">
   <header class="page-head">
     <div>
-      <p class="eyebrow">Red de apoyo y seguimiento</p>
-      <h1>Todos cuidando a {{ childStore.name() }}</h1>
+      <p class="eyebrow">{{ 'tracking.redDeApoyoY' | translate }}</p>
+      <h1>{{ 'tracking.todosCuidandoA' | translate: { p0: (childStore.name()) } }}</h1>
       <p class="lead">
-        Las crisis del Modo SOS se registran solas aquí. Agrega notas, pide ayuda y crea reportes para su terapeuta.
+        {{ 'tracking.lasCrisisDelModo' | translate }}
       </p>
     </div>
-    <a class="btn btn-ghost" routerLink="/perfil" [queryParams]="{ tab: 'red' }"><span class="icon">group_add</span> Cuidadores y contactos</a>
+    <a class="btn btn-ghost" routerLink="/perfil" [queryParams]="{ tab: 'red' }"><span class="icon">group_add</span> {{ 'tracking.cuidadoresYContactos' | translate }}</a>
   </header>
 
   <div class="tabs">
-    <button type="button" [class.active]="tab() === 'episodes'" (click)="tab.set('episodes')"><span class="icon">event_note</span> Episodios ({{ episodes().length }})</button>
+    <button type="button" [class.active]="tab() === 'episodes'" (click)="tab.set('episodes')"><span class="icon">event_note</span> {{ 'tracking.episodios' | translate: { p0: (episodes().length) } }}</button>
     <button type="button" [class.active]="tab() === 'help'" (click)="tab.set('help')">
-      <span class="icon">support</span> Pedir ayuda @if (pendingHelp()) {<span class="chip sun">{{ pendingHelp() }}</span>}
+      <span class="icon">support</span> {{ 'common.pedirAyuda' | translate }} @if (pendingHelp()) {<span class="chip sun">{{ pendingHelp() }}</span>}
     </button>
-    <button type="button" [class.active]="tab() === 'reports'" (click)="tab.set('reports')"><span class="icon">summarize</span> Reportes</button>
-    <button type="button" [class.active]="tab() === 'tips'" (click)="tab.set('tips')"><span class="icon">tips_and_updates</span> Recomendaciones</button>
+    <button type="button" [class.active]="tab() === 'reports'" (click)="tab.set('reports')"><span class="icon">summarize</span> {{ 'tracking.reportes' | translate }}</button>
+    <button type="button" [class.active]="tab() === 'tips'" (click)="tab.set('tips')"><span class="icon">tips_and_updates</span> {{ 'common.recomendaciones' | translate }}</button>
   </div>
 
   @if (loading()) {
@@ -33,36 +33,36 @@
                   <strong>{{ formatDateTime(episode.startedAt) }}</strong>
                   <div class="row wrap">
                     <span class="chip peach">⚡ {{ triggerLabel(episode.trigger) }}</span>
-                    <span class="chip">Terminó {{ moodInfo(episode.emotionalState).label.toLowerCase() }}</span>
+                    <span class="chip">{{ 'tracking.termino' | translate: { p0: (moodInfo(episode.emotionalState).label.toLowerCase()) } }}</span>
                     @if (episode.endedAt) {
-                      <span class="chip">{{ minutesBetween(episode.startedAt, episode.endedAt) }} min</span>
+                      <span class="chip">{{ 'common.min' | translate: { p0: (minutesBetween(episode.startedAt, episode.endedAt)) } }}</span>
                     }
                   </div>
                 </div>
               </div>
               @if (episode.strategyUsed) {
-                <p class="small"><span class="muted">Estrategia:</span> {{ episode.strategyUsed }}</p>
+                <p class="small"><span class="muted">{{ 'tracking.estrategia' | translate }}</span> {{ episode.strategyUsed }}</p>
               }
               @if (editingNote === episode.id) {
-                <textarea class="textarea" [(ngModel)]="noteText" placeholder="¿Qué pasó antes? ¿Qué funcionó?"></textarea>
+                <textarea class="textarea" [(ngModel)]="noteText" [placeholder]="'tracking.quePasoAntesQue' | translate"></textarea>
                 <div class="row">
-                  <button class="btn btn-primary btn-sm" type="button" (click)="saveNote(episode)">Guardar nota</button>
-                  <button class="btn btn-ghost btn-sm" type="button" (click)="editingNote = null">Cancelar</button>
+                  <button class="btn btn-primary btn-sm" type="button" (click)="saveNote(episode)">{{ 'tracking.guardarNota' | translate }}</button>
+                  <button class="btn btn-ghost btn-sm" type="button" (click)="editingNote = null">{{ 'common.cancelar' | translate }}</button>
                 </div>
               } @else {
                 @if (episode.notes) {
                   <p class="note">{{ episode.notes }}</p>
                 }
                 <div class="row wrap">
-                  <button class="btn btn-ghost btn-sm" type="button" (click)="editNote(episode)"><span class="icon">edit_note</span> Nota</button>
-                  <button class="btn btn-soft btn-sm" type="button" (click)="openTip(episode)"><span class="icon">add_task</span> Recomendación</button>
+                  <button class="btn btn-ghost btn-sm" type="button" (click)="editNote(episode)"><span class="icon">edit_note</span> {{ 'tracking.nota' | translate }}</button>
+                  <button class="btn btn-soft btn-sm" type="button" (click)="openTip(episode)"><span class="icon">add_task</span> {{ 'tracking.recomendacion' | translate }}</button>
                 </div>
               }
             </article>
           } @empty {
             <div class="card empty">
               <span class="icon">sentiment_satisfied</span>
-              <p>No hay episodios registrados. Cuando uses el <a routerLink="/sos">Modo SOS</a>, la crisis aparecerá aquí.</p>
+              <p>{{ 'tracking.noHayEpisodiosRegistrados' | translate }} <a routerLink="/sos">{{ 'common.modoSos' | translate }}</a>{{ 'tracking.laCrisisApareceraAqui' | translate }}</p>
             </div>
           }
         </div>
@@ -71,43 +71,43 @@
       @case ('help') {
         <div class="grid grid-2">
           <section class="card">
-            <div class="card-head"><h2><span class="icon">campaign</span> Pedir ayuda a su red</h2></div>
+            <div class="card-head"><h2><span class="icon">campaign</span> {{ 'tracking.pedirAyudaASu' | translate }}</h2></div>
             <div class="stack">
               @for (message of quickMessages; track message) {
                 <button class="quick" type="button" (click)="sendHelp(message)">{{ message }}</button>
               }
-              <textarea class="textarea" [(ngModel)]="helpMessage" placeholder="O escribe tu propio mensaje…"></textarea>
-              <button class="btn btn-primary" type="button" (click)="sendHelp()"><span class="icon">send</span> Enviar pedido</button>
+              <textarea class="textarea" [(ngModel)]="helpMessage" [placeholder]="'tracking.oEscribeTuPropio' | translate"></textarea>
+              <button class="btn btn-primary" type="button" (click)="sendHelp()"><span class="icon">send</span> {{ 'tracking.enviarPedido' | translate }}</button>
             </div>
           </section>
           <section class="card">
-            <div class="card-head"><h2><span class="icon">call</span> Contactos de confianza</h2></div>
+            <div class="card-head"><h2><span class="icon">call</span> {{ 'common.contactosDeConfianza' | translate }}</h2></div>
             @for (contact of contacts(); track contact.id) {
               <div class="list-item">
                 <span class="avatar">{{ contact.priorityOrder }}</span>
-                <span class="grow"><strong>{{ contact.fullName }}</strong><br /><span class="muted small">{{ contact.relationship || 'Contacto' }}</span></span>
-                <a class="btn btn-soft btn-sm" [href]="'tel:' + contact.phone"><span class="icon">call</span> Llamar</a>
+                <span class="grow"><strong>{{ contact.fullName }}</strong><br /><span class="muted small">{{ contact.relationship || ('common.contacto' | translate) }}</span></span>
+                <a class="btn btn-soft btn-sm" [href]="'tel:' + contact.phone"><span class="icon">call</span> {{ 'tracking.llamar' | translate }}</a>
               </div>
             } @empty {
-              <div class="empty"><span class="icon">contacts</span><p>Agrega contactos en <a routerLink="/perfil" [queryParams]="{ tab: 'red' }">su perfil</a>.</p></div>
+              <div class="empty"><span class="icon">contacts</span><p>{{ 'tracking.agregaContactosEn' | translate }} <a routerLink="/perfil" [queryParams]="{ tab: 'red' }">{{ 'common.suPerfil' | translate }}</a>.</p></div>
             }
           </section>
         </div>
         <section class="card">
-          <div class="card-head"><h2><span class="icon">history</span> Pedidos</h2></div>
+          <div class="card-head"><h2><span class="icon">history</span> {{ 'tracking.pedidos' | translate }}</h2></div>
           <div class="list">
             @for (request of help(); track request.id) {
               <div class="list-item">
                 <span class="grow"><strong>{{ request.message }}</strong><br /><span class="muted small">{{ relative(request.createdAt) }}</span></span>
                 @if (request.status === 'PENDING') {
-                  <button class="btn btn-soft btn-sm" type="button" (click)="resolveHelp(request, true)">Ya recibí ayuda</button>
-                  <button class="btn btn-ghost btn-sm" type="button" (click)="resolveHelp(request, false)">Cancelar</button>
+                  <button class="btn btn-soft btn-sm" type="button" (click)="resolveHelp(request, true)">{{ 'tracking.yaRecibiAyuda' | translate }}</button>
+                  <button class="btn btn-ghost btn-sm" type="button" (click)="resolveHelp(request, false)">{{ 'common.cancelar' | translate }}</button>
                 } @else {
-                  <span class="chip" [class.mint]="request.status === 'CONFIRMED'">{{ request.status === 'CONFIRMED' ? 'Atendido' : 'Cancelado' }}</span>
+                  <span class="chip" [class.mint]="request.status === 'CONFIRMED'">{{ request.status === 'CONFIRMED' ? ('tracking.atendido' | translate) : ('tracking.cancelado' | translate) }}</span>
                 }
               </div>
             } @empty {
-              <p class="muted">Todavía no enviaste pedidos de ayuda.</p>
+              <p class="muted">{{ 'tracking.todaviaNoEnviastePedidos' | translate }}</p>
             }
           </div>
         </section>
@@ -115,30 +115,30 @@
 
       @case ('reports') {
         <section class="card">
-          <div class="card-head"><h2><span class="icon">auto_awesome</span> Nuevo reporte automático</h2></div>
-          <p class="muted small">Nubi resume episodios, ánimo y momentos de calma del periodo. Puedes sumar tus observaciones.</p>
+          <div class="card-head"><h2><span class="icon">auto_awesome</span> {{ 'tracking.nuevoReporteAutomatico' | translate }}</h2></div>
+          <p class="muted small">{{ 'tracking.nubiResumeEpisodiosAnimo' | translate }}</p>
           <div class="form-grid report-form">
             <label class="field">
-              <span>Periodo</span>
+              <span>{{ 'tracking.periodo' | translate }}</span>
               <select class="select" [(ngModel)]="reportDays">
-                <option [ngValue]="7">Últimos 7 días</option>
-                <option [ngValue]="14">Últimos 14 días</option>
-                <option [ngValue]="30">Últimos 30 días</option>
+                <option [ngValue]="7">{{ 'tracking.ultimos7Dias' | translate }}</option>
+                <option [ngValue]="14">{{ 'tracking.ultimos14Dias' | translate }}</option>
+                <option [ngValue]="30">{{ 'tracking.ultimos30Dias' | translate }}</option>
               </select>
             </label>
             <label class="field wide">
-              <span>Observaciones (opcional)</span>
-              <input class="input" [(ngModel)]="reportObservations" placeholder="Ej. Esta semana empezó vacaciones" />
+              <span>{{ 'tracking.observacionesOpcional' | translate }}</span>
+              <input class="input" [(ngModel)]="reportObservations" [placeholder]="'tracking.ejEstaSemanaEmpezo' | translate" />
             </label>
           </div>
-          <button class="btn btn-primary" type="button" (click)="createReport()"><span class="icon">summarize</span> Crear reporte</button>
+          <button class="btn btn-primary" type="button" (click)="createReport()"><span class="icon">summarize</span> {{ 'tracking.crearReporte' | translate }}</button>
         </section>
 
         @for (report of reports(); track report.id) {
           <article class="card report">
             <div class="card-head">
               <h3>{{ formatDate(report.periodStart) }} – {{ formatDate(report.periodEnd) }}</h3>
-              <span class="chip" [class.mint]="report.shared">{{ report.shared ? 'Compartido con ' + report.sharedWith : 'Sin compartir' }}</span>
+              <span class="chip" [class.mint]="report.shared">{{ report.shared ? ('tracking.compartidoCon' | translate) + report.sharedWith : ('tracking.sinCompartir' | translate) }}</span>
             </div>
             <p>{{ report.summary }}</p>
             @if (report.observations) {
@@ -146,14 +146,14 @@
             }
             <div class="row wrap share">
               @if (!report.shared) {
-                <input class="input" [(ngModel)]="shareWith[report.id]" placeholder="Terapeuta, docente, correo…" />
-                <button class="btn btn-soft" type="button" (click)="share(report)"><span class="icon">share</span> Compartir</button>
+                <input class="input" [(ngModel)]="shareWith[report.id]" [placeholder]="'tracking.terapeutaDocenteCorreo' | translate" />
+                <button class="btn btn-soft" type="button" (click)="share(report)"><span class="icon">share</span> {{ 'tracking.compartir' | translate }}</button>
               }
-              <button class="btn btn-ghost" type="button" (click)="copy(report)"><span class="icon">content_copy</span> Copiar</button>
+              <button class="btn btn-ghost" type="button" (click)="copy(report)"><span class="icon">content_copy</span> {{ 'tracking.copiar' | translate }}</button>
             </div>
           </article>
         } @empty {
-          <div class="card empty"><span class="icon">summarize</span><p>Aún no hay reportes.</p></div>
+          <div class="card empty"><span class="icon">summarize</span><p>{{ 'tracking.aunNoHayReportes' | translate }}</p></div>
         }
       }
 
@@ -164,18 +164,18 @@
               <div class="card-head">
                 <h3>{{ tip.title }}</h3>
                 @if (tip.effective) {
-                  <span class="chip mint"><span class="icon">verified</span> Funciona</span>
+                  <span class="chip mint"><span class="icon">verified</span> {{ 'tracking.funciona' | translate }}</span>
                 }
               </div>
               <p>{{ tip.description }}</p>
-              <p class="small"><strong>Estrategia:</strong> {{ tip.strategy }}</p>
-              <p class="small"><strong>Qué hacer:</strong> {{ tip.actionGuide }}</p>
+              <p class="small"><strong>{{ 'tracking.estrategia' | translate }}</strong> {{ tip.strategy }}</p>
+              <p class="small"><strong>{{ 'tracking.queHacer' | translate }}</strong> {{ tip.actionGuide }}</p>
               @if (!tip.effective) {
-                <button class="btn btn-soft btn-sm" type="button" (click)="markEffective(tip)"><span class="icon">thumb_up</span> Nos funcionó</button>
+                <button class="btn btn-soft btn-sm" type="button" (click)="markEffective(tip)"><span class="icon">thumb_up</span> {{ 'tracking.nosFunciono' | translate }}</button>
               }
             </article>
           } @empty {
-            <div class="card empty"><span class="icon">tips_and_updates</span><p>Crea recomendaciones a partir de un episodio para que toda su red sepa qué hacer.</p></div>
+            <div class="card empty"><span class="icon">tips_and_updates</span><p>{{ 'tracking.creaRecomendacionesAPartir' | translate }}</p></div>
           }
         </div>
       }
@@ -186,17 +186,17 @@
 @if (tipFor) {
   <div class="backdrop" (click)="tipFor = null">
     <form class="dialog" (click)="$event.stopPropagation()" (ngSubmit)="saveTip()">
-      <h2>Recomendación para su red</h2>
-      <p class="muted small">Lo aprendido en el episodio del {{ formatDateTime(tipFor.startedAt) }}.</p>
+      <h2>{{ 'tracking.recomendacionParaSuRed' | translate }}</h2>
+      <p class="muted small">{{ 'tracking.loAprendidoEnEl' | translate: { p0: (formatDateTime(tipFor.startedAt)) } }}</p>
       <div class="stack form-gap">
-        <label class="field"><span>Título</span><input class="input" name="title" [(ngModel)]="tipForm.title" /></label>
-        <label class="field"><span>Qué observamos</span><textarea class="textarea" name="description" [(ngModel)]="tipForm.description" placeholder="Se alteró con el ruido del recreo"></textarea></label>
-        <label class="field"><span>Estrategia</span><input class="input" name="strategy" [(ngModel)]="tipForm.strategy" placeholder="Audífonos y lugar tranquilo" /></label>
-        <label class="field"><span>Qué hacer paso a paso</span><textarea class="textarea" name="actionGuide" [(ngModel)]="tipForm.actionGuide" placeholder="1. Bajar la voz 2. Ofrecer audífonos…"></textarea></label>
+        <label class="field"><span>{{ 'tracking.titulo' | translate }}</span><input class="input" name="title" [(ngModel)]="tipForm.title" /></label>
+        <label class="field"><span>{{ 'tracking.queObservamos' | translate }}</span><textarea class="textarea" name="description" [(ngModel)]="tipForm.description" [placeholder]="'tracking.seAlteroConEl' | translate"></textarea></label>
+        <label class="field"><span>{{ 'tracking.estrategia2' | translate }}</span><input class="input" name="strategy" [(ngModel)]="tipForm.strategy" [placeholder]="'tracking.audifonosYLugarTranquilo' | translate" /></label>
+        <label class="field"><span>{{ 'tracking.queHacerPasoA' | translate }}</span><textarea class="textarea" name="actionGuide" [(ngModel)]="tipForm.actionGuide" [placeholder]="'tracking.1BajarLaVoz' | translate"></textarea></label>
       </div>
       <div class="dialog-actions">
-        <button class="btn btn-ghost" type="button" (click)="tipFor = null">Cancelar</button>
-        <button class="btn btn-primary" type="submit">Guardar</button>
+        <button class="btn btn-ghost" type="button" (click)="tipFor = null">{{ 'common.cancelar' | translate }}</button>
+        <button class="btn btn-primary" type="submit">{{ 'common.guardar' | translate }}</button>
       </div>
     </form>
   </div>

@@ -2,21 +2,21 @@
   @if (wellbeing.openSos(); as open) {
     <a class="alert sos-open" [routerLink]="['/sos', open.id]">
       <span class="icon fill">sos</span>
-      Hay una sesión SOS en curso. Toca aquí para continuar la guía.
+      {{ 'home.hayUnaSesionSos' | translate }}
     </a>
   }
 
   <section class="hero">
     <div class="hero-text">
-      <p class="eyebrow">{{ greeting }}, {{ session.firstName() }}</p>
-      <h1>¿Cómo está {{ childStore.name() }} hoy?</h1>
+      <p class="eyebrow">{{ greeting() }}, {{ session.firstName() }}</p>
+      <h1>{{ 'home.comoEstaHoy' | translate: { p0: (childStore.name()) } }}</h1>
       @if (wellbeing.todayMood(); as mood) {
         <p class="lead">
-          Último registro: <strong>{{ moodInfo(mood.level).emoji }} {{ moodInfo(mood.level).label }}</strong>
+          {{ 'home.ultimoRegistro' | translate }} <strong>{{ moodInfo(mood.level).emoji }} {{ moodInfo(mood.level).label }}</strong>
           · {{ relative(mood.checkedAt) }}
         </p>
       } @else {
-        <p class="lead">Todavía no registraron su ánimo hoy. Un toque basta.</p>
+        <p class="lead">{{ 'home.todaviaNoRegistraronSu' | translate }}</p>
       }
       <app-mood-picker
         [selected]="wellbeing.todayMood()?.level ?? null"
@@ -33,8 +33,8 @@
           <span class="child-photo" [class.emoji]="avatarOf(child).emoji">{{ avatarOf(child).emoji ?? avatarOf(child).text }}</span>
         }
         <strong>{{ child.displayName }}</strong>
-        <span class="small muted">{{ child.age }} años · TEA</span>
-        <a class="btn btn-primary" routerLink="/nino">🫧 Abrir su rincón</a>
+        <span class="small muted">{{ 'home.anosTea' | translate: { p0: (child.age) } }}</span>
+        <a class="btn btn-primary" routerLink="/nino">{{ 'home.abrirSuRincon' | translate }}</a>
       </div>
     }
   </section>
@@ -44,28 +44,28 @@
       <span class="icon-bubble">🫧</span>
       <div>
         <strong class="num">{{ wellbeing.weekCalm().length }}</strong>
-        <span class="muted small">momentos de calma en 7 días</span>
+        <span class="muted small">{{ 'home.momentosDeCalmaEn' | translate }}</span>
       </div>
     </div>
     <div class="card stat">
       <span class="icon-bubble lavender">⏱️</span>
       <div>
-        <strong class="num">{{ weekMinutes() }}<small> min</small></strong>
-        <span class="muted small">de calma esta semana</span>
+        <strong class="num">{{ weekMinutes() }}<small> {{ 'home.min' | translate }}</small></strong>
+        <span class="muted small">{{ 'home.deCalmaEstaSemana' | translate }}</span>
       </div>
     </div>
     <div class="card stat">
       <span class="icon-bubble sun">🔥</span>
       <div>
-        <strong class="num">{{ wellbeing.streak() }}<small> {{ wellbeing.streak() === 1 ? 'día' : 'días' }}</small></strong>
-        <span class="muted small">seguidos con un momento de calma</span>
+        <strong class="num">{{ wellbeing.streak() }}<small> {{ wellbeing.streak() === 1 ? ('home.dia' | translate) : ('home.dias' | translate) }}</small></strong>
+        <span class="muted small">{{ 'home.seguidosConUnMomento' | translate }}</span>
       </div>
     </div>
     <div class="card stat">
       <span class="icon-bubble coral">🆘</span>
       <div>
         <strong class="num">{{ wellbeing.weekSos().length }}</strong>
-        <span class="muted small">crisis acompañadas en 7 días</span>
+        <span class="muted small">{{ 'home.crisisAcompanadasEn7' | translate }}</span>
       </div>
     </div>
   </section>
@@ -73,25 +73,25 @@
   <div class="grid grid-2">
     <section class="card">
       <div class="card-head">
-        <h2><span class="icon">view_timeline</span> Su día</h2>
-        <a class="btn btn-ghost btn-sm" routerLink="/rutina">Editar rutina</a>
+        <h2><span class="icon">view_timeline</span> {{ 'home.suDia' | translate }}</h2>
+        <a class="btn btn-ghost btn-sm" routerLink="/rutina">{{ 'home.editarRutina' | translate }}</a>
       </div>
       <div class="routine-summary">
         <app-progress-ring
           [value]="wellbeing.routineToday().share"
           [text]="wellbeing.routineToday().done + '/' + wellbeing.routineToday().total"
-          label="Pasos de la rutina hechos hoy"
+          [label]="'home.routineRingLabel' | translate"
         />
         <div>
           @if (next(); as step) {
-            <p class="muted small">Ahora toca</p>
-            <p class="next"><span>{{ step.icon }}</span> {{ step.title }}</p>
+            <p class="muted small">{{ 'home.ahoraToca' | translate }}</p>
+            <p class="next"><span>{{ step.icon }}</span> {{ step.title | serverText }}</p>
             @if (step.scheduledTime) {
-              <p class="muted small">a las {{ shortTime(step.scheduledTime) }}</p>
+              <p class="muted small">{{ 'home.aLas' | translate: { p0: (shortTime(step.scheduledTime)) } }}</p>
             }
           } @else if (wellbeing.routine().length) {
-            <p class="next">🌟 ¡Rutina completa!</p>
-            <p class="muted small">Celébralo con {{ childStore.name() }}.</p>
+            <p class="next">{{ 'home.rutinaCompleta' | translate }}</p>
+            <p class="muted small">{{ 'home.celebraloCon' | translate: { p0: (childStore.name()) } }}</p>
           }
         </div>
       </div>
@@ -99,7 +99,7 @@
         @for (step of upcoming(); track step.id) {
           <button type="button" class="list-item step" (click)="toggleStep(step)">
             <span class="step-icon">{{ step.icon }}</span>
-            <span class="grow">{{ step.title }}</span>
+            <span class="grow">{{ step.title | serverText }}</span>
             <span class="muted small">{{ shortTime(step.scheduledTime) }}</span>
             <span class="icon check">radio_button_unchecked</span>
           </button>
@@ -109,16 +109,16 @@
 
     <section class="card">
       <div class="card-head">
-        <h2><span class="icon">insights</span> Momentos de calma</h2>
-        <a class="btn btn-ghost btn-sm" routerLink="/progreso">Ver progreso</a>
+        <h2><span class="icon">insights</span> {{ 'common.momentosDeCalma' | translate }}</h2>
+        <a class="btn btn-ghost btn-sm" routerLink="/progreso">{{ 'home.verProgreso' | translate }}</a>
       </div>
-      <app-day-bars [points]="calmDays()" unit="sesiones" />
+      <app-day-bars [points]="calmDays()" [unit]="'common.sessions' | translate" />
       @if (lastCalm(); as last) {
         <a class="last-calm" [routerLink]="['/sesion', last.session.resourceId]">
           <span class="icon-bubble">{{ lookOf(last.resource?.code ?? '').emoji }}</span>
           <span class="grow">
-            <strong>{{ last.resource?.name ?? 'Sesión de calma' }}</strong>
-            <span class="muted small">Último momento de calma · {{ relative(last.session.startedAt) }}</span>
+            <strong>{{ (last.resource?.name | serverText) || ('home.sesionDeCalma' | translate) }}</strong>
+            <span class="muted small">{{ 'home.ultimoMomentoDeCalma' | translate: { p0: (relative(last.session.startedAt)) } }}</span>
           </span>
           <span class="icon">play_circle</span>
         </a>
@@ -129,7 +129,7 @@
   <div class="grid grid-2">
     <section class="card">
       <div class="card-head">
-        <h2><span class="icon">lightbulb</span> Lo que Nubi notó</h2>
+        <h2><span class="icon">lightbulb</span> {{ 'common.loQueNubiNoto' | translate }}</h2>
       </div>
       <div class="stack">
         @for (insight of insights(); track insight.text) {
@@ -143,9 +143,9 @@
 
     <section class="card">
       <div class="card-head">
-        <h2><span class="icon">tips_and_updates</span> Recomendaciones</h2>
+        <h2><span class="icon">tips_and_updates</span> {{ 'common.recomendaciones' | translate }}</h2>
         <button class="btn btn-soft btn-sm" type="button" (click)="generateRecommendations()">
-          <span class="icon">auto_awesome</span> Actualizar
+          <span class="icon">auto_awesome</span> {{ 'home.actualizar' | translate }}
         </button>
       </div>
       @for (rec of recommendations(); track rec.id) {
@@ -157,16 +157,16 @@
       } @empty {
         <div class="empty">
           <span class="icon">auto_awesome</span>
-          <p>Genera consejos personalizados según su perfil sensorial y sus crisis.</p>
+          <p>{{ 'home.generaConsejosPersonalizad' | translate }}</p>
         </div>
       }
     </section>
   </div>
 
   <section class="quick grid grid-4">
-    <a class="card quick-link" routerLink="/calma"><span>🌊</span><strong>Rincón de calma</strong><span class="muted small">Estímulos suaves</span></a>
-    <a class="card quick-link" routerLink="/comunicacion"><span>💬</span><strong>Pictogramas</strong><span class="muted small">Lo que quiere decir</span></a>
-    <a class="card quick-link" routerLink="/seguimiento"><span>🤝</span><strong>Red de apoyo</strong><span class="muted small">Episodios y ayuda</span></a>
-    <a class="card quick-link sos" routerLink="/sos"><span>🆘</span><strong>Modo SOS</strong><span class="small">Guía paso a paso</span></a>
+    <a class="card quick-link" routerLink="/calma"><span>🌊</span><strong>{{ 'common.rinconDeCalma' | translate }}</strong><span class="muted small">{{ 'home.estimulosSuaves' | translate }}</span></a>
+    <a class="card quick-link" routerLink="/comunicacion"><span>💬</span><strong>{{ 'home.pictogramas' | translate }}</strong><span class="muted small">{{ 'home.loQueQuiereDecir' | translate }}</span></a>
+    <a class="card quick-link" routerLink="/seguimiento"><span>🤝</span><strong>{{ 'home.redDeApoyo' | translate }}</strong><span class="muted small">{{ 'home.episodiosYAyuda' | translate }}</span></a>
+    <a class="card quick-link sos" routerLink="/sos"><span>🆘</span><strong>{{ 'common.modoSos' | translate }}</strong><span class="small">{{ 'home.guiaPasoAPaso' | translate }}</span></a>
   </section>
 </div>

@@ -1,14 +1,13 @@
 <div class="page">
   <header class="page-head">
     <div>
-      <p class="eyebrow">Rincón de calma</p>
-      <h1>Lo que ayuda a {{ childStore.name() }} a relajarse</h1>
+      <p class="eyebrow">{{ 'common.rinconDeCalma' | translate }}</p>
+      <h1>{{ 'calmLibrary.loQueAyudaA' | translate: { p0: (childStore.name()) } }}</h1>
       <p class="lead">
-        Estímulos suaves, respiración guiada y dibujo tranquilo. Marca sus favoritos: aparecerán primero en su modo
-        niño.
+        {{ 'calmLibrary.estimulosSuavesRespiracion' | translate }}
       </p>
     </div>
-    <a class="btn btn-primary" routerLink="/nino"><span>🫧</span> Abrir su rincón</a>
+    <a class="btn btn-primary" routerLink="/nino"><span>🫧</span> {{ 'calmLibrary.abrirSuRincon' | translate }}</a>
   </header>
 
   <div class="segmented filters">
@@ -26,14 +25,14 @@
           <button
             class="fav"
             type="button"
-            [attr.aria-label]="favoriteIds().has(resource.id) ? 'Quitar de favoritos' : 'Marcar como favorito'"
+            [attr.aria-label]="favoriteIds().has(resource.id) ? ('common.quitarDeFavoritos' | translate) : ('calmLibrary.marcarComoFavorito' | translate)"
             (click)="toggleFavorite(resource, $event)"
           >
             <span class="icon" [class.fill]="favoriteIds().has(resource.id)">favorite</span>
           </button>
           <span class="emoji">{{ lookOf(resource.code).emoji }}</span>
           <span class="info">
-            <strong>{{ resource.name }}</strong>
+            <strong>{{ resource.name | serverText }}</strong>
             <span class="row">
               <span class="chip"><span class="icon">{{ types[resource.type].icon }}</span>{{ types[resource.type].label }}</span>
               @if (usage().get(resource.id); as count) {
@@ -44,7 +43,7 @@
           <span class="play icon fill">play_circle</span>
         </a>
       } @empty {
-        <div class="empty card"><span class="icon">favorite</span><p>Todavía no hay recursos en este filtro.</p></div>
+        <div class="empty card"><span class="icon">favorite</span><p>{{ 'calmLibrary.todaviaNoHayRecursos' | translate }}</p></div>
       }
     </div>
 
@@ -52,15 +51,13 @@
       <div class="alert info">
         <span class="icon">shield</span>
         <span>
-          Ocultamos {{ hidden().length }} {{ hidden().length === 1 ? 'recurso' : 'recursos' }}
-          ({{ hiddenNames() }}) porque su perfil sensorial indica sensibilidad alta.
-          Puedes cambiarlo en <a routerLink="/perfil">su perfil</a>.
+          {{ 'calmLibrary.ocultamosPorqueSuPerfil' | translate: { p0: (hidden().length), p1: ((hidden().length === 1 ? 'calmLibrary.resourceOne' : 'calmLibrary.resourceMany') | translate), p2: (hiddenNames()) } }} <a routerLink="/perfil">{{ 'common.suPerfil' | translate }}</a>.
         </span>
       </div>
     }
 
     <section class="card">
-      <div class="card-head"><h2><span class="icon">history</span> Últimos momentos de calma</h2></div>
+      <div class="card-head"><h2><span class="icon">history</span> {{ 'calmLibrary.ultimosMomentosDeCalma' | translate }}</h2></div>
       <div class="list">
         @for (session of recent(); track session.id) {
           <div class="list-item">
@@ -70,14 +67,14 @@
               <span class="muted small"> · {{ relative(session.startedAt) }}</span>
             </span>
             @if (session.startedBySos) {
-              <span class="chip coral">Desde SOS</span>
+              <span class="chip coral">{{ 'calmLibrary.desdeSos' | translate }}</span>
             }
             <span class="chip" [class.mint]="session.status === 'FINISHED'">
-              {{ session.status === 'FINISHED' ? 'Terminada' : session.status === 'PAUSED' ? 'En pausa' : 'Abierta' }}
+              {{ session.status === 'FINISHED' ? ('calmLibrary.terminada' | translate) : session.status === 'PAUSED' ? ('common.enPausa' | translate) : ('calmLibrary.abierta' | translate) }}
             </span>
           </div>
         } @empty {
-          <div class="empty"><span class="icon">spa</span><p>Aún no hay sesiones. ¡Prueben la primera!</p></div>
+          <div class="empty"><span class="icon">spa</span><p>{{ 'calmLibrary.aunNoHaySesiones' | translate }}</p></div>
         }
       </div>
     </section>

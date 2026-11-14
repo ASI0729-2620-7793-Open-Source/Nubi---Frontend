@@ -1,37 +1,38 @@
 <div class="auth">
   <section class="hero">
     <span class="bubble b1"></span><span class="bubble b2"></span><span class="bubble b3"></span>
-    <div class="brand"><img src="logo-nubi.png" alt="" /> Nubi</div>
+    <div class="brand"><img src="logo-nubi.png" alt="" /> {{ 'common.nubi' | translate }}</div>
+    <app-language-switch class="auth-lang" />
     <div>
-      <h1>Acompañemos juntos a tu hijo.</h1>
-      <p>Crea tu cuenta y registra a tu niño. Nubi se adapta a cómo siente el ruido, la luz y el contacto.</p>
+      <h1>{{ 'signUp.acompanemosJuntosATu' | translate }}</h1>
+      <p>{{ 'signUp.creaTuCuentaY' | translate }}</p>
     </div>
     <div class="features">
-      <div class="feature"><span>👨‍👩‍👧</span><span>Invita a la familia y a su terapeuta</span></div>
-      <div class="feature"><span>📈</span><span>Mira su progreso semana a semana</span></div>
-      <div class="feature"><span>🔒</span><span>Tus datos solo los ven sus cuidadores</span></div>
+      <div class="feature"><span>👨‍👩‍👧</span><span>{{ 'signUp.invitaALaFamilia' | translate }}</span></div>
+      <div class="feature"><span>📈</span><span>{{ 'signUp.miraSuProgresoSemana' | translate }}</span></div>
+      <div class="feature"><span>🔒</span><span>{{ 'signUp.tusDatosSoloLos' | translate }}</span></div>
     </div>
   </section>
 
   <section class="panel">
     <form class="form" (ngSubmit)="submit()">
       <div>
-        <p class="eyebrow">Paso 1 de 2</p>
-        <h2>Crea tu cuenta</h2>
-        <p class="muted small">Después registrarás a tu hijo o hija.</p>
+        <p class="eyebrow">{{ 'signUp.paso1De2' | translate }}</p>
+        <h2>{{ 'common.creaTuCuenta' | translate }}</h2>
+        <p class="muted small">{{ 'signUp.despuesRegistrarasATu' | translate }}</p>
       </div>
       <label class="field">
-        <span>Tu nombre completo</span>
+        <span>{{ 'signUp.tuNombreCompleto' | translate }}</span>
         <input class="input" name="fullName" autocomplete="name" [(ngModel)]="fullName" required />
       </label>
       <label class="field">
-        <span>Correo</span>
+        <span>{{ 'common.correo' | translate }}</span>
         <input class="input" type="email" name="email" autocomplete="email" [(ngModel)]="email" required />
       </label>
       <label class="field">
-        <span>Contraseña</span>
+        <span>{{ 'common.contrasena' | translate }}</span>
         <input class="input" type="password" name="password" autocomplete="new-password" [(ngModel)]="password" required />
-        <span class="hint">Mínimo 6 caracteres.</span>
+        <span class="hint">{{ 'signUp.minimo6Caracteres' | translate }}</span>
       </label>
 
       @if (error()) {
@@ -39,9 +40,9 @@
       }
 
       <button class="btn btn-primary btn-block" type="submit" [disabled]="busy()">
-        {{ busy() ? 'Creando…' : 'Crear cuenta' }}
+        {{ busy() ? ('signUp.creando' | translate) : ('signUp.crearCuenta' | translate) }}
       </button>
-      <p class="switch-link">¿Ya tienes cuenta? <a routerLink="/ingresar">Ingresa</a></p>
+      <p class="switch-link">{{ 'signUp.yaTienesCuenta' | translate }} <a routerLink="/ingresar">{{ 'signUp.ingresa' | translate }}</a></p>
     </form>
   </section>
 </div>

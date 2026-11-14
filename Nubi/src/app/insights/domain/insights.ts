@@ -4,6 +4,7 @@ import { RoutineStep } from '../../routine/domain/model/routine-step';
 import { CalmSession, CalmingResource } from '../../self-regulation/domain/model/calm';
 import { dayKey, daysAgo, lastDays, minutesBetween, toDate, weekday } from '../../shared/domain/dates';
 import { MOODS, MoodLevel, moodInfo } from '../../shared/domain/mood';
+import { st, t } from '../../shared/infrastructure/i18n-bridge';
 
 /**
  * Indicadores de bienestar calculados en el frontend con los datos que ya guarda el backend
@@ -68,12 +69,12 @@ export function moodDistribution(moods: MoodCheckIn[]): { level: MoodLevel; coun
 export function hardMomentOfDay(moods: MoodCheckIn[]): string | null {
   const hard = moods.filter((mood) => mood.level === 'ALTERED' || mood.level === 'CRISIS');
   if (hard.length < 2) return null;
-  const buckets = { mañana: 0, tarde: 0, noche: 0 };
+  const buckets = { morning: 0, afternoon: 0, night: 0 };
   for (const mood of hard) {
     const hour = toDate(mood.checkedAt)!.getHours();
-    if (hour < 12) buckets.mañana++;
-    else if (hour < 19) buckets.tarde++;
-    else buckets.noche++;
+    if (hour < 12) buckets.morning++;
+    else if (hour < 19) buckets.afternoon++;
+    else buckets.night++;
   }
   return Object.entries(buckets).sort((a, b) => b[1] - a[1])[0][0];
 }
@@ -116,7 +117,7 @@ export function topResources(sessions: CalmSession[], resources: CalmingResource
   return [...counts.entries()]
     .map(([id, count]) => ({
       key: String(id),
-      label: resources.find((resource) => resource.id === id)?.name ?? `Recurso ${id}`,
+      label: st(resources.find((resource) => resource.id === id)?.name) || t('insights.resourceFallback', { id }),
       count,
       share: count / total,
     }))
@@ -171,32 +172,32 @@ export function insightMessages(input: {
 
   const favorite = topResources(calm, resources)[0];
   if (favorite && favorite.count >= 2) {
-    messages.push({ icon: 'favorite', tone: 'lavender', text: `"${favorite.label}" es lo que más usa ${childName} para calmarse (${favorite.count} veces).` });
+    messages.push({ icon: 'favorite', tone: 'lavender', text: t('insights.favorite', { label: favorite.label, name: childName, count: favorite.count }) });
   }
 
   const trigger = topTriggers(sos)[0];
   if (trigger && trigger.key !== 'NONE' && sos.length >= 2) {
-    messages.push({ icon: 'hearing', tone: 'peach', text: `La mayoría de las crisis se relacionan con: ${trigger.label.toLowerCase()}. Anticípalo cuando puedas.` });
+    messages.push({ icon: 'hearing', tone: 'peach', text: t('insights.trigger', { label: trigger.label.toLowerCase() }) });
   }
 
   const moment = hardMomentOfDay(moods);
   if (moment) {
-    messages.push({ icon: 'schedule', tone: 'sun', text: `Los momentos difíciles suelen aparecer en la ${moment}. Una pausa de calma antes puede ayudar.` });
+    messages.push({ icon: 'schedule', tone: 'sun', text: t('insights.moment', { moment: t(`dayPart.${moment}`) }) });
   }
 
   const improvement = sosImprovement(sos);
   if (improvement !== null && improvement > 0) {
-    messages.push({ icon: 'trending_down', tone: 'mint', text: `Con la guía SOS la intensidad baja en promedio ${improvement.toFixed(1)} niveles. ¡Lo están haciendo bien!` });
+    messages.push({ icon: 'trending_down', tone: 'mint', text: t('insights.improvement', { n: improvement.toFixed(1) }) });
   }
 
   const recent = moodsSince(moods, 7);
   const calmShare = recent.length ? recent.filter((mood) => mood.level === 'CALM').length / recent.length : 0;
   if (recent.length >= 3 && calmShare >= 0.6) {
-    messages.push({ icon: 'sentiment_satisfied', tone: 'mint', text: `Esta semana ${childName} estuvo en calma en el ${Math.round(calmShare * 100)}% de sus registros.` });
+    messages.push({ icon: 'sentiment_satisfied', tone: 'mint', text: t('insights.calmWeek', { name: childName, pct: Math.round(calmShare * 100) }) });
   }
 
   if (!messages.length) {
-    messages.push({ icon: 'lightbulb', tone: 'sky', text: `Registra cómo se siente ${childName} cada día: con unos pocos datos Nubi empezará a mostrar patrones.` });
+    messages.push({ icon: 'lightbulb', tone: 'sky', text: t('insights.empty', { name: childName }) });
   }
   return messages;
 }

@@ -1,4 +1,5 @@
 import { MoodLevel } from '../../../shared/domain/mood';
+import { t, withTexts } from '../../../shared/infrastructure/i18n-bridge';
 
 /** Bounded Context Gestión de Crisis (Modo SOS). */
 export type SensoryTrigger = 'AUDITORY' | 'VISUAL' | 'TACTILE' | 'ROUTINE_CHANGE' | 'CROWD' | 'OTHER' | 'NONE';
@@ -69,28 +70,28 @@ export interface CrisisRecommendation {
 }
 
 export const TRIGGERS: { value: SensoryTrigger; label: string; emoji: string }[] = [
-  { value: 'AUDITORY', label: 'Ruido', emoji: '🔊' },
-  { value: 'VISUAL', label: 'Luz o imágenes', emoji: '💡' },
-  { value: 'TACTILE', label: 'Contacto o texturas', emoji: '✋' },
-  { value: 'ROUTINE_CHANGE', label: 'Cambio de rutina', emoji: '🔄' },
-  { value: 'CROWD', label: 'Mucha gente', emoji: '👥' },
-  { value: 'OTHER', label: 'Otro', emoji: '❔' },
-  { value: 'NONE', label: 'No lo sé', emoji: '🤷' },
-];
+  { value: 'AUDITORY' as SensoryTrigger, emoji: '🔊' },
+  { value: 'VISUAL' as SensoryTrigger, emoji: '💡' },
+  { value: 'TACTILE' as SensoryTrigger, emoji: '✋' },
+  { value: 'ROUTINE_CHANGE' as SensoryTrigger, emoji: '🔄' },
+  { value: 'CROWD' as SensoryTrigger, emoji: '👥' },
+  { value: 'OTHER' as SensoryTrigger, emoji: '❔' },
+  { value: 'NONE' as SensoryTrigger, emoji: '🤷' },
+].map((item) => withTexts(item, { label: `triggers.${item.value}` }));
 
 export const OBSERVED_STATES: { value: ObservedState; label: string; emoji: string }[] = [
-  { value: 'CALM', label: 'Tranquilo', emoji: '😌' },
-  { value: 'TIRED', label: 'Cansado', emoji: '🥱' },
-  { value: 'SENSITIVE', label: 'Sensible', emoji: '🥺' },
-  { value: 'IRRITABLE', label: 'Irritable', emoji: '😤' },
-];
+  { value: 'CALM' as ObservedState, emoji: '😌' },
+  { value: 'TIRED' as ObservedState, emoji: '🥱' },
+  { value: 'SENSITIVE' as ObservedState, emoji: '🥺' },
+  { value: 'IRRITABLE' as ObservedState, emoji: '😤' },
+].map((item) => withTexts(item, { label: `observed.${item.value}` }));
 
 export const TOPICS: Record<RecommendationTopic, { label: string; chip: string; icon: string }> = {
-  SENSORY: { label: 'Sensorial', chip: 'lavender', icon: 'hearing' },
-  COMMUNICATIONAL: { label: 'Comunicación', chip: 'sky', icon: 'forum' },
-  BEHAVIORAL: { label: 'Conducta', chip: 'sun', icon: 'psychology' },
+  SENSORY: withTexts({ chip: 'lavender', icon: 'hearing' }, { label: 'topics.SENSORY' }),
+  COMMUNICATIONAL: withTexts({ chip: 'sky', icon: 'forum' }, { label: 'topics.COMMUNICATIONAL' }),
+  BEHAVIORAL: withTexts({ chip: 'sun', icon: 'psychology' }, { label: 'topics.BEHAVIORAL' }),
 };
 
 export function triggerLabel(trigger: string | null | undefined): string {
-  return TRIGGERS.find((item) => item.value === trigger)?.label ?? 'Sin identificar';
+  return TRIGGERS.find((item) => item.value === trigger)?.label ?? t('triggers.unidentified');
 }

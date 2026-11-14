@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, signal, viewChild } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 /**
  * Lienzo de dibujo tranquilo: trazos suaves con colores pastel que se desvanecen poco a poco,
@@ -6,6 +7,7 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, signal, viewChild } fr
  */
 @Component({
   selector: 'app-calm-canvas',
+  imports: [TranslatePipe],
   template: `
     <div class="wrap">
       <canvas
@@ -14,16 +16,16 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, signal, viewChild } fr
         (pointermove)="draw($event)"
         (pointerup)="end()"
         (pointerleave)="end()"
-        aria-label="Lienzo para dibujar"
+        [attr.aria-label]="'calmCanvas.lienzoParaDibujar' | translate"
       ></canvas>
       <div class="palette">
         @for (color of colors; track color) {
-          <button type="button" [style.background]="color" [class.active]="color === current()" (click)="current.set(color)" [attr.aria-label]="'Color ' + color"></button>
+          <button type="button" [style.background]="color" [class.active]="color === current()" (click)="current.set(color)" [attr.aria-label]="('calmCanvas.color' | translate) + color"></button>
         }
-        <button type="button" class="tool" [class.active]="fade()" (click)="fade.set(!fade())" title="Arena mágica: lo dibujado se borra solo">
+        <button type="button" class="tool" [class.active]="fade()" (click)="fade.set(!fade())" [title]="'calmCanvas.arenaMagicaLoDibujado' | translate">
           <span class="icon">auto_awesome</span>
         </button>
-        <button type="button" class="tool" (click)="clear()" title="Borrar todo"><span class="icon">ink_eraser</span></button>
+        <button type="button" class="tool" (click)="clear()" [title]="'calmCanvas.borrarTodo' | translate"><span class="icon">ink_eraser</span></button>
       </div>
     </div>
   `,

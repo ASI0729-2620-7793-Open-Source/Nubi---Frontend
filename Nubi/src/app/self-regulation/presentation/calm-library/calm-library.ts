@@ -7,6 +7,9 @@ import { relative } from '../../../shared/domain/dates';
 import { apiErrorMessage } from '../../../shared/infrastructure/api-error';
 import { CalmSession, CalmingResource, RESOURCE_TYPES, ResourceType, lookOf } from '../../domain/model/calm';
 import { CalmApi } from '../../infrastructure/calm-api';
+import { TranslatePipe } from '@ngx-translate/core';
+import { st, t, withTexts } from '../../../shared/infrastructure/i18n-bridge';
+import { ServerTextPipe } from '../../../shared/presentation/server-text.pipe';
 
 /**
  * Catálogo de recursos de calma adecuados para el niño. El backend ya filtra los que no van
@@ -14,7 +17,7 @@ import { CalmApi } from '../../infrastructure/calm-api';
  */
 @Component({
   selector: 'app-calm-library',
-  imports: [RouterLink],
+  imports: [RouterLink, TranslatePipe, ServerTextPipe],
   templateUrl: './calm-library.html',
   styleUrl: './calm-library.css',
 })
@@ -36,7 +39,7 @@ export class CalmLibrary implements OnInit {
   protected readonly hidden = computed(() =>
     this.catalog().filter((resource) => !this.suitable().some((item) => item.id === resource.id)),
   );
-  protected readonly hiddenNames = computed(() => this.hidden().map((resource) => resource.name).join(', '));
+  protected readonly hiddenNames = computed(() => this.hidden().map((resource) => st(resource.name)).join(', '));
   protected readonly shown = computed(() => {
     const filter = this.filter();
     return this.suitable().filter((resource) =>
@@ -54,12 +57,12 @@ export class CalmLibrary implements OnInit {
     [...this.sessions()].sort((a, b) => b.startedAt.localeCompare(a.startedAt)).slice(0, 5),
   );
   protected readonly filters: { id: ResourceType | 'ALL' | 'FAV'; label: string }[] = [
-    { id: 'ALL', label: 'Todos' },
-    { id: 'FAV', label: '❤️ Favoritos' },
-    { id: 'VISUAL', label: 'Visuales' },
-    { id: 'AUDITORY', label: 'Sonidos' },
-    { id: 'GUIDED_BREATHING', label: 'Respiración' },
-    { id: 'DRAWING_CANVAS', label: 'Dibujo' },
+    withTexts({ id: 'ALL' as const }, { label: 'filters.ALL' }),
+    withTexts({ id: 'FAV' as const }, { label: 'filters.FAV' }),
+    withTexts({ id: 'VISUAL' as const }, { label: 'filters.VISUAL' }),
+    withTexts({ id: 'AUDITORY' as const }, { label: 'filters.AUDITORY' }),
+    withTexts({ id: 'GUIDED_BREATHING' as const }, { label: 'filters.GUIDED_BREATHING' }),
+    withTexts({ id: 'DRAWING_CANVAS' as const }, { label: 'filters.DRAWING_CANVAS' }),
   ];
 
   private get childId(): number {
@@ -88,7 +91,7 @@ export class CalmLibrary implements OnInit {
   }
 
   resourceName(id: number | null): string {
-    return this.catalog().find((resource) => resource.id === id)?.name ?? 'Sesión de calma';
+    return st(this.catalog().find((resource) => resource.id === id)?.name) || t('home.sesionDeCalma');
   }
 
   resourceCode(id: number | null): string {
@@ -108,7 +111,7 @@ export class CalmLibrary implements OnInit {
         if (isFavorite) next.delete(resource.id);
         else next.add(resource.id);
         this.favoriteIds.set(next);
-        this.toast.ok(isFavorite ? 'Quitado de favoritos.' : `${lookOf(resource.code).emoji} Ahora aparece primero en su rincón.`);
+        this.toast.ok(isFavorite ? t('calmLibrary.removedFavorite') : t('calmLibrary.addedFavorite', { emoji: lookOf(resource.code).emoji }));
       },
       error: (error) => this.toast.error(apiErrorMessage(error)),
     });

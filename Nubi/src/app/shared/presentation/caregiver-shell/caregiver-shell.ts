@@ -3,6 +3,8 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 import { SessionStore } from '../../../iam/application/session.store';
 import { ChildStore } from '../../../profile/application/child.store';
 import { avatarOf, initials } from '../../../profile/domain/model/child-profile';
+import { TranslatePipe } from '@ngx-translate/core';
+import { LanguageSwitch } from '../language-switch/language-switch';
 
 interface NavLink {
   path: string;
@@ -16,7 +18,7 @@ interface NavLink {
  */
 @Component({
   selector: 'app-caregiver-shell',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, TranslatePipe, LanguageSwitch],
   templateUrl: './caregiver-shell.html',
   styleUrl: './caregiver-shell.css',
 })
@@ -29,20 +31,20 @@ export class CaregiverShell {
   protected readonly avatarOf = avatarOf;
 
   protected readonly links: NavLink[] = [
-    { path: '/inicio', label: 'Inicio', icon: 'home' },
-    { path: '/rutina', label: 'Rutina visual', icon: 'view_timeline' },
-    { path: '/calma', label: 'Rincón de calma', icon: 'spa' },
-    { path: '/comunicacion', label: 'Comunicación', icon: 'forum' },
-    { path: '/progreso', label: 'Progreso', icon: 'insights' },
-    { path: '/seguimiento', label: 'Red de apoyo', icon: 'diversity_1' },
-    { path: '/perfil', label: 'Perfil del niño', icon: 'child_care' },
+    { path: '/inicio', label: 'nav.home', icon: 'home' },
+    { path: '/rutina', label: 'nav.routine', icon: 'view_timeline' },
+    { path: '/calma', label: 'nav.calm', icon: 'spa' },
+    { path: '/comunicacion', label: 'nav.communication', icon: 'forum' },
+    { path: '/progreso', label: 'nav.progress', icon: 'insights' },
+    { path: '/seguimiento', label: 'nav.support', icon: 'diversity_1' },
+    { path: '/perfil', label: 'nav.profile', icon: 'child_care' },
   ];
 
   protected readonly mobileLinks: NavLink[] = [
-    { path: '/inicio', label: 'Inicio', icon: 'home' },
-    { path: '/rutina', label: 'Rutina', icon: 'view_timeline' },
-    { path: '/calma', label: 'Calma', icon: 'spa' },
-    { path: '/comunicacion', label: 'Hablar', icon: 'forum' },
+    { path: '/inicio', label: 'nav.home', icon: 'home' },
+    { path: '/rutina', label: 'nav.routineShort', icon: 'view_timeline' },
+    { path: '/calma', label: 'nav.calmShort', icon: 'spa' },
+    { path: '/comunicacion', label: 'nav.talkShort', icon: 'forum' },
   ];
 
   signOut(): void {

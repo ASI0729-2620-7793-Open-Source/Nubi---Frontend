@@ -1,11 +1,11 @@
 <div class="player" [class.kid]="kidMode()" [style.background]="lookOf(resource()?.code ?? '').gradient">
   <header class="top">
-    <button class="round" type="button" aria-label="Salir" (click)="finish()">
+    <button class="round" type="button" [attr.aria-label]="'common.salir' | translate" (click)="finish()">
       <span class="icon">close</span>
     </button>
     <div class="title">
       <span>{{ lookOf(resource()?.code ?? '').emoji }}</span>
-      <strong>{{ resource()?.name ?? 'Momento de calma' }}</strong>
+      <strong>{{ (resource()?.name | serverText) || ('calmPlayer.momentoDeCalma' | translate) }}</strong>
     </div>
     @if (phase() === 'playing' && (session()?.timer?.running || remaining() > 0)) {
       <span class="clock"><span class="icon">timer</span> {{ clock() }}</span>
@@ -17,7 +17,7 @@
   @if (error()) {
     <div class="center">
       <div class="alert"><span class="icon">error</span>{{ error() }}</div>
-      <button class="btn btn-primary" type="button" (click)="leave()">Volver</button>
+      <button class="btn btn-primary" type="button" (click)="leave()">{{ 'common.volver' | translate }}</button>
     </div>
   } @else if (phase() === 'playing') {
     <section class="stage-area">
@@ -42,18 +42,18 @@
 
       @if (needsAudioTap()) {
         <button class="audio-tap" type="button" (click)="startAudio()">
-          <span class="icon fill">volume_up</span> Tocar para escuchar
+          <span class="icon fill">volume_up</span> {{ 'calmPlayer.tocarParaEscuchar' | translate }}
         </button>
       }
       @if (paused()) {
-        <div class="paused-badge"><span class="icon fill">pause_circle</span> En pausa</div>
+        <div class="paused-badge"><span class="icon fill">pause_circle</span> {{ 'common.enPausa' | translate }}</div>
       }
       @if (session()?.shouldSuggestHelp) {
         <div class="help">
-          <p><strong>Se acabó el tiempo.</strong> ¿Sigue inquieto?</p>
+          <p><strong>{{ 'calmPlayer.seAcaboElTiempo' | translate }}</strong> {{ 'calmPlayer.sigueInquieto' | translate }}</p>
           <div class="row wrap">
-            <button class="btn btn-soft" type="button" (click)="startTimer(5)">5 minutos más</button>
-            <a class="btn btn-danger" routerLink="/sos"><span class="icon fill">sos</span> Pedir ayuda</a>
+            <button class="btn btn-soft" type="button" (click)="startTimer(5)">{{ 'calmPlayer.5MinutosMas' | translate }}</button>
+            <a class="btn btn-danger" routerLink="/sos"><span class="icon fill">sos</span> {{ 'common.pedirAyuda' | translate }}</a>
           </div>
         </div>
       }
@@ -69,42 +69,42 @@
             [max]="resource()?.maxIntensity ?? 10"
             [value]="session()?.intensity ?? 5"
             (input)="setIntensity(+$any($event.target).value)"
-            aria-label="Intensidad"
+            [attr.aria-label]="'calmPlayer.intensidad' | translate"
           />
           <span class="strong">{{ session()?.intensity }}</span>
         </label>
       }
       <div class="buttons">
-        <button class="round" type="button" [attr.aria-label]="paused() ? 'Continuar' : 'Pausar'" (click)="togglePause()">
+        <button class="round" type="button" [attr.aria-label]="paused() ? ('common.continuar' | translate) : ('calmPlayer.pausar' | translate)" (click)="togglePause()">
           <span class="icon fill">{{ paused() ? 'play_arrow' : 'pause' }}</span>
         </button>
         @if (isStimulus()) {
-          <button class="round" type="button" [class.on]="session()?.lowStimulationActive" title="Baja estimulación" (click)="toggleLowStimulation()">
+          <button class="round" type="button" [class.on]="session()?.lowStimulationActive" [title]="'common.bajaEstimulacion' | translate" (click)="toggleLowStimulation()">
             <span class="icon">contrast</span>
           </button>
         }
         @if (!kidMode()) {
           @for (minutes of durations; track minutes) {
-            <button class="pill" type="button" (click)="startTimer(minutes)">{{ minutes }} min</button>
+            <button class="pill" type="button" (click)="startTimer(minutes)">{{ 'common.min' | translate: { p0: (minutes) } }}</button>
           }
         }
         <button class="btn btn-primary" type="button" (click)="finish()">
-          <span class="icon">check</span> {{ kidMode() ? 'Ya estoy mejor' : 'Terminar' }}
+          <span class="icon">check</span> {{ kidMode() ? ('calmPlayer.yaEstoyMejor' | translate) : ('calmPlayer.terminar' | translate) }}
         </button>
       </div>
     </footer>
   } @else if (phase() === 'ask') {
     <div class="center ask">
       <span class="big">🌟</span>
-      <h1>¿Cómo te sientes ahora?</h1>
+      <h1>{{ 'calmPlayer.comoTeSientesAhora' | translate }}</h1>
       <app-mood-picker [kid]="true" (picked)="answer($event)" />
-      <button class="btn btn-ghost" type="button" (click)="leave()">Saltar</button>
+      <button class="btn btn-ghost" type="button" (click)="leave()">{{ 'calmPlayer.saltar' | translate }}</button>
     </div>
   } @else {
     <div class="center ask">
       <span class="big">💙</span>
-      <h1>¡Muy bien!</h1>
-      <p class="lead">Lo hiciste genial.</p>
+      <h1>{{ 'calmPlayer.muyBien' | translate }}</h1>
+      <p class="lead">{{ 'calmPlayer.loHicisteGenial' | translate }}</p>
     </div>
   }
 </div>

@@ -1,4 +1,7 @@
-import { Component, OnDestroy, OnInit, computed, input, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, computed, input, signal, inject } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
+import { t, withTexts } from '../../../../shared/infrastructure/i18n-bridge';
+import { I18nStore } from '../../../../shared/application/i18n.store';
 
 type Phase = 'inhale' | 'hold' | 'exhale';
 
@@ -16,6 +19,7 @@ interface Pattern {
  */
 @Component({
   selector: 'app-breathing-balloon',
+  imports: [TranslatePipe],
   template: `
     <div class="stage keep-motion" [style.--scale]="scale()" [style.--secs]="phaseSeconds() + 's'">
       <div class="balloon-wrap">
@@ -33,7 +37,7 @@ interface Pattern {
         }
       </div>
     }
-    <p class="breaths">🎈 {{ breaths() }} {{ breaths() === 1 ? 'respiración' : 'respiraciones' }}</p>
+    <p class="breaths">🎈 {{ breaths() }} {{ (breaths() === 1 ? 'breathingBalloon.respiracion' : 'breathingBalloon.respiraciones') | translate }}</p>
   `,
   styles: `
     :host {
@@ -102,13 +106,14 @@ interface Pattern {
   `,
 })
 export class BreathingBalloon implements OnInit, OnDestroy {
+  private readonly i18n = inject(I18nStore);
   readonly kid = input(false);
   readonly paused = input(false);
 
   protected readonly patterns: Pattern[] = [
-    { id: 'balloon', name: 'Globo (4-2-6)', inhale: 4, hold: 2, exhale: 6 },
-    { id: 'square', name: 'Cuadrado (4-4-4)', inhale: 4, hold: 4, exhale: 4 },
-    { id: 'gentle', name: 'Suave (3-1-4)', inhale: 3, hold: 1, exhale: 4 },
+    withTexts({ id: 'balloon', inhale: 4, hold: 2, exhale: 6 }, { name: 'breathing.balloon' }),
+    withTexts({ id: 'square', inhale: 4, hold: 4, exhale: 4 }, { name: 'breathing.square' }),
+    withTexts({ id: 'gentle', inhale: 3, hold: 1, exhale: 4 }, { name: 'breathing.gentle' }),
   ];
   protected readonly pattern = signal<Pattern>(this.patterns[0]);
   protected readonly phase = signal<Phase>('inhale');
@@ -120,7 +125,10 @@ export class BreathingBalloon implements OnInit, OnDestroy {
   protected readonly phaseSeconds = computed(() => this.pattern()[this.phase()]);
   protected readonly color = computed(() => ['lavender', 'mint', 'sun'][this.breaths() % 3]);
   protected readonly phaseText = computed(() =>
-    ({ inhale: 'Toma aire… 🌬️', hold: 'Aguanta un poquito', exhale: 'Suelta despacio…' })[this.phase()],
+    {
+      this.i18n.lang();
+      return { inhale: t('breathing.inhale'), hold: t('breathing.hold'), exhale: t('breathing.exhale') }[this.phase()];
+    },
   );
 
   ngOnInit(): void {

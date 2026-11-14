@@ -1,5 +1,5 @@
 <section class="ask">
-  <h1>Hola, {{ childStore.name() }} 👋<br />¿Cómo te sientes?</h1>
+  <h1>{{ 'kidHome.hola' | translate: { p0: (childStore.name()) } }}<br />{{ 'kidHome.comoTeSientes' | translate }}</h1>
   <app-mood-picker [kid]="true" [selected]="answered()" (picked)="feel($event)" />
   @if (message(); as m) {
     <p class="message"><span>{{ m.emoji }}</span> {{ m.text }}</p>
@@ -21,13 +21,13 @@
 <section class="row-tiles">
   <a class="tile wide talk" routerLink="/nino/hablar">
     <span class="emoji">💬</span>
-    <strong>Quiero decir algo</strong>
+    <strong>{{ 'kidHome.quieroDecirAlgo' | translate }}</strong>
   </a>
   <a class="tile wide day" routerLink="/nino/mi-dia">
     <span class="emoji">{{ next()?.icon ?? '🗓️' }}</span>
     <span>
-      <strong>{{ next() ? 'Ahora: ' + next()!.title : 'Mi día' }}</strong>
-      <span class="sub">{{ wellbeing.routineToday().done }} de {{ wellbeing.routineToday().total }} listos</span>
+      <strong>{{ next() ? ('kidHome.ahora' | translate) + (next()!.title | serverText) : ('common.miDia' | translate) }}</strong>
+      <span class="sub">{{ 'kidHome.deListos' | translate: { p0: (wellbeing.routineToday().done), p1: (wellbeing.routineToday().total) } }}</span>
     </span>
   </a>
 </section>
