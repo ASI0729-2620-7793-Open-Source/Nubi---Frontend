@@ -1,0 +1,141 @@
+<div class="onboarding">
+  <header class="row between">
+    <div class="brand"><img src="logo-nubi-symbol.png" alt="" /> Nubi</div>
+    <button class="btn btn-ghost btn-sm" type="button" (click)="signOut()">Salir</button>
+  </header>
+
+  <div class="progress" aria-hidden="true">
+    @for (n of [1, 2, 3]; track n) {
+      <span [class.done]="step() >= n"></span>
+    }
+  </div>
+
+  <section class="card wizard">
+    @switch (step()) {
+      @case (1) {
+        <div class="intro">
+          <span class="big-emoji">👋</span>
+          <div>
+            <p class="eyebrow">Paso 1 de 3</p>
+            <h1>Hola, {{ session.firstName() }}. ¿Quién es tu niño?</h1>
+            <p class="lead">
+              Nubi acompaña a <strong>un niño con autismo por cuenta</strong>. Más adelante podrás invitar a su
+              familia, docentes o terapeutas.
+            </p>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <label class="field">
+            <span>Nombre</span>
+            <input class="input" name="firstName" [(ngModel)]="form.firstName" />
+          </label>
+          <label class="field">
+            <span>Apellido</span>
+            <input class="input" name="lastName" [(ngModel)]="form.lastName" />
+          </label>
+          <label class="field">
+            <span>¿Cómo le dicen?</span>
+            <input class="input" name="nickname" placeholder="Opcional" [(ngModel)]="form.nickname" />
+          </label>
+          <label class="field">
+            <span>Edad</span>
+            <input class="input" type="number" min="1" max="18" name="age" [(ngModel)]="form.age" />
+          </label>
+        </div>
+
+        <div class="field">
+          <span>Es…</span>
+          <div class="segmented">
+            @for (gender of genders; track gender.value) {
+              <button type="button" [class.active]="form.gender === gender.value" (click)="form.gender = gender.value">
+                {{ gender.label }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="field">
+          <span>¿Cómo se comunica mejor?</span>
+          <div class="needs">
+            @for (need of needs; track need.value) {
+              <button
+                type="button"
+                class="need"
+                [class.active]="form.communicativeNeed === need.value"
+                (click)="form.communicativeNeed = need.value"
+              >
+                <span class="icon">{{ need.icon }}</span>
+                <strong>{{ need.label }}</strong>
+                <span class="hint">{{ need.hint }}</span>
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="alert info">
+          <span class="icon">info</span>
+          Registraremos el diagnóstico como Trastorno del Espectro Autista (TEA). Podrás completar quién lo
+          diagnosticó y sus notas desde su perfil.
+        </div>
+
+        @if (error()) {
+          <div class="alert"><span class="icon">error</span>{{ error() }}</div>
+        }
+        <div class="actions">
+          <button class="btn btn-primary" type="button" (click)="next()">
+            Continuar <span class="icon">arrow_forward</span>
+          </button>
+        </div>
+      }
+
+      @case (2) {
+        <div class="intro">
+          <span class="big-emoji">🌈</span>
+          <div>
+            <p class="eyebrow">Paso 2 de 3</p>
+            <h1>¿Cómo siente el mundo {{ form.nickname || form.firstName }}?</h1>
+            <p class="lead">
+              Con esto Nubi oculta los estímulos que podrían alterarlo y ordena la guía SOS según lo que más le
+              afecta.
+            </p>
+          </div>
+        </div>
+
+        <app-sensory-editor [(value)]="sensory" />
+
+        @if (error()) {
+          <div class="alert"><span class="icon">error</span>{{ error() }}</div>
+        }
+        <div class="actions">
+          <button class="btn btn-ghost" type="button" (click)="step.set(1)">
+            <span class="icon">arrow_back</span> Atrás
+          </button>
+          <button class="btn btn-primary" type="button" [disabled]="busy()" (click)="finish()">
+            {{ busy() ? 'Guardando…' : 'Registrar a ' + (form.nickname || form.firstName) }}
+          </button>
+        </div>
+      }
+
+      @case (3) {
+        <div class="done">
+          <span class="celebrate">🎉</span>
+          <p class="eyebrow">¡Todo listo!</p>
+          <h1>Bienvenido a Nubi, {{ form.nickname || form.firstName }}</h1>
+          <p class="lead">Preparamos una rutina sugerida y su tablero de pictogramas. ¿Por dónde quieres empezar?</p>
+          <div class="choices">
+            <button class="choice" type="button" (click)="go('/inicio')">
+              <span>🏡</span><strong>Ir al panel</strong><span class="hint">Ver todo de un vistazo</span>
+            </button>
+            <button class="choice" type="button" (click)="go('/rutina')">
+              <span>🗓️</span><strong>Ajustar su rutina</strong><span class="hint">Su día, paso a paso</span>
+            </button>
+            <button class="choice" type="button" (click)="go('/nino')">
+              <span>🫧</span><strong>Abrir modo niño</strong><span class="hint">Para que lo explore</span>
+            </button>
+          </div>
+        </div>
+      }
+    }
+  </section>
+</div>

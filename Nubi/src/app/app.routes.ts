@@ -1,115 +1,129 @@
 import { Routes } from '@angular/router';
-import {
-  crisisManagementFocusRoutes,
-  crisisManagementRoutes,
-} from './crisis-management/presentation/crisis-management.routes';
-import { Layout } from './shared/presentation/component/layout/layout';
+import { authGuard, childGuard, guestGuard, noChildGuard } from './iam/application/guards';
+import { CaregiverShell } from './shared/presentation/caregiver-shell/caregiver-shell';
 
 /**
- * Rutas de la Web Application.
- *
- * Cada Bounded Context registra aquí sus propias rutas como hijas del layout. Las de la
- * barra lateral que todavía no existen las agrega el equipo responsable de cada contexto;
- * mientras tanto redirigen a Inicio.
- *
- * El `title` de cada ruta es una clave de public/i18n (ver TranslatedTitleStrategy).
+ * Nubi tiene dos formas de usarse:
+ *  - Modo cuidador (con barra lateral): seguimiento, perfil, rutina, progreso...
+ *  - Modo niño (/nino): pantalla completa, botones grandes y nada de configuración.
+ * El reproductor de calma y el Modo SOS también son de pantalla completa.
  */
 export const routes: Routes = [
   {
+    path: 'ingresar',
+    canActivate: [guestGuard],
+    title: 'Ingresar · Nubi',
+    loadComponent: () => import('./iam/presentation/sign-in/sign-in').then((m) => m.SignIn),
+  },
+  {
+    path: 'registro',
+    canActivate: [guestGuard],
+    title: 'Crear cuenta · Nubi',
+    loadComponent: () => import('./iam/presentation/sign-up/sign-up').then((m) => m.SignUp),
+  },
+  {
+    path: 'bienvenida',
+    canActivate: [authGuard, noChildGuard],
+    title: 'Bienvenida · Nubi',
+    loadComponent: () => import('./profile/presentation/onboarding/onboarding').then((m) => m.Onboarding),
+  },
+  {
     path: '',
-    component: Layout,
+    component: CaregiverShell,
+    canActivate: [authGuard, childGuard],
     children: [
-      { path: '', redirectTo: 'inicio', pathMatch: 'full' },
-
-      // ---------- Comunicación Asistida ----------
+      { path: '', pathMatch: 'full', redirectTo: 'inicio' },
       {
         path: 'inicio',
-        title: 'home.title',
-        loadComponent: () =>
-          import('./assistive-comunication/presentation/home-overview/home-overview').then(
-            (m) => m.HomeOverview,
-          ),
+        title: 'Inicio · Nubi',
+        loadComponent: () => import('./dashboard/presentation/home/home').then((m) => m.Home),
+      },
+      {
+        path: 'rutina',
+        title: 'Rutina visual · Nubi',
+        loadComponent: () => import('./routine/presentation/routine-editor/routine-editor').then((m) => m.RoutineEditor),
+      },
+      {
+        path: 'calma',
+        title: 'Rincón de calma · Nubi',
+        loadComponent: () => import('./self-regulation/presentation/calm-library/calm-library').then((m) => m.CalmLibrary),
       },
       {
         path: 'comunicacion',
-        title: 'board.title',
+        title: 'Comunicación · Nubi',
         loadComponent: () =>
-          import('./assistive-comunication/presentation/communication-board/communication-board').then(
-            (m) => m.CommunicationBoard,
-          ),
-      },
-
-      // ---------- Gestión de Crisis (Modo SOS) ----------
-      ...crisisManagementRoutes,
-
-      // ---------- Autorregulación ----------
-      {
-        path: 'autocuidado',
-        title: 'gallery.title',
-        loadComponent: () =>
-          import('./self-regulation/presentation/stimulus-gallery/stimulus-gallery').then(
-            (m) => m.StimulusGallery,
-          ),
+          import('./communication/presentation/communication-board/communication-board').then((m) => m.CommunicationBoardPage),
       },
       {
-        path: 'autocuidado/estimulos/:resourceId',
-        title: 'session.pageTitle',
-        loadComponent: () =>
-          import('./self-regulation/presentation/stimulus-session/stimulus-session').then(
-            (m) => m.StimulusSession,
-          ),
+        path: 'progreso',
+        title: 'Progreso · Nubi',
+        loadComponent: () => import('./insights/presentation/progress/progress').then((m) => m.Progress),
       },
-
-      // ---------- Dashboard de Red de Apoyo y Seguimiento ----------
       {
-        path: 'support-network',
-        title: 'nav.support',
-        loadComponent: () =>
-          import('./support-network/presentation/support-dashboard/support-dashboard').then(
-            (component) => component.SupportDashboard,
-          ),
+        path: 'seguimiento',
+        title: 'Red de apoyo · Nubi',
+        loadComponent: () => import('./support-network/presentation/tracking/tracking').then((m) => m.Tracking),
       },
-
-      // ---------- Perfil y Personalización ----------
       {
         path: 'perfil',
-        loadChildren: () =>
-          import('./profile/presentation/profile.routes').then((m) => m.profileRoutes),
+        title: 'Perfil del niño · Nubi',
+        loadComponent: () => import('./profile/presentation/child-profile/child-profile').then((m) => m.ChildProfilePage),
       },
       {
-        path: 'my-plan',
-        loadChildren: () =>
-          import('./account/presentation/account.routes').then((m) => m.accountRoutes),
+        path: 'plan',
+        title: 'Mi plan · Nubi',
+        loadComponent: () => import('./profile/presentation/plan/plan').then((m) => m.Plan),
       },
     ],
   },
-  // US-46 y US-47: autenticación pública, fuera del shell con menú.
   {
-    path: 'auth/sign-in',
-    loadComponent: () =>
-      import('./account/presentation/views/sign-in/sign-in').then((m) => m.SignIn),
-    title: 'auth.signIn.title',
+    path: 'sesion/:resourceId',
+    canActivate: [authGuard, childGuard],
+    title: 'Momento de calma · Nubi',
+    loadComponent: () => import('./self-regulation/presentation/calm-player/calm-player').then((m) => m.CalmPlayer),
   },
   {
-    path: 'auth/sign-up',
-    loadComponent: () =>
-      import('./account/presentation/views/sign-up/sign-up').then((m) => m.SignUp),
-    title: 'auth.signUp.title',
+    path: 'sos',
+    canActivate: [authGuard, childGuard],
+    children: [
+      {
+        path: '',
+        title: 'Modo SOS · Nubi',
+        loadComponent: () => import('./crisis/presentation/sos-start/sos-start').then((m) => m.SosStart),
+      },
+      {
+        path: ':sessionId',
+        title: 'Guía SOS · Nubi',
+        loadComponent: () => import('./crisis/presentation/sos-guide/sos-guide').then((m) => m.SosGuide),
+      },
+    ],
   },
-
-  // Pantalla de foco único: sin barra lateral, como en el mock-up del temporizador
   {
-    path: 'autocuidado/temporizador/:sessionId',
-    title: 'timer.title',
-    loadComponent: () =>
-      import('./self-regulation/presentation/calm-timer-page/calm-timer-page').then(
-        (m) => m.CalmTimerPage,
-      ),
+    path: 'nino',
+    canActivate: [authGuard, childGuard],
+    loadComponent: () => import('./kid-mode/presentation/kid-shell/kid-shell').then((m) => m.KidShell),
+    children: [
+      {
+        path: '',
+        title: 'Mi rincón · Nubi',
+        loadComponent: () => import('./kid-mode/presentation/kid-home/kid-home').then((m) => m.KidHome),
+      },
+      {
+        path: 'hablar',
+        title: 'Hablar · Nubi',
+        loadComponent: () => import('./kid-mode/presentation/kid-talk/kid-talk').then((m) => m.KidTalk),
+      },
+      {
+        path: 'mi-dia',
+        title: 'Mi día · Nubi',
+        loadComponent: () => import('./kid-mode/presentation/kid-day/kid-day').then((m) => m.KidDay),
+      },
+    ],
   },
-
-  // Gestión de Crisis: guía paso a paso y resumen, también de foco único
-  ...crisisManagementFocusRoutes,
-
-  // Las rutas de la barra lateral que todavía no existen vuelven a Inicio
+  {
+    path: 'sin-conexion',
+    title: 'Sin conexión · Nubi',
+    loadComponent: () => import('./shared/presentation/offline/offline').then((m) => m.Offline),
+  },
   { path: '**', redirectTo: 'inicio' },
 ];

@@ -1,0 +1,47 @@
+<div class="auth">
+  <section class="hero">
+    <span class="bubble b1"></span><span class="bubble b2"></span><span class="bubble b3"></span>
+    <div class="brand"><img src="logo-nubi-symbol.png" alt="" /> Nubi</div>
+    <div>
+      <h1>Acompañemos juntos a tu hijo.</h1>
+      <p>Crea tu cuenta y registra a tu niño. Nubi se adapta a cómo siente el ruido, la luz y el contacto.</p>
+    </div>
+    <div class="features">
+      <div class="feature"><span>👨‍👩‍👧</span><span>Invita a la familia y a su terapeuta</span></div>
+      <div class="feature"><span>📈</span><span>Mira su progreso semana a semana</span></div>
+      <div class="feature"><span>🔒</span><span>Tus datos solo los ven sus cuidadores</span></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <form class="form" (ngSubmit)="submit()">
+      <div>
+        <p class="eyebrow">Paso 1 de 2</p>
+        <h2>Crea tu cuenta</h2>
+        <p class="muted small">Después registrarás a tu hijo o hija.</p>
+      </div>
+      <label class="field">
+        <span>Tu nombre completo</span>
+        <input class="input" name="fullName" autocomplete="name" [(ngModel)]="fullName" required />
+      </label>
+      <label class="field">
+        <span>Correo</span>
+        <input class="input" type="email" name="email" autocomplete="email" [(ngModel)]="email" required />
+      </label>
+      <label class="field">
+        <span>Contraseña</span>
+        <input class="input" type="password" name="password" autocomplete="new-password" [(ngModel)]="password" required />
+        <span class="hint">Mínimo 6 caracteres.</span>
+      </label>
+
+      @if (error()) {
+        <div class="alert"><span class="icon">error</span>{{ error() }}</div>
+      }
+
+      <button class="btn btn-primary btn-block" type="submit" [disabled]="busy()">
+        {{ busy() ? 'Creando…' : 'Crear cuenta' }}
+      </button>
+      <p class="switch-link">¿Ya tienes cuenta? <a routerLink="/ingresar">Ingresa</a></p>
+    </form>
+  </section>
+</div>

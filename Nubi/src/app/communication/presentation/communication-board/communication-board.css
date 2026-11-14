@@ -1,0 +1,132 @@
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 18px;
+  align-items: start;
+}
+
+.board {
+  padding-top: 8px;
+}
+
+.pictos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.picto {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 18px 10px 14px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius-l);
+  background: var(--surface);
+  cursor: pointer;
+  transition:
+    transform 0.2s var(--ease),
+    border-color 0.2s;
+}
+.picto:hover {
+  transform: translateY(-3px);
+  border-color: var(--mint-400);
+}
+.picto:active {
+  transform: scale(0.97);
+}
+.emoji {
+  font-size: 3rem;
+  line-height: 1.1;
+}
+.picto img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+.phrase {
+  font-size: 0.78rem;
+  color: var(--ink-3);
+  text-align: center;
+}
+.star {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: var(--ink-3);
+}
+.star.on {
+  color: var(--sun-500);
+}
+.star:hover {
+  background: var(--sun-100);
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 12px;
+}
+.message .grow {
+  display: flex;
+  flex-direction: column;
+}
+.msg-emoji {
+  font-size: 2rem;
+}
+.msg-actions {
+  display: flex;
+  gap: 8px;
+  padding: 8px 0 12px;
+  border-bottom: 1px solid var(--line);
+}
+.compact {
+  padding: 8px 0;
+}
+
+.picto-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: 14px auto;
+  padding: 18px 28px;
+  width: fit-content;
+  border: 2px solid var(--mint-400);
+  border-radius: var(--radius-l);
+}
+.picto-preview span {
+  font-size: 3rem;
+}
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
+  gap: 6px;
+}
+.emoji-grid button {
+  height: 42px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: var(--surface-2);
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+.emoji-grid button.active {
+  border-color: var(--mint-400);
+  background: var(--mint-50);
+}
+
+@media (max-width: 1000px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}

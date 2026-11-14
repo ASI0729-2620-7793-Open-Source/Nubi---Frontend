@@ -1,0 +1,110 @@
+<div class="sos">
+  <header class="sos-top">
+    <a class="round" routerLink="/inicio" aria-label="Salir"><span class="icon">close</span></a>
+    <span class="tag"><span class="icon fill">sos</span> {{ childStore.name() }}</span>
+    @if (!finished()) {
+      <button class="btn btn-ghost btn-sm" type="button" (click)="finishing.set(true)">Ya se calmó</button>
+    } @else {
+      <span class="round ghost"></span>
+    }
+  </header>
+
+  @if (guide(); as guide) {
+    <main class="sos-body">
+      <div class="progress" aria-hidden="true">
+        @for (step of guide.steps; track step.id) {
+          <span [class]="stepState(step)"></span>
+        }
+      </div>
+
+      @if (finished()) {
+        @if (session(); as s) {
+          <section class="step-card summary">
+            <span class="big">💙</span>
+            <h1>Lo lograron</h1>
+            <p class="desc">
+              Pasó de {{ moodInfo(s.initialIntensity).emoji }} {{ moodInfo(s.initialIntensity).label.toLowerCase() }} a
+              {{ moodInfo(s.finalIntensity).emoji }} {{ moodInfo(s.finalIntensity).label.toLowerCase() }}
+              en {{ s.durationMinutes || 1 }} min · {{ s.completedSteps.length }} de {{ s.totalSteps }} pasos.
+            </p>
+            <div class="alert ok">
+              <span class="icon">task_alt</span>
+              El episodio quedó registrado en su red de apoyo con el detonante "{{ triggerLabel(s.trigger) }}".
+            </div>
+            <div class="row wrap">
+              <a class="btn btn-primary" routerLink="/seguimiento"><span class="icon">edit_note</span> Agregar una nota</a>
+              @if (breathing(); as b) {
+                <a class="btn btn-soft" [routerLink]="['/sesion', b.id]" [queryParams]="{ modo: 'nino', sos: 1 }">🎈 Respirar juntos</a>
+              }
+              <a class="btn btn-ghost" routerLink="/inicio">Volver al inicio</a>
+            </div>
+          </section>
+        }
+      } @else if (finishing()) {
+        <section class="step-card">
+          <p class="step-number">Cierre</p>
+          <h1>¿Cómo lo ves ahora?</h1>
+          <div class="options">
+            @for (state of states; track state.value) {
+              <button type="button" class="option" [class.active]="observed() === state.value" (click)="observed.set(state.value)">
+                <span class="emoji">{{ state.emoji }}</span>{{ state.label }}
+              </button>
+            }
+          </div>
+          <h2>Intensidad final <span class="muted small">(opcional)</span></h2>
+          <div class="options">
+            @for (mood of moods; track mood.level) {
+              <button type="button" class="option small-option" [class.active]="finalIntensity() === mood.level" [style.--c]="mood.color" (click)="finalIntensity.set(finalIntensity() === mood.level ? null : mood.level)">
+                <span class="emoji">{{ mood.emoji }}</span>{{ mood.label }}
+              </button>
+            }
+          </div>
+          <div class="step-actions">
+            <button class="btn btn-primary main" type="button" [disabled]="busy()" (click)="finish()">Terminar el Modo SOS</button>
+            @if (current()) {
+              <button class="btn btn-ghost" type="button" (click)="finishing.set(false)">Volver a la guía</button>
+            }
+          </div>
+        </section>
+      } @else if (current(); as step) {
+        <section class="step-card">
+          <p class="step-number">Paso {{ position() }} de {{ guide.steps.length }} @if (step.mandatory) { · importante }</p>
+          <h1>{{ step.title }}</h1>
+          <p class="desc">{{ step.description }}</p>
+          @if (alternative(); as alt) {
+            <div class="alt">
+              <strong>💡 Prueba esto: {{ alt.title }}</strong>
+              <p class="small">{{ alt.description }}</p>
+            </div>
+          }
+          <div class="step-actions">
+            <button class="btn btn-primary main" type="button" [disabled]="busy()" (click)="complete(step)">
+              <span class="icon">check</span> Hecho
+            </button>
+            @if (step.alternativeTechniques.length && !alternative()) {
+              <button class="btn btn-soft" type="button" (click)="askAlternative(step)">No puedo hacerlo</button>
+            } @else {
+              <span></span>
+            }
+            <button class="btn btn-ghost" type="button" [disabled]="busy()" (click)="skip(step)">Omitir</button>
+          </div>
+        </section>
+      }
+
+      @if (!finished()) {
+        <section class="tools">
+          @if (breathing(); as b) {
+            <a class="tool" [routerLink]="['/sesion', b.id]" [queryParams]="{ modo: 'nino', sos: 1 }">
+              <span>🎈</span> Respiración del globo
+            </a>
+          }
+          @for (contact of contacts(); track contact.id) {
+            <a class="tool" [href]="'tel:' + contact.phone"><span>📞</span> Llamar a {{ contact.fullName }}</a>
+          }
+        </section>
+      }
+    </main>
+  } @else {
+    <div class="skeleton" style="margin-top: 32px; min-height: 320px"></div>
+  }
+</div>
