@@ -22,7 +22,7 @@ export class I18nStore {
     bindTranslator((key, params) => this.translate.instant(key, params) as string);
   }
 
-  /** Carga el idioma guardado (o el del navegador) antes de mostrar la primera pantalla. */
+  /** Carga el idioma guardado (o inglés, el idioma por defecto) antes de mostrar la primera pantalla. */
   init(): Promise<unknown> {
     const lang = this.initialLanguage();
     this.applyToDocument(lang);
@@ -44,9 +44,9 @@ export class I18nStore {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored === 'es' || stored === 'en') return stored;
     } catch {
-      // se usa el idioma del navegador
+      // se usa el idioma por defecto
     }
-    return navigator.language?.toLowerCase().startsWith('en') ? 'en' : 'es';
+    return 'en';
   }
 
   private applyToDocument(lang: AppLanguage): void {
