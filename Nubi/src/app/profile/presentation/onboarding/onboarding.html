@@ -13,6 +13,16 @@
     }
   </div>
 
+  @for (invitation of invitations(); track invitation.caregiverId) {
+    <aside class="card invitation">
+      <span class="grow">
+        <strong>{{ 'invitations.title' | translate: { p0: invitation.childName } }}</strong><br />
+        <span class="muted small">{{ (invitation.role === 'THERAPIST' ? 'childProfile.terapeuta' : 'childProfile.cuidador') | translate }}</span>
+      </span>
+      <button class="btn btn-primary" type="button" [disabled]="accepting()" (click)="accept(invitation)">{{ 'invitations.accept' | translate }}</button>
+    </aside>
+  }
+
   <section class="card wizard">
     @switch (step()) {
       @case (1) {

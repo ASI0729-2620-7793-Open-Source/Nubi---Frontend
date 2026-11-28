@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { ChildStore } from '../../profile/application/child.store';
 import { SessionStore } from './session.store';
+import { kidLock } from '../../shared/application/kid-lock';
 
 /** Solo con sesión iniciada. */
 export const authGuard: CanActivateFn = () => {
@@ -30,3 +31,7 @@ export const noChildGuard: CanActivateFn = async () => {
   if (child === undefined) return router.createUrlTree(['/sin-conexion']);
   return child ? router.createUrlTree(['/inicio']) : true;
 };
+
+/** Con el Modo niño activo, el área de adultos redirige a él hasta que se ingrese el PIN. */
+export const adultGuard: CanActivateFn = () =>
+  kidLock.locked() && kidLock.hasPin() ? inject(Router).createUrlTree(['/nino']) : true;

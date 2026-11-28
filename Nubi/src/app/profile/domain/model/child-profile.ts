@@ -9,6 +9,15 @@ export type SensitivityLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH';
 export type CaregiverRole = 'PRIMARY' | 'CAREGIVER' | 'THERAPIST';
 export type InvitationStatus = 'PENDING' | 'ACTIVE' | 'REVOKED';
 
+/** Invitación pendiente para la cuenta que inició sesión. */
+export interface Invitation {
+  profileId: number;
+  caregiverId: number;
+  childName: string;
+  role: string;
+  invitedAt: string;
+}
+
 export interface SensoryProfile {
   auditory: SensitivityLevel;
   visual: SensitivityLevel;

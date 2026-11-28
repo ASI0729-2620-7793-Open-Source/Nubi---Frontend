@@ -130,3 +130,22 @@
     grid-template-columns: 1fr;
   }
 }
+
+.arasaac-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 8px;
+}
+.arasaac-grid button {
+  padding: 4px;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  background: #fff;
+  cursor: pointer;
+}
+.arasaac-grid button.active {
+  border-color: var(--teal-700);
+}
+.arasaac-grid img {
+  width: 100%;
+}

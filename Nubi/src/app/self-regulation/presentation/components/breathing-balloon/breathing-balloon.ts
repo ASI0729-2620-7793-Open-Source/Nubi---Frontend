@@ -57,12 +57,12 @@ interface Pattern {
       display: flex;
       flex-direction: column;
       align-items: center;
-      height: clamp(220px, 40vh, 340px);
+      height: clamp(290px, 52vh, 460px);
       justify-content: flex-end;
     }
     .balloon {
-      width: 150px;
-      height: 180px;
+      width: min(220px, 60vw);
+      height: min(264px, 72vw);
       border-radius: 50% 50% 48% 48% / 55% 55% 45% 45%;
       background: radial-gradient(circle at 32% 28%, #ffffff 0 8%, transparent 9%),
         radial-gradient(circle at 40% 35%, var(--b1), var(--b2));
@@ -72,16 +72,16 @@ interface Pattern {
       transition: transform var(--secs) ease-in-out;
     }
     .balloon.lavender {
-      --b1: #b8aef0;
-      --b2: #8b7fd6;
+      --b1: #bdb8dc;
+      --b2: #928bb8;
     }
     .balloon.mint {
-      --b1: #8de3d6;
-      --b2: #2a8f8a;
+      --b1: #a9d4cd;
+      --b2: #5b9490;
     }
     .balloon.sun {
-      --b1: #fbd98d;
-      --b2: #f2b84b;
+      --b1: #ecd6a8;
+      --b2: #cfae72;
     }
     .string {
       width: 2px;

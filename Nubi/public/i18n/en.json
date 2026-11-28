@@ -71,7 +71,7 @@
     "https": "https://…",
     "usar": "Use",
     "archivarPerfil": "Archive profile",
-    "cadaCuentaAcompanaA": "Each account supports a single child. If you archive this profile you can register another one; their data is not deleted.",
+    "cadaCuentaAcompanaA": "Archiving deletes nothing: the profile no longer appears in Nubi and you can register another child. It cannot be restored from the app yet.",
     "archivar": "Archive",
     "comoSienteElMundo": "How they experience the world",
     "siUnaSensibilidadEs": "If a sensitivity is high, Nubi hides stimuli of that type and puts that step first in the SOS guide.",
@@ -211,7 +211,13 @@
     "anotado": "Logged: {{p0}} {{p1}}",
     "hecho": "{{p0}} {{p1}}: done!",
     "preparamosRecomendacionesS": "We prepared recommendations based on their profile.",
-    "routineRingLabel": "Routine steps done today"
+    "routineRingLabel": "Routine steps done today",
+    "sosHint": "The red SOS button is always at hand. Use it when a crisis starts: it guides you step by step.",
+    "sosHintMore": "Learn more",
+    "sosHintOk": "Got it",
+    "contactsHint": "Who to call",
+    "guidance": "Guidance and help",
+    "guidanceHint": "How to use Nubi"
   },
   "kidDay": {
     "terminasteTuDia": "You finished your day! 🌟",
@@ -505,7 +511,8 @@
       "trigger": "Most frequent trigger: {{label}}."
     },
     "copyHeader": "Nubi report ({{from}} – {{to}})",
-    "copyNotes": "Notes:"
+    "copyNotes": "Notes:",
+    "byMail": "Email"
   },
   "errors": {
     "generic": "Something went wrong. Please try again.",
@@ -535,7 +542,8 @@
     "kidHome": "My corner",
     "kidTalk": "Talk",
     "kidDay": "My day",
-    "offline": "Offline"
+    "offline": "Offline",
+    "help": "Help"
   },
   "nav": {
     "home": "Home",
@@ -547,7 +555,8 @@
     "profile": "Child's profile",
     "routineShort": "Routine",
     "calmShort": "Calm",
-    "talkShort": "Talk"
+    "talkShort": "Talk",
+    "help": "Help"
   },
   "kidNav": {
     "home": "Home",
@@ -826,5 +835,62 @@
     "cuidarElEntornoSensorial": "Take care of the sensory environment",
     "facilitarLaComunicacionDuranteLaCrisis": "Make communication easier during the crisis",
     "mantenerRutinasYAnticiparCambios": "Keep routines and anticipate changes"
+  },
+  "waking": {
+    "title": "Waking Nubi up…",
+    "detail": "If nobody used it for a while, the first load can take up to two minutes. Please keep this screen open."
+  },
+  "kidLock": {
+    "createTitle": "Create the adult PIN",
+    "createHelp": "Before handing over the device, choose 4 digits. They will be required to return to the adult area.",
+    "askTitle": "Adult area",
+    "askHelp": "Enter your 4-digit PIN.",
+    "label": "4-digit PIN",
+    "format": "The PIN has 4 digits.",
+    "wrong": "That PIN does not match.",
+    "forgot": "I forgot the PIN: sign out",
+    "save": "Save PIN",
+    "enter": "Enter"
+  },
+  "help": {
+    "eyebrow": "Help",
+    "title": "How Nubi supports you",
+    "goal": "Nubi supports families of children with ASD in daily life: visual routines, calm, pictogram communication and help during a crisis. It does not diagnose or replace therapy.",
+    "sos": {
+      "q": "What is SOS Mode?",
+      "a": "A step-by-step guide to support a crisis. You record the intensity and a possible trigger, follow the prompts, and it is saved for later review. It does not call emergency services: if there is danger, contact them."
+    },
+    "network": {
+      "q": "What is the Support Network?",
+      "a": "The people around the child: invited caregivers and therapists, and trusted contacts to call during a crisis. Here you can ask for help and share reports with them."
+    },
+    "professional": {
+      "q": "Is there professional backing?",
+      "a": "Nubi suggestions are guidance only and do not replace a specialist. Invite the child’s therapist from Profile, Network tab, with the Therapist role, and share reports for review."
+    },
+    "answers": {
+      "q": "What do “I understood” and “I did not understand” mean?",
+      "a": "When the child taps a pictogram, the message appears here. “I understood” records that you got what was asked; “I did not understand” notes it so you can review that pictogram or phrase."
+    },
+    "kidMode": {
+      "q": "How do I leave Kid Mode?",
+      "a": "Press and hold the “Adults” lock and enter your PIN. If you forgot it, sign out from that same window and sign in again with your password."
+    },
+    "archive": {
+      "q": "What happens if I archive a profile?",
+      "a": "The profile no longer appears in Nubi and you can register another child. Its data is not deleted, but it cannot be restored from the app yet."
+    },
+    "openNetwork": "See caregivers and contacts",
+    "openSupport": "Go to the Support Network"
+  },
+  "arasaac": {
+    "search": "Search the word in ARASAAC",
+    "use": "Use this pictogram",
+    "empty": "ARASAAC returned no pictograms for that word.",
+    "credit": "Pictograms: Sergio Palao, ARASAAC, Government of Aragón (CC BY-NC-SA)."
+  },
+  "invitations": {
+    "title": "You were invited to care for {{p0}}",
+    "accept": "Accept invitation"
   }
 }
