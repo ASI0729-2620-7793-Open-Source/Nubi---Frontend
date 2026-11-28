@@ -112,6 +112,7 @@
     "diagnosisUpdated": "Diagnosis updated."
   },
   "common": {
+    "terminosYCondiciones": "Terms and conditions",
     "quitarDeFavoritos": "Remove from favorites",
     "cancelar": "Cancel",
     "nombre": "Name",
