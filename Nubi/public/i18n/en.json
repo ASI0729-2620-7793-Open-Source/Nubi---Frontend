@@ -888,5 +888,9 @@
     "use": "Use this pictogram",
     "empty": "ARASAAC returned no pictograms for that word.",
     "credit": "Pictograms: Sergio Palao, ARASAAC, Government of Aragón (CC BY-NC-SA)."
+  },
+  "invitations": {
+    "title": "You were invited to care for {{p0}}",
+    "accept": "Accept invitation"
   }
 }

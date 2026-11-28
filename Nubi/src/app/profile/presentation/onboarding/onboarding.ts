@@ -13,6 +13,7 @@ import {
   SensoryProfile,
 } from '../../domain/model/child-profile';
 import { ProfileApi } from '../../infrastructure/profile-api';
+import { Invitation } from '../../domain/model/child-profile';
 import { SensoryEditor } from '../components/sensory-editor/sensory-editor';
 import { TranslatePipe } from '@ngx-translate/core';
 import { t } from '../../../shared/infrastructure/i18n-bridge';
@@ -34,6 +35,29 @@ export class Onboarding {
   private readonly toast = inject(ToastStore);
   private readonly router = inject(Router);
   protected readonly session = inject(SessionStore);
+  protected readonly invitations = signal<Invitation[]>([]);
+  protected readonly accepting = signal(false);
+
+  constructor() {
+    this.api
+      .listInvitations()
+      .pipe(catchError(() => of([] as Invitation[])))
+      .subscribe((list) => this.invitations.set(list));
+  }
+
+  accept(invitation: Invitation): void {
+    this.accepting.set(true);
+    this.api
+      .acceptInvitation(invitation.profileId, invitation.caregiverId)
+      .pipe(switchMap(() => this.childStore.load()))
+      .subscribe({
+        next: () => void this.router.navigate(['/inicio']),
+        error: (error) => {
+          this.accepting.set(false);
+          this.toast.error(apiErrorMessage(error));
+        },
+      });
+  }
 
   protected readonly genders = GENDERS;
   protected readonly needs = COMMUNICATION_NEEDS;

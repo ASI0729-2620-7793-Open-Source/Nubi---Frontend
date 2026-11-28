@@ -142,3 +142,10 @@
 .brand img {
   border-radius: 10px;
 }
+
+.invitation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}

@@ -1,25 +1,38 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import { catchError, throwError } from 'rxjs';
 import { ACCOUNT_HEADER, API_BASE, SESSION_KEY } from './api-base';
 
 /**
- * Agrega la cabecera X-Account-Id a cada llamada al backend. Se lee del almacenamiento
- * local para no depender del store (y evitar dependencias circulares).
+ * Agrega el token de acceso (y la cabecera X-Account-Id) a cada llamada al backend. Se lee del
+ * almacenamiento local para no depender del store (y evitar dependencias circulares). Si el
+ * backend rechaza el token (venció o el servicio se reinició), se vuelve a la pantalla de ingreso.
  */
 export const accountHeaderInterceptor: HttpInterceptorFn = (request, next) => {
-  if (!request.url.startsWith(API_BASE) || request.headers.has(ACCOUNT_HEADER)) {
+  if (!request.url.startsWith(API_BASE)) {
     return next(request);
   }
-  const accountId = readAccountId();
-  if (accountId === null) {
+  const session = readSession();
+  if (session === null) {
     return next(request);
   }
-  return next(request.clone({ setHeaders: { [ACCOUNT_HEADER]: String(accountId) } }));
+  const headers: Record<string, string> = { [ACCOUNT_HEADER]: String(session.id) };
+  if (session.token) headers['Authorization'] = `Bearer ${session.token}`;
+  return next(request.clone({ setHeaders: headers })).pipe(
+    catchError((error: unknown) => {
+      if (error instanceof HttpErrorResponse && error.status === 401 && !request.url.includes('/authentication/sign-')) {
+        localStorage.removeItem(SESSION_KEY);
+        location.assign('/ingresar');
+      }
+      return throwError(() => error);
+    }),
+  );
 };
 
-function readAccountId(): number | null {
+function readSession(): { id: number; token?: string } | null {
   try {
     const raw = localStorage.getItem(SESSION_KEY);
-    return raw ? ((JSON.parse(raw) as { id?: number }).id ?? null) : null;
+    const session = raw ? (JSON.parse(raw) as { id?: number; token?: string }) : null;
+    return session?.id == null ? null : { id: session.id, token: session.token };
   } catch {
     return null;
   }

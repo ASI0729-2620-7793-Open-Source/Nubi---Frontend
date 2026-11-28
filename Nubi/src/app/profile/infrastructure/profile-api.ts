@@ -8,6 +8,7 @@ import {
   ChildForm,
   ChildProfile,
   Diagnosis,
+  Invitation,
   SensoryProfile,
   Subscription,
   TrustedContact,
@@ -49,6 +50,10 @@ export class ProfileApi {
 
   inviteCaregiver(id: number, email: string, role: CaregiverRole): Observable<Caregiver> {
     return this.http.post<Caregiver>(`${this.url}/${id}/caregivers`, { email, role });
+  }
+
+  listInvitations(): Observable<Invitation[]> {
+    return this.http.get<Invitation[]>(`${this.url}/invitations`);
   }
 
   acceptInvitation(id: number, caregiverId: number): Observable<Caregiver> {

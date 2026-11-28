@@ -175,7 +175,7 @@ export class CommunicationBoardPage implements OnInit {
           this.board.update((board) => (board ? { ...board, pictograms: [...board.pictograms, pictogram] } : board));
           this.categoryId.set(pictogram.categoryId);
           this.dialog.set(null);
-          this.toast.ok(t('communicationBoard.yaEstaEnSu', { p0: emoji, p1: pictogram.label }));
+          this.toast.ok(t('communicationBoard.yaEstaEnSu', { p0: image ? '🖼️' : emoji, p1: pictogram.label }));
         },
         error: (error) => this.toast.error(apiErrorMessage(error)),
       });

@@ -815,5 +815,9 @@
     "use": "Usar este pictograma",
     "empty": "ARASAAC no devolvió pictogramas para esa palabra.",
     "credit": "Pictogramas: Sergio Palao, ARASAAC, Gobierno de Aragón (CC BY-NC-SA)."
+  },
+  "invitations": {
+    "title": "Te invitaron a acompañar a {{p0}}",
+    "accept": "Aceptar invitación"
   }
 }
