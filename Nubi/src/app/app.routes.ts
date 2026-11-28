@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard, childGuard, guestGuard, noChildGuard } from './iam/application/guards';
+import { adultGuard, authGuard, childGuard, guestGuard, noChildGuard } from './iam/application/guards';
 import { CaregiverShell } from './shared/presentation/caregiver-shell/caregiver-shell';
 
 /**
@@ -30,7 +30,7 @@ export const routes: Routes = [
   {
     path: '',
     component: CaregiverShell,
-    canActivate: [authGuard, childGuard],
+    canActivate: [authGuard, childGuard, adultGuard],
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'inicio' },
       {
@@ -68,6 +68,11 @@ export const routes: Routes = [
         path: 'perfil',
         title: 'titles.profile',
         loadComponent: () => import('./profile/presentation/child-profile/child-profile').then((m) => m.ChildProfilePage),
+      },
+      {
+        path: 'ayuda',
+        title: 'titles.help',
+        loadComponent: () => import('./shared/presentation/help/help').then((m) => m.Help),
       },
       {
         path: 'plan',

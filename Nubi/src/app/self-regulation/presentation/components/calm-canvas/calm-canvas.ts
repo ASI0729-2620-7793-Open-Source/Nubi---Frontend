@@ -85,7 +85,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class CalmCanvas implements AfterViewInit, OnDestroy {
   private readonly canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
-  protected readonly colors = ['#8b7fd6', '#4ccbbb', '#5aa9e6', '#f2b84b', '#f08a6c', '#9bd18b'];
+  protected readonly colors = ['#9a93bd', '#86b5ae', '#8ba8bf', '#d3b783', '#c9988f'];
   protected readonly current = signal(this.colors[0]);
   protected readonly fade = signal(true);
   private context!: CanvasRenderingContext2D;

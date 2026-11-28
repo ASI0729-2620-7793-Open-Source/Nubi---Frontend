@@ -221,8 +221,21 @@ export class Tracking implements OnInit {
     });
   }
 
+  whatsappLink(report: EpisodeReport): string {
+    return `https://wa.me/?text=${encodeURIComponent(this.reportText(report))}`;
+  }
+
+  mailLink(report: EpisodeReport): string {
+    const subject = t('tracking.copyHeader', { from: formatDate(report.periodStart), to: formatDate(report.periodEnd) });
+    return `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(this.reportText(report))}`;
+  }
+
+  private reportText(report: EpisodeReport): string {
+    return `${t('tracking.copyHeader', { from: formatDate(report.periodStart), to: formatDate(report.periodEnd) })}\n${report.summary}${report.observations ? `\n${t('tracking.copyNotes')} ${report.observations}` : ''}`;
+  }
+
   copy(report: EpisodeReport): void {
-    const text = `${t('tracking.copyHeader', { from: formatDate(report.periodStart), to: formatDate(report.periodEnd) })}\n${report.summary}${report.observations ? `\n${t('tracking.copyNotes')} ${report.observations}` : ''}`;
+    const text = this.reportText(report);
     void navigator.clipboard?.writeText(text).then(() => this.toast.ok(t('tracking.copiadoPegaloEnWhatsapp')));
   }
 

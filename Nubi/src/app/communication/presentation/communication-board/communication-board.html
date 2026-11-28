@@ -55,6 +55,7 @@
               <span class="chip sun">{{ pending().length }}</span>
             }
           </div>
+          <p class="muted small">{{ 'help.answers.a' | translate }}</p>
           @for (selection of pending(); track selection.id) {
             @if (pictogram(selection.pictogramId); as p) {
               <div class="message">
@@ -107,7 +108,11 @@
       <h2>{{ 'communicationBoard.nuevoPictograma' | translate }}</h2>
       <p class="muted small">{{ 'communicationBoard.palabrasConcretasQueUse' | translate }}</p>
       <div class="picto-preview">
-        <span>{{ newPictogram.emoji }}</span>
+        @if (newPictogram.image) {
+          <img [src]="newPictogram.image" alt="" width="64" height="64" />
+        } @else {
+          <span>{{ newPictogram.emoji }}</span>
+        }
         <strong>{{ newPictogram.label || ('communicationBoard.palabra' | translate) }}</strong>
       </div>
       <div class="stack">
@@ -125,10 +130,19 @@
           <span>{{ 'communicationBoard.imagen' | translate }}</span>
           <div class="emoji-grid">
             @for (emoji of emojiChoices; track emoji) {
-              <button type="button" [class.active]="newPictogram.emoji === emoji" (click)="newPictogram.emoji = emoji">{{ emoji }}</button>
+              <button type="button" [class.active]="newPictogram.emoji === emoji" (click)="newPictogram.emoji = emoji; newPictogram.image = ''">{{ emoji }}</button>
             }
           </div>
         </div>
+      </div>
+      <div class="stack arasaac">
+        <button class="btn btn-soft" type="button" [disabled]="searching()" (click)="searchArasaac()"><span class="icon">image_search</span> {{ 'arasaac.search' | translate }}</button>
+        <div class="arasaac-grid">
+          @for (image of arasaac(); track image) {
+            <button type="button" [class.active]="newPictogram.image === image" [attr.aria-label]="'arasaac.use' | translate" (click)="newPictogram.image = image"><img [src]="image" alt="" loading="lazy" /></button>
+          }
+        </div>
+        <p class="muted small">{{ 'arasaac.credit' | translate }} <a href="https://arasaac.org" target="_blank" rel="noopener">arasaac.org</a></p>
       </div>
       <div class="dialog-actions">
         <button class="btn btn-ghost" type="button" (click)="dialog.set(null)">{{ 'common.cancelar' | translate }}</button>

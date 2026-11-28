@@ -18,6 +18,8 @@ import {
 import { BoardApi } from '../../infrastructure/board-api';
 import { TranslatePipe } from '@ngx-translate/core';
 import { t } from '../../../shared/infrastructure/i18n-bridge';
+import { ArasaacApi } from '../../infrastructure/arasaac-api';
+import { I18nStore } from '../../../shared/application/i18n.store';
 import { ServerTextPipe } from '../../../shared/presentation/server-text.pipe';
 
 /**
@@ -46,7 +48,11 @@ export class CommunicationBoardPage implements OnInit {
   protected readonly dialog = signal<'pictogram' | 'category' | null>(null);
   protected readonly loading = signal(true);
   protected newCategory = '';
-  protected newPictogram = { label: '', phrase: '', emoji: '🍪', categoryId: 0 };
+  protected newPictogram = { label: '', phrase: '', emoji: '🍪', image: '', categoryId: 0 };
+  protected readonly arasaac = signal<string[]>([]);
+  protected readonly searching = signal(false);
+  private readonly arasaacApi = inject(ArasaacApi);
+  private readonly i18n = inject(I18nStore);
   protected readonly emojiChoices = ['🍪', '🥤', '🍌', '🍕', '🛝', '📺', '🎮', '🐱', '🚗', '🖍️', '🧦', '🤗', '😴', '🤒', '🙅', '👍', '🏠', '🌳', '🧃', '🎧'];
 
   protected readonly favorites = computed(() => this.board()?.pictograms.filter((p) => p.favorite) ?? []);
@@ -129,25 +135,47 @@ export class CommunicationBoardPage implements OnInit {
       label: '',
       phrase: '',
       emoji: '🍪',
+      image: '',
       categoryId: typeof category === 'number' ? category : (this.board()?.categories[0]?.id ?? 0),
     };
+    this.arasaac.set([]);
     this.dialog.set('pictogram');
   }
 
+  searchArasaac(): void {
+    const term = this.newPictogram.label.trim();
+    if (!term) {
+      this.toast.error(t('communicationBoard.escribeUnaPalabraPara'));
+      return;
+    }
+    this.searching.set(true);
+    this.arasaacApi.search(term, this.i18n.lang() === 'en' ? 'en' : 'es').subscribe({
+      next: (images) => {
+        this.arasaac.set(images);
+        this.searching.set(false);
+        if (!images.length) this.toast.error(t('arasaac.empty'));
+      },
+      error: () => {
+        this.searching.set(false);
+        this.toast.error(t('arasaac.empty'));
+      },
+    });
+  }
+
   createPictogram(): void {
-    const { label, phrase, emoji, categoryId } = this.newPictogram;
+    const { label, phrase, emoji, image, categoryId } = this.newPictogram;
     if (!label.trim()) {
       this.toast.error(t('communicationBoard.escribeUnaPalabraPara'));
       return;
     }
     this.api
-      .createPictogram(this.childId, { label: label.trim(), phrase: phrase.trim() || label.trim(), imageUrl: `emoji:${emoji}`, categoryId: Number(categoryId) })
+      .createPictogram(this.childId, { label: label.trim(), phrase: phrase.trim() || label.trim(), imageUrl: image || `emoji:${emoji}`, categoryId: Number(categoryId) })
       .subscribe({
         next: (pictogram) => {
           this.board.update((board) => (board ? { ...board, pictograms: [...board.pictograms, pictogram] } : board));
           this.categoryId.set(pictogram.categoryId);
           this.dialog.set(null);
-          this.toast.ok(t('communicationBoard.yaEstaEnSu', { p0: emoji, p1: pictogram.label }));
+          this.toast.ok(t('communicationBoard.yaEstaEnSu', { p0: image ? '🖼️' : emoji, p1: pictogram.label }));
         },
         error: (error) => this.toast.error(apiErrorMessage(error)),
       });

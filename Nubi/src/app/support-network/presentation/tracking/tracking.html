@@ -9,6 +9,7 @@
     </div>
     <a class="btn btn-ghost" routerLink="/perfil" [queryParams]="{ tab: 'red' }"><span class="icon">group_add</span> {{ 'tracking.cuidadoresYContactos' | translate }}</a>
   </header>
+  <p class="muted small">{{ 'help.network.a' | translate }} <a routerLink="/ayuda">{{ 'home.sosHintMore' | translate }}</a></p>
 
   <div class="tabs">
     <button type="button" [class.active]="tab() === 'episodes'" (click)="tab.set('episodes')"><span class="icon">event_note</span> {{ 'tracking.episodios' | translate: { p0: (episodes().length) } }}</button>
@@ -149,6 +150,8 @@
                 <input class="input" [(ngModel)]="shareWith[report.id]" [placeholder]="'tracking.terapeutaDocenteCorreo' | translate" />
                 <button class="btn btn-soft" type="button" (click)="share(report)"><span class="icon">share</span> {{ 'tracking.compartir' | translate }}</button>
               }
+              <a class="btn btn-ghost" [href]="whatsappLink(report)" target="_blank" rel="noopener"><span class="icon">chat</span> WhatsApp</a>
+              <a class="btn btn-ghost" [href]="mailLink(report)"><span class="icon">mail</span> {{ 'tracking.byMail' | translate }}</a>
               <button class="btn btn-ghost" type="button" (click)="copy(report)"><span class="icon">content_copy</span> {{ 'tracking.copiar' | translate }}</button>
             </div>
           </article>

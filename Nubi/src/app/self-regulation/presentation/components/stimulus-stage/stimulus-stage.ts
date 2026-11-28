@@ -67,7 +67,7 @@ export class StimulusStage {
         return particles(5 + Math.round(intensity * 10), (i) => ({
           x: seeded(i, 1) * 94,
           y: 100,
-          size: 18 + seeded(i, 2) * 46,
+          size: 36 + seeded(i, 2) * 70,
           duration: 22 - intensity * 10 + seeded(i, 3) * 6,
           delay: seeded(i, 4) * 22,
         }));

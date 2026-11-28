@@ -126,3 +126,8 @@
     animation-duration: 14s;
   }
 }
+
+/* Colores atenuados: la validacion con familias los percibio demasiado fluorescentes. */
+:host {
+  filter: saturate(0.68);
+}

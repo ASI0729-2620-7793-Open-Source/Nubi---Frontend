@@ -6,6 +6,15 @@
     </a>
   }
 
+  @if (showSosGuide()) {
+    <aside class="alert sos-hint">
+      <span class="icon fill">sos</span>
+      <span class="grow">{{ 'home.sosHint' | translate }}</span>
+      <a class="btn btn-ghost btn-sm" routerLink="/ayuda">{{ 'home.sosHintMore' | translate }}</a>
+      <button class="btn btn-primary btn-sm" type="button" (click)="dismissSosGuide()">{{ 'home.sosHintOk' | translate }}</button>
+    </aside>
+  }
+
   <section class="hero">
     <div class="hero-text">
       <p class="eyebrow">{{ greeting() }}, {{ session.firstName() }}</p>
@@ -168,5 +177,9 @@
     <a class="card quick-link" routerLink="/comunicacion"><span>💬</span><strong>{{ 'home.pictogramas' | translate }}</strong><span class="muted small">{{ 'home.loQueQuiereDecir' | translate }}</span></a>
     <a class="card quick-link" routerLink="/seguimiento"><span>🤝</span><strong>{{ 'home.redDeApoyo' | translate }}</strong><span class="muted small">{{ 'home.episodiosYAyuda' | translate }}</span></a>
     <a class="card quick-link sos" routerLink="/sos"><span>🆘</span><strong>{{ 'common.modoSos' | translate }}</strong><span class="small">{{ 'home.guiaPasoAPaso' | translate }}</span></a>
+    <a class="card quick-link" routerLink="/perfil" [queryParams]="{ tab: 'red' }"><span>📞</span><strong>{{ 'common.contactosDeConfianza' | translate }}</strong><span class="muted small">{{ 'home.contactsHint' | translate }}</span></a>
+    <a class="card quick-link" routerLink="/ayuda"><span>🧭</span><strong>{{ 'home.guidance' | translate }}</strong><span class="muted small">{{ 'home.guidanceHint' | translate }}</span></a>
   </section>
+
+  <p class="muted small purpose">{{ 'help.goal' | translate }}</p>
 </div>

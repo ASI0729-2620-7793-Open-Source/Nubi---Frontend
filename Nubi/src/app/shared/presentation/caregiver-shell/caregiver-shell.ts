@@ -38,6 +38,7 @@ export class CaregiverShell {
     { path: '/progreso', label: 'nav.progress', icon: 'insights' },
     { path: '/seguimiento', label: 'nav.support', icon: 'diversity_1' },
     { path: '/perfil', label: 'nav.profile', icon: 'child_care' },
+    { path: '/ayuda', label: 'nav.help', icon: 'help' },
   ];
 
   protected readonly mobileLinks: NavLink[] = [
