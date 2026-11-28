@@ -30,6 +30,14 @@ import { I18nStore } from '../../../shared/application/i18n.store';
   styleUrl: './home.css',
 })
 export class Home implements OnInit {
+  /** Guía de primer uso del botón SOS: se muestra hasta que la persona la cierra. */
+  protected readonly showSosGuide = signal(localStorage.getItem('nubi.sosGuideSeen') !== '1');
+
+  dismissSosGuide(): void {
+    localStorage.setItem('nubi.sosGuideSeen', '1');
+    this.showSosGuide.set(false);
+  }
+
   protected readonly session = inject(SessionStore);
   protected readonly childStore = inject(ChildStore);
   protected readonly wellbeing = inject(WellbeingStore);

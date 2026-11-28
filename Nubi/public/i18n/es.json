@@ -71,7 +71,7 @@
     "https": "https://…",
     "usar": "Usar",
     "archivarPerfil": "Archivar perfil",
-    "cadaCuentaAcompanaA": "Cada cuenta acompaña a un solo niño. Si archivas este perfil podrás registrar otro; sus datos no se borran.",
+    "cadaCuentaAcompanaA": "Archivar no borra nada: el perfil deja de mostrarse en Nubi y podrás registrar a otro niño. Desde la aplicación todavía no se puede restaurar.",
     "archivar": "Archivar",
     "comoSienteElMundo": "Cómo siente el mundo",
     "siUnaSensibilidadEs": "Si una sensibilidad es alta, Nubi oculta los estímulos de ese tipo y pone primero ese paso en la guía SOS.",
@@ -211,7 +211,13 @@
     "anotado": "Anotado: {{p0}} {{p1}}",
     "hecho": "{{p0}} {{p1}}: ¡hecho!",
     "preparamosRecomendacionesS": "Preparamos recomendaciones según su perfil.",
-    "routineRingLabel": "Pasos de la rutina hechos hoy"
+    "routineRingLabel": "Pasos de la rutina hechos hoy",
+    "sosHint": "El botón rojo SOS está siempre a la mano. Úsalo cuando empiece una crisis: te guía paso a paso.",
+    "sosHintMore": "Saber más",
+    "sosHintOk": "Entendido",
+    "contactsHint": "A quién llamar",
+    "guidance": "Orientación y ayuda",
+    "guidanceHint": "Cómo usar Nubi"
   },
   "kidDay": {
     "terminasteTuDia": "¡Terminaste tu día! 🌟",
@@ -505,7 +511,8 @@
       "trigger": "Desencadenante más frecuente: {{label}}."
     },
     "copyHeader": "Reporte Nubi ({{from}} – {{to}})",
-    "copyNotes": "Observaciones:"
+    "copyNotes": "Observaciones:",
+    "byMail": "Correo"
   },
   "errors": {
     "generic": "Algo salió mal. Inténtalo otra vez.",
@@ -535,7 +542,8 @@
     "kidHome": "Mi rincón",
     "kidTalk": "Hablar",
     "kidDay": "Mi día",
-    "offline": "Sin conexión"
+    "offline": "Sin conexión",
+    "help": "Ayuda"
   },
   "nav": {
     "home": "Inicio",
@@ -547,7 +555,8 @@
     "profile": "Perfil del niño",
     "routineShort": "Rutina",
     "calmShort": "Calma",
-    "talkShort": "Hablar"
+    "talkShort": "Hablar",
+    "help": "Ayuda"
   },
   "kidNav": {
     "home": "Inicio",
@@ -753,5 +762,58 @@
     "morning": "mañana",
     "afternoon": "tarde",
     "night": "noche"
+  },
+  "waking": {
+    "title": "Despertando a Nubi…",
+    "detail": "Si nadie la usó en un rato, la primera carga puede tardar hasta dos minutos. No cierres esta pantalla."
+  },
+  "kidLock": {
+    "createTitle": "Crea el PIN de adulto",
+    "createHelp": "Antes de entregar el dispositivo, elige 4 dígitos. Se pedirán para volver al área de adultos.",
+    "askTitle": "Área de adultos",
+    "askHelp": "Ingresa tu PIN de 4 dígitos.",
+    "label": "PIN de 4 dígitos",
+    "format": "El PIN tiene 4 dígitos.",
+    "wrong": "Ese PIN no coincide.",
+    "forgot": "Olvidé el PIN: cerrar sesión",
+    "save": "Guardar PIN",
+    "enter": "Entrar"
+  },
+  "help": {
+    "eyebrow": "Ayuda",
+    "title": "Cómo te acompaña Nubi",
+    "goal": "Nubi acompaña a las familias de niños con TEA en su día a día: rutinas visuales, calma, comunicación con pictogramas y apoyo en momentos de crisis. No diagnostica ni reemplaza la terapia.",
+    "sos": {
+      "q": "¿Qué es el Modo SOS?",
+      "a": "Es una guía paso a paso para acompañar una crisis. Registras la intensidad y el posible detonante, sigues las indicaciones y queda guardado para revisarlo después. No llama a emergencias: si hay peligro, comunícate con los servicios de emergencia."
+    },
+    "network": {
+      "q": "¿Qué es la Red de Apoyo?",
+      "a": "Son las personas que acompañan al niño: cuidadores y terapeutas invitados, y contactos de confianza para llamar en una crisis. Aquí puedes pedir ayuda y compartir reportes con ellos."
+    },
+    "professional": {
+      "q": "¿Hay respaldo profesional?",
+      "a": "Las sugerencias de Nubi son orientativas y no sustituyen a un especialista. Invita a la terapeuta o al terapeuta del niño desde Perfil, pestaña Red, con el rol Terapeuta, y comparte los reportes para que los revise."
+    },
+    "answers": {
+      "q": "¿Qué significan «Entendí» y «No entendí»?",
+      "a": "Cuando el niño toca un pictograma, aquí aparece su mensaje. «Entendí» registra que comprendiste lo que pedía; «No entendí» lo deja anotado para revisar ese pictograma o su frase."
+    },
+    "kidMode": {
+      "q": "¿Cómo salgo del Modo niño?",
+      "a": "Mantén presionado el candado «Adultos» e ingresa tu PIN. Si lo olvidaste, cierra sesión desde esa misma ventana y vuelve a ingresar con tu contraseña."
+    },
+    "archive": {
+      "q": "¿Qué pasa si archivo un perfil?",
+      "a": "El perfil deja de mostrarse en Nubi y puedes registrar a otro niño. Sus datos no se borran, pero desde la aplicación todavía no se puede restaurar."
+    },
+    "openNetwork": "Ver cuidadores y contactos",
+    "openSupport": "Ir a la Red de Apoyo"
+  },
+  "arasaac": {
+    "search": "Buscar la palabra en ARASAAC",
+    "use": "Usar este pictograma",
+    "empty": "ARASAAC no devolvió pictogramas para esa palabra.",
+    "credit": "Pictogramas: Sergio Palao, ARASAAC, Gobierno de Aragón (CC BY-NC-SA)."
   }
 }

@@ -1,3 +1,5 @@
+import { kidLock } from '../../../shared/application/kid-lock';
+import { SessionStore } from '../../../iam/application/session.store';
 import { Component, OnDestroy, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ChildStore } from '../../../profile/application/child.store';
@@ -42,7 +44,7 @@ import { TranslatePipe } from '@ngx-translate/core';
           (pointerdown)="startHold()"
           (pointerup)="cancelHold()"
           (pointerleave)="cancelHold()"
-          (keydown.enter)="exit()"
+          (keydown.enter)="askPin()"
           [attr.aria-label]="'kidShell.salirDelModoNino' | translate"
         >
           <span class="icon">lock</span>
@@ -54,8 +56,35 @@ import { TranslatePipe } from '@ngx-translate/core';
         <router-outlet />
       </main>
     </div>
+
+    @if (pinStep(); as step) {
+      <div class="backdrop">
+        <form class="dialog pin" (submit)="submitPin($event, pinInput.value); pinInput.value = ''">
+          <h2>{{ (step === 'create' ? 'kidLock.createTitle' : 'kidLock.askTitle') | translate }}</h2>
+          <p class="muted small">{{ (step === 'create' ? 'kidLock.createHelp' : 'kidLock.askHelp') | translate }}</p>
+          <input #pinInput class="input" type="password" inputmode="numeric" autocomplete="off" maxlength="4" [attr.aria-label]="'kidLock.label' | translate" />
+          @if (pinError()) {
+            <p class="alert" role="alert">{{ pinError() | translate }}</p>
+          }
+          <div class="dialog-actions">
+            @if (step === 'ask') {
+              <button class="btn btn-ghost" type="button" (click)="forgotPin()">{{ 'kidLock.forgot' | translate }}</button>
+              <span class="spacer"></span>
+              <button class="btn btn-ghost" type="button" (click)="pinStep.set(null)">{{ 'common.cancelar' | translate }}</button>
+            }
+            <button class="btn btn-primary" type="submit">{{ (step === 'create' ? 'kidLock.save' : 'kidLock.enter') | translate }}</button>
+          </div>
+        </form>
+      </div>
+    }
   `,
   styles: `
+    .pin input {
+      text-align: center;
+      font-size: 1.8rem;
+      letter-spacing: 0.6em;
+    }
+
     :host {
       display: block;
       min-height: 100vh;
@@ -252,6 +281,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class KidShell implements OnDestroy {
   protected readonly childStore = inject(ChildStore);
   private readonly router = inject(Router);
+  private readonly session = inject(SessionStore);
+  protected readonly pinStep = signal<'create' | 'ask' | null>(kidLock.hasPin() ? null : 'create');
+  protected readonly pinError = signal('');
 
   protected readonly links = [
     { path: '/nino', label: 'kidNav.home', emoji: '🏠', tone: 'var(--mint-100)', exact: true },
@@ -267,6 +299,10 @@ export class KidShell implements OnDestroy {
   protected readonly holding = signal(false);
   private timer: ReturnType<typeof setInterval> | null = null;
 
+  constructor() {
+    kidLock.lock();
+  }
+
   startHold(): void {
     this.cancelHold();
     this.holding.set(true);
@@ -274,7 +310,7 @@ export class KidShell implements OnDestroy {
     this.timer = setInterval(() => {
       const progress = Math.min(1, (Date.now() - started) / 2000);
       this.hold.set(progress);
-      if (progress >= 1) this.exit();
+      if (progress >= 1) this.askPin();
     }, 50);
   }
 
@@ -285,9 +321,37 @@ export class KidShell implements OnDestroy {
     this.hold.set(0);
   }
 
-  exit(): void {
+  askPin(): void {
     this.cancelHold();
+    this.pinError.set('');
+    this.pinStep.set(kidLock.hasPin() ? 'ask' : 'create');
+  }
+
+  submitPin(event: Event, value: string): void {
+    event.preventDefault();
+    if (!/^[0-9]{4}$/.test(value)) {
+      this.pinError.set('kidLock.format');
+      return;
+    }
+    if (this.pinStep() === 'create') {
+      kidLock.savePin(value);
+      this.pinStep.set(null);
+      return;
+    }
+    if (!kidLock.isPin(value)) {
+      this.pinError.set('kidLock.wrong');
+      return;
+    }
+    kidLock.unlock();
     void this.router.navigate(['/inicio']);
+  }
+
+  /** Sin el PIN solo se sale cerrando la sesión: volver a entrar pide la contraseña. */
+  forgotPin(): void {
+    kidLock.reset();
+    this.session.signOut();
+    this.childStore.clear();
+    void this.router.navigate(['/ingresar']);
   }
 
   ngOnDestroy(): void {
